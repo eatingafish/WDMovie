@@ -11,8 +11,9 @@ import com.example.movie.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.jessyan.autosize.internal.CustomAdapt;
 
-public class RegActivity extends AppCompatActivity {
+public class RegActivity extends AppCompatActivity implements CustomAdapt {
 
     @BindView(R.id.mEt_Name_Reg)
     EditText mEtNameReg;
@@ -44,5 +45,19 @@ public class RegActivity extends AppCompatActivity {
         Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
         finish();
 
+    }
+
+    /**
+     * 屏幕适配
+     * @return
+     */
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 720;
     }
 }

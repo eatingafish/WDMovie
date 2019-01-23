@@ -8,7 +8,9 @@ import android.os.Bundle;
 
 import com.example.movie.R;
 
-public class MainActivity extends AppCompatActivity {
+import me.jessyan.autosize.internal.CustomAdapt;
+
+public class MainActivity extends AppCompatActivity implements CustomAdapt {
 
     int sum = 2;
 
@@ -42,5 +44,19 @@ public class MainActivity extends AppCompatActivity {
 
         handler.removeMessages(100);
 
+    }
+
+    /**
+     * 屏幕适配
+     * @return
+     */
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 720;
     }
 }

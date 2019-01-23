@@ -13,36 +13,34 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"></FrameLayout>
 
-    <RadioGroup
-        android:id="@+id/radiogroup"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true">
 
-        <RadioButton
-            android:id="@+id/radiobutton1"
-            android:layout_width="78dp"
-            android:layout_height="78dp"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawableTop="@drawable/yingpian_bg"
+        <ImageView
+            android:id="@+id/homeactivity_imagefilm"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:src="@drawable/yingpian1" />
 
-            />
+        <ImageView
+            android:id="@+id/homeactivity_imagecinema"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/yingyuan1" />
 
-        <RadioButton
-            android:id="@+id/radiobutton2"
-            android:layout_width="78dp"
-            android:layout_height="78dp"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawableTop="@drawable/yingyuan_bg" />
-
-        <RadioButton
-            android:id="@+id/radiobutton3"
-            android:layout_width="78dp"
-            android:layout_height="78dp"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawableTop="@drawable/my_bg" />
-    </RadioGroup>
+        <ImageView
+            android:id="@+id/homeactivity_imagemy"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/my1" />
+    </RelativeLayout>
 </LinearLayout>

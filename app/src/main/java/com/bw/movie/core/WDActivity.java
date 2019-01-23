@@ -13,8 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 
-import java.util.List;
-
 import butterknife.ButterKnife;
 
 /**

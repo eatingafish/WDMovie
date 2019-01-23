@@ -16,8 +16,9 @@ import com.example.movie.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.jessyan.autosize.internal.CustomAdapt;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements CustomAdapt {
 
     @BindView(R.id.mEt_Phone_login)
     EditText mEtPhoneLogin;
@@ -69,9 +70,20 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(this, FragActivity.class));
                 finish();
 
+
                 break;
             case R.id.mIv_WeChat:
                 break;
         }
+    }
+
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 720;
     }
 }

@@ -1,8 +1,6 @@
 package com.example.movie.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,9 +10,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.movie.R;
-import com.facebook.drawee.view.SimpleDraweeView;
-
-import recycler.coverflow.RecyclerCoverFlow;
 
 public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
