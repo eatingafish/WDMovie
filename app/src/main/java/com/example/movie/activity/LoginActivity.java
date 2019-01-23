@@ -65,6 +65,10 @@ public class LoginActivity extends AppCompatActivity {
 
                 break;
             case R.id.mBt_Login:
+
+                startActivity(new Intent(this, FragActivity.class));
+                finish();
+
                 break;
             case R.id.mIv_WeChat:
                 break;
