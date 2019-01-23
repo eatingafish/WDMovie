@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.mIv_WeChat)
     ImageView mIvWeChat;
     boolean canSee = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

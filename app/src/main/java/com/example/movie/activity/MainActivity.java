@@ -1,13 +1,12 @@
-package com.example.movie;
+package com.example.movie.activity;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.example.movie.activity.GuideActivity;
+import com.example.movie.R;
 
 public class MainActivity extends AppCompatActivity {
 
