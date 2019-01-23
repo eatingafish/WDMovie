@@ -17,8 +17,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.jessyan.autosize.internal.CustomAdapt;
 
-public class GuideActivity extends AppCompatActivity {
+public class GuideActivity extends AppCompatActivity implements CustomAdapt {
 
 
     @BindView(R.id.my_viewpage)
@@ -100,5 +101,19 @@ public class GuideActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    /**
+     * 屏幕适配
+     * @return
+     */
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 720;
     }
 }
