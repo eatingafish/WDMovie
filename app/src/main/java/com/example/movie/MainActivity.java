@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.movie.activity.GuideActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     int sum = 2;
@@ -26,9 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (msg.what == 100) {
                 if (sum <= 0) {
-                    //startActivity(new Intent(MainActivity.this, GuideActivity.class));
-                    //finish();
-                    Toast.makeText(MainActivity.this, "hhh", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, GuideActivity.class));
+                    finish();
                 }
                 sum--;
                 handler.sendEmptyMessageDelayed(100, 1000);
