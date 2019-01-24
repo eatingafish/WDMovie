@@ -43,6 +43,12 @@ public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
         vh.name.setText(list.get(i).getName());
         vh.address.setText(list.get(i).getAddress());
         vh.distance.setText(list.get(i).getDistance()+"km");
+        vh.xin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
