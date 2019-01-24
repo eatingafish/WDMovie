@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.bw.movie.activity.MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,10 +24,12 @@
             android:name="design_height_in_dp"
             android:value="1280" />
 
-        <activity android:name="com.bw.movie.activity.GuideActivity" />
-        <activity android:name="com.bw.movie.activity.LoginActivity" />
-        <activity android:name="com.bw.movie.activity.RegActivity" />
-        <activity android:name="com.bw.movie.activity.FragActivity"></activity>
+        <activity android:name=".activity.GuideActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.RegActivity" />
+        <activity android:name=".activity.FragActivity" />
+        <activity android:name=".my.MyMessageActivity" />
+        <activity android:name=".my.Myattention"/>
     </application>
 
 </manifest>

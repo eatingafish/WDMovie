@@ -66,7 +66,6 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
 
                 break;
             case R.id.mBt_Login:
-                startActivity(new Intent(this, FragActivity.class));
 
 
                 break;
