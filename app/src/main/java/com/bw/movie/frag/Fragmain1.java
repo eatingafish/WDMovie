@@ -21,6 +21,7 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmain1, container, false);
+        
         return view;
     }
 
