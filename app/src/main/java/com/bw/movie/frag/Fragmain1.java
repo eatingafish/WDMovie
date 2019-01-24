@@ -1,5 +1,6 @@
 package com.bw.movie.frag;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.adapter.BannerAdapter;
@@ -29,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.jessyan.autosize.internal.CustomAdapt;
+import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
 
 /**
@@ -37,13 +41,12 @@ import recycler.coverflow.RecyclerCoverFlow;
  * Well 正在热映
  * Soon 即将上映
  */
-public class Fragmain1 extends Fragment implements CustomAdapt {
+public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onItemClick {
 
 
     Unbinder unbinder;
 
-    @BindView(R.id.mBanner)
-    RecyclerCoverFlow mList;
+
     @BindView(R.id.mRv_Popular)
     RecyclerView mRvPopular;
     @BindView(R.id.mRv_Well)
@@ -56,6 +59,9 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
     private PopularAdapter_Rv popularAdapter_rv;
     private WellAdapter_Rv wellAdapter_rv;
     private SoonAdapter_Rv soonAdapter_rv;
+    private RecyclerCoverFlow mList;
+    private BannerAdapter bannerAdapter;
+
 
     @Nullable
     @Override
@@ -91,20 +97,31 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
         soonAdapter_rv = new SoonAdapter_Rv(getContext());
         mRvSoon.setAdapter(soonAdapter_rv);
         //Banner
-
-
-        BannerAdapter bannerAdapter = new BannerAdapter(getContext());
-        bannerAdapter.setOnItemClick(new BannerAdapter.onItemClick() {
-            @Override
-            public void clickItem(int position) {
-                mList.smoothScrollToPosition(position);
-            }
-        });
-
+        mList = view.findViewById(R.id.mBanner);
+        bannerAdapter = new BannerAdapter(this, getContext());
         mList.setAdapter(bannerAdapter);
+       /* mList.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
+            @Override
+            public void onItemSelected(int position) {
+                Toast.makeText(getContext(), "123", Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
         onDestroyView();
         return view;
     }
+    private void initList() {
+//        mList.setFlatFlow(true); //平面滚动
+//        mList.setGreyItem(true); //设置灰度渐变
+//        mList.setAlphaItem(true); //设置半透渐变
+
+
+    }
+    @Override
+    public void clickItem(int position) {
+        mList.smoothScrollToPosition(position);
+    }
+
 
 
     @Override
@@ -112,7 +129,6 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
     /**
      * 屏幕适配
@@ -128,6 +144,13 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
     public float getSizeInDp() {
         return 720;
     }
+
+
+
+   /* @Override
+    public void clickItem(int position) {
+        mList.smoothScrollToPosition(position);
+    }*/
 
     /**
      * 热门电影请求接口返回值
@@ -174,6 +197,7 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
         public void success(Result<List<MovieBean>> data) {
             if (data.getStatus().equals("0000")) {
                 soonAdapter_rv.addData(data.getResult());
+                bannerAdapter.addData(data.getResult());
             }
 
         }

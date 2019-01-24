@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     android:orientation="vertical">
 
     <android.support.v4.widget.NestedScrollView
@@ -75,6 +76,7 @@
                         android:src="@drawable/com_icon_next_default" />
 
                     <View
+                        android:id="@+id/v1"
                         android:layout_width="30dp"
                         android:layout_height="3dp"
                         android:layout_below="@+id/rmdy"
@@ -88,7 +90,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/rl"
-                    android:layout_marginTop="-29dp"></android.support.v7.widget.RecyclerView>
+                    android:layout_marginTop="20dp"
+                    ></android.support.v7.widget.RecyclerView>
             </RelativeLayout>
 
             <RelativeLayout
