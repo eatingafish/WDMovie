@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bw.movie.R;
 
 public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -48,7 +47,7 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         if (viewHolder instanceof Vh_Banner){
 
-            Glide.with(mActivity).load(mImages[i%mImages.length]).into(((Vh_Banner) viewHolder).mSdv);
+           // Glide.with(mActivity).load(mImages[i%mImages.length]).into(((Vh_Banner) viewHolder).mSdv);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

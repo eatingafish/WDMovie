@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.FragActivity">
+    tools:context="com.bw.movie.activity.FragActivity">
 
     <FrameLayout
         android:id="@+id/fragmain"

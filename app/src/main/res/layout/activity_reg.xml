@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/log_bitmap"
     android:scaleType="fitXY"
-    tools:context=".activity.RegActivity">
+    tools:context="com.bw.movie.activity.RegActivity">
 
 
     <LinearLayout

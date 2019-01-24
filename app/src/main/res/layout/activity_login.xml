@@ -7,7 +7,7 @@
     android:layout_gravity="center_horizontal"
     android:background="@drawable/reg"
     android:padding="36dp"
-    tools:context=".activity.LoginActivity">
+    tools:context="com.bw.movie.activity.LoginActivity">
 
 
     <RelativeLayout
