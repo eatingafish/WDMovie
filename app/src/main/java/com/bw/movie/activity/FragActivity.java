@@ -34,6 +34,8 @@ public class FragActivity extends AppCompatActivity implements CustomAdapt, View
     ImageView homeactivityImagemy;
     private Fragmain1 fragmain1;
     private Fragmain2 fragmain2;
+
+
     private Fragmain3 fragmain3;
     private FragmentTransaction transaction;
 
@@ -42,10 +44,11 @@ public class FragActivity extends AppCompatActivity implements CustomAdapt, View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_frag);
         ButterKnife.bind(this);
+        //哈哈
         initView();
         initEvent();
-        //刚刚更改
-
+        //刚刚
+        //aa
     }
 
     private void initEvent() {
