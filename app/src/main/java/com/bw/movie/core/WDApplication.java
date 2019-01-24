@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 /**
  * @name: MyApplication
  * @describe: 程序入口
@@ -40,6 +42,7 @@ public class WDApplication extends Application {
         mMainThreadHandler = new Handler();
         mMainLooper = getMainLooper();
         sharedPreferences = getSharedPreferences("share.xml",MODE_PRIVATE);
+        Fresco.initialize(this);
     }
 
     public static SharedPreferences getShare(){

@@ -63,26 +63,25 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
         unbinder = ButterKnife.bind(this, view);
 
         //设置RecycleView
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
         //热门电影
-        popularPresenter = new PopularPresenter(new PopularCall());
+        /*popularPresenter = new PopularPresenter(new PopularCall());
         popularPresenter.reqeust();
         mRvPopular.setLayoutManager(layoutManager);
         PopularAdapter_Rv popularAdapter_rv = new PopularAdapter_Rv();
-        mRvPopular.setAdapter(popularAdapter_rv);
+        mRvPopular.setAdapter(popularAdapter_rv);*/
         //正在上映
-        wellPresenter = new WellPresenter(new WellCall());
+       /* wellPresenter = new WellPresenter(new WellCall());
         wellPresenter.reqeust();
         WellAdapter_Rv wellAdapter_rv = new WellAdapter_Rv();
         mRvWell.setAdapter(wellAdapter_rv);
-        mRvWell.setLayoutManager(layoutManager);
+        mRvWell.setLayoutManager(layoutManager);*/
         //即将上映
-        soonPresenter = new SoonPresenter(new SoonCall());
+        /*soonPresenter = new SoonPresenter(new SoonCall());
         soonPresenter.reqeust();
         mRvSoon.setLayoutManager(layoutManager);
         SoonAdapter_Rv soonAdapter_rv = new SoonAdapter_Rv();onDestroyView();
-        mRvSoon.setAdapter(soonAdapter_rv);
+        mRvSoon.setAdapter(soonAdapter_rv);*/
         //Banner
         BannerAdapter bannerAdapter = new BannerAdapter(getContext());
         bannerAdapter.setOnItemClick(new BannerAdapter.onItemClick() {

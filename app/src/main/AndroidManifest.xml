@@ -28,6 +28,8 @@
         <activity android:name="com.bw.movie.activity.LoginActivity" />
         <activity android:name="com.bw.movie.activity.RegActivity" />
         <activity android:name="com.bw.movie.activity.FragActivity"></activity>
+        <activity android:name=".my.MyMessageActivity"></activity>
+        <activity android:name=".my.Myattention"></activity>
     </application>
 
 </manifest>
