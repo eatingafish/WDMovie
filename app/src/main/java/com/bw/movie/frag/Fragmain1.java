@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.adapter.BannerAdapter;
@@ -18,7 +17,6 @@ import com.bw.movie.adapter.SoonAdapter_Rv;
 import com.bw.movie.adapter.WellAdapter_Rv;
 import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.Result;
-import com.bw.movie.bean.User;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.presenter.PopularPresenter;
