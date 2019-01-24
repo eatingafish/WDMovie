@@ -65,11 +65,17 @@ public class FragActivity extends AppCompatActivity implements CustomAdapt, View
     }
 
 
+    /**
+     * @author dingtao
+     * @date 2019/1/24 11:31 AM
+     * 初始化布局
+     */
     private void initView() {
 
         homeactivityImagefilm.setOnClickListener(this);
         homeactivityImagecinema.setOnClickListener(this);
         homeactivityImagemy.setOnClickListener(this);
+//        homeactivityImagemy.setOnClickListener(this);
 
         AnimatorSet set = new AnimatorSet();
         ObjectAnimator o1 = ObjectAnimator.ofFloat(homeactivityImagefilm, "scaleX", 1.17f);
