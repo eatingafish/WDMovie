@@ -44,6 +44,7 @@ public class WellAdapter_Rv extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Log.e("TAG", "onBindViewHolder: "+ list.get(i).getImageUrl());
             ((Vh_Well) viewHolder).mSdv_Well.setImageURI(Uri.parse(list.get(i).getImageUrl()));
             ((Vh_Well) viewHolder).mTv_Well.setText(list.get(i).getName());
+            ((Vh_Well) viewHolder).mTv_Well.setBackgroundColor(0x55000000);
         }
 
     }
