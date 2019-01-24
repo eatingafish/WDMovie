@@ -3,7 +3,7 @@ package com.bw.movie.bean;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 
-public class User<T> {
+public class User {
 
 
     /**
@@ -33,15 +33,17 @@ public class User<T> {
         this.userId = userId;
     }
 
-    public T getUserInfo() {
+
+    public UserInfo getUserInfo() {
         return userInfo;
     }
 
-    public void setUserInfo(T userInfo) {
+    public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
 
-    private T userInfo;
+    private UserInfo userInfo;
+
 
 
 }

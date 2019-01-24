@@ -12,6 +12,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -55,7 +56,7 @@ public interface IRequest {
      */
     @POST("movieApi/user/v1/login")
     @FormUrlEncoded
-    Observable<Result<User<UserInfo>>> login(@Field("phone") String phone,
+    Observable<Result<User>> login(@Field("phone") String phone,
                                              @Field("pwd") String pwd);
 
     /**
@@ -67,8 +68,8 @@ public interface IRequest {
      * @return
      */
     @GET("movieApi/movie/v1/findHotMovieList")
-    Observable<Result<User<List<MovieBean>>>> polular(@Query("userId") int userId,
-                                                      @Query("sessionId") String sessionId,
+    Observable<Result<List<MovieBean>>> polular(@Header("userId") int userId,
+                                                      @Header("sessionId") String sessionId,
                                                       @Query("page") int page,
                                                       @Query("count") int count);
 
@@ -81,8 +82,8 @@ public interface IRequest {
      * @return
      */
     @GET("movieApi/movie/v1/findReleaseMovieList")
-    Observable<Result<User<List<MovieBean>>>> well(@Query("userId") int userId,
-                                                      @Query("sessionId") String sessionId,
+    Observable<Result<List<MovieBean>>> well(@Header("userId") int userId,
+                                                      @Header("sessionId") String sessionId,
                                                       @Query("page") int page,
                                                       @Query("count") int count);
 
@@ -96,8 +97,8 @@ public interface IRequest {
      * @return
      */
     @GET("movieApi/movie/v1/findComingSoonMovieList")
-    Observable<Result<User<List<MovieBean>>>> soon(@Query("userId") int userId,
-                                                      @Query("sessionId") String sessionId,
+    Observable<Result<List<MovieBean>>> soon(@Header("userId") int userId,
+                                                      @Header("sessionId") String sessionId,
                                                       @Query("page") int page,
                                                       @Query("count") int count);
 

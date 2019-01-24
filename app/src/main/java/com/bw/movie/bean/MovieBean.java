@@ -1,17 +1,17 @@
 package com.bw.movie.bean;
 
 public class MovieBean {
-    private boolean followMovie;
     private int id;
+    private int followMovie;
     private String imageUrl;
     private String name;
     private int rank;
 
-    public boolean isFollowMovie() {
+    public int isFollowMovie() {
         return followMovie;
     }
 
-    public void setFollowMovie(boolean followMovie) {
+    public void setFollowMovie(int followMovie) {
         this.followMovie = followMovie;
     }
 
@@ -56,5 +56,16 @@ public class MovieBean {
     }
 
     private String summary;
+
+    public String getReleaseTimeShow() {
+        return releaseTimeShow;
+    }
+
+    public void setReleaseTimeShow(String releaseTimeShow) {
+        this.releaseTimeShow = releaseTimeShow;
+    }
+
+    private String releaseTimeShow;
+
 
 }

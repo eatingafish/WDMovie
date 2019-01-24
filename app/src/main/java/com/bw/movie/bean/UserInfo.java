@@ -9,6 +9,7 @@ public class UserInfo {
     private String phone;
     private int sex;
 
+
     public long getBirthday() {
         return birthday;
     }

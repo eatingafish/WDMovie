@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.adapter.BannerAdapter;
@@ -54,6 +55,9 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
     private PopularPresenter popularPresenter;
     private WellPresenter wellPresenter;
     private SoonPresenter soonPresenter;
+    private PopularAdapter_Rv popularAdapter_rv;
+    private WellAdapter_Rv wellAdapter_rv;
+    private SoonAdapter_Rv soonAdapter_rv;
 
     @Nullable
     @Override
@@ -63,26 +67,34 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
         unbinder = ButterKnife.bind(this, view);
 
         //设置RecycleView
-
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext());
+        layoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
+        layoutManager2.setOrientation(LinearLayoutManager.HORIZONTAL);
         //热门电影
-        /*popularPresenter = new PopularPresenter(new PopularCall());
-        popularPresenter.reqeust();
+        popularPresenter = new PopularPresenter(new PopularCall());
+        popularPresenter.reqeust(0,null,1,10);
         mRvPopular.setLayoutManager(layoutManager);
-        PopularAdapter_Rv popularAdapter_rv = new PopularAdapter_Rv();
-        mRvPopular.setAdapter(popularAdapter_rv);*/
+        popularAdapter_rv = new PopularAdapter_Rv(getContext());
+        mRvPopular.setAdapter(popularAdapter_rv);
         //正在上映
-       /* wellPresenter = new WellPresenter(new WellCall());
-        wellPresenter.reqeust();
-        WellAdapter_Rv wellAdapter_rv = new WellAdapter_Rv();
+        wellPresenter = new WellPresenter(new WellCall());
+        wellPresenter.reqeust(0,null,1,10);
+        mRvWell.setLayoutManager(layoutManager1);
+        wellAdapter_rv = new WellAdapter_Rv(getContext());
         mRvWell.setAdapter(wellAdapter_rv);
-        mRvWell.setLayoutManager(layoutManager);*/
+
         //即将上映
-        /*soonPresenter = new SoonPresenter(new SoonCall());
-        soonPresenter.reqeust();
-        mRvSoon.setLayoutManager(layoutManager);
-        SoonAdapter_Rv soonAdapter_rv = new SoonAdapter_Rv();onDestroyView();
-        mRvSoon.setAdapter(soonAdapter_rv);*/
+        soonPresenter = new SoonPresenter(new SoonCall());
+        soonPresenter.reqeust(0,null,1,10);
+        mRvSoon.setLayoutManager(layoutManager2);
+        soonAdapter_rv = new SoonAdapter_Rv(getContext());
+        mRvSoon.setAdapter(soonAdapter_rv);
         //Banner
+
+
         BannerAdapter bannerAdapter = new BannerAdapter(getContext());
         bannerAdapter.setOnItemClick(new BannerAdapter.onItemClick() {
             @Override
@@ -92,7 +104,7 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
         });
 
         mList.setAdapter(bannerAdapter);
-
+        onDestroyView();
         return view;
     }
 
@@ -122,9 +134,14 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
     /**
      * 热门电影请求接口返回值
      */
-    private class PopularCall implements DataCall<Result<User<List<MovieBean>>>> {
+    private class PopularCall implements DataCall<Result<List<MovieBean>>> {
         @Override
-        public void success(Result<User<List<MovieBean>>> data) {
+        public void success(Result<List<MovieBean>> data) {
+
+            if (data.getStatus().equals("0000")){
+                popularAdapter_rv.addData(data.getResult());
+
+            }
 
         }
 
@@ -136,9 +153,12 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
     /**
      * 正在热映请求接口返回值
      */
-    private class WellCall implements DataCall<Result<User<List<MovieBean>>>> {
+    private class WellCall implements DataCall<Result<List<MovieBean>>> {
         @Override
-        public void success(Result<User<List<MovieBean>>> data) {
+        public void success(Result<List<MovieBean>> data) {
+            if (data.getStatus().equals("0000")) {
+                wellAdapter_rv.addData(data.getResult());
+            }
 
         }
 
@@ -151,9 +171,12 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
     /**
      * 即将上映请求接口返回值
      */
-    private class SoonCall implements DataCall<Result<User<List<MovieBean>>>> {
+    private class SoonCall implements DataCall<Result<List<MovieBean>>> {
         @Override
-        public void success(Result<User<List<MovieBean>>> data) {
+        public void success(Result<List<MovieBean>> data) {
+            if (data.getStatus().equals("0000")) {
+                soonAdapter_rv.addData(data.getResult());
+            }
 
         }
 
