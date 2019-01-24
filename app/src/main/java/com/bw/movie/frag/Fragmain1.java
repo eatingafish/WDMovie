@@ -20,7 +20,6 @@ import com.bw.movie.adapter.SoonAdapter_Rv;
 import com.bw.movie.adapter.WellAdapter_Rv;
 import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.Result;
-import com.bw.movie.bean.User;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.presenter.PopularPresenter;
@@ -45,6 +44,7 @@ import recycler.coverflow.RecyclerCoverFlow;
 public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onItemClick {
 
 
+    Unbinder unbinder;
 
 
     @BindView(R.id.mRv_Popular)
@@ -53,7 +53,6 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
     RecyclerView mRvWell;
     @BindView(R.id.mRv_Soon)
     RecyclerView mRvSoon;
-    Unbinder unbinder;
     private PopularPresenter popularPresenter;
     private WellPresenter wellPresenter;
     private SoonPresenter soonPresenter;
@@ -70,7 +69,7 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
         View view = inflater.inflate(R.layout.fragmain1, container, false);
 
         unbinder = ButterKnife.bind(this, view);
-        initList();
+
         //设置RecycleView
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

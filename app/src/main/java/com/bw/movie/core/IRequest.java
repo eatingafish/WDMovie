@@ -3,7 +3,7 @@ package com.bw.movie.core;
 import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
-import com.bw.movie.bean.UserInfo;
+import com.bw.movie.bean.cinema.Cinemabean;
 
 import java.util.List;
 
@@ -101,5 +101,22 @@ public interface IRequest {
                                                       @Query("page") int page,
                                                       @Query("count") int count);
 
-
+    /**
+     *查询推荐影院
+     * @param page
+     * @param count
+     * @return
+     */
+    @GET("movieApi/cinema/v1/findRecommendCinemas")
+    Observable<Result<List<Cinemabean>>> yingpian(@Query("page") int page,
+                                                  @Query("count") int count);
+    /**
+     * 查询附近影院
+     */
+    @GET("movieApi/cinema/v1/findNearbyCinemas")
+    Observable<Result<List<Cinemabean>>> near(@Query("page") int page,
+                                              @Query("count") int count,
+                                              @Query("longitude") String longitude,
+                                              @Query("latitude") String latitude
+                                              );
 }
