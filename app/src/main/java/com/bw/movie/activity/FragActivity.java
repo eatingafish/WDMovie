@@ -42,8 +42,10 @@ public class FragActivity extends AppCompatActivity implements CustomAdapt, View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_frag);
         ButterKnife.bind(this);
+        //哈哈
         initView();
         initEvent();
+        //刚刚
         //刚刚更改
         //池鱼思故渊
     }
