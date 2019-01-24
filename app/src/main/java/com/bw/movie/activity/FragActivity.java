@@ -44,6 +44,7 @@ public class FragActivity extends AppCompatActivity implements CustomAdapt, View
         ButterKnife.bind(this);
         initView();
         initEvent();
+        //刚刚更改
 
     }
 
