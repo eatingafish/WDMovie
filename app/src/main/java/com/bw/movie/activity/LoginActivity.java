@@ -103,12 +103,11 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
         return 720;
     }
 
-    private class LoginCall implements DataCall<Result<User<UserInfo>>> {
+    private class LoginCall implements DataCall<Result<User>> {
         @Override
-        public void success(Result<User<UserInfo>> data) {
+        public void success(Result<User> data) {
 
             if (data.getStatus().equals("0000")){
-
                 Toast.makeText(LoginActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginActivity.this, FragActivity.class));
                 finish();

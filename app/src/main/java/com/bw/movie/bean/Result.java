@@ -11,6 +11,7 @@ public class Result<T> {
     private String status;
     private T result;
 
+
     public T getResult() {
         return result;
     }
