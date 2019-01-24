@@ -34,8 +34,6 @@ public class FragActivity extends AppCompatActivity implements CustomAdapt, View
     ImageView homeactivityImagemy;
     private Fragmain1 fragmain1;
     private Fragmain2 fragmain2;
-
-
     private Fragmain3 fragmain3;
     private FragmentTransaction transaction;
 
@@ -48,7 +46,8 @@ public class FragActivity extends AppCompatActivity implements CustomAdapt, View
         initView();
         initEvent();
         //刚刚
-        //aa
+        //刚刚更改
+        //池鱼思故渊
     }
 
     private void initEvent() {
