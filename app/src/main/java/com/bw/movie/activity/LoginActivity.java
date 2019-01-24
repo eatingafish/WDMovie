@@ -10,8 +10,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
+
+import com.bw.movie.bean.Result;
+import com.bw.movie.bean.User;
+import com.bw.movie.bean.UserInfo;
+import com.bw.movie.core.DataCall;
+import com.bw.movie.exception.ApiException;
+import com.bw.movie.exception.EncryptUtil;
+import com.bw.movie.presenter.LoginPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,17 +46,20 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
     @BindView(R.id.mIv_WeChat)
     ImageView mIvWeChat;
     boolean canSee = false;
+    private LoginPresenter loginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        loginPresenter = new LoginPresenter(new LoginCall());
     }
 
     @OnClick({R.id.mIv_eye, R.id.mBt_ToReg_Login, R.id.mBt_Login, R.id.mIv_WeChat})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            //密码可见或者不可见
             case R.id.mIv_eye:
                 if (canSee == false) {
                     //如果是不能看到密码的情况下，
@@ -60,15 +72,22 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
                 }
 
                 break;
+                //注册
             case R.id.mBt_ToReg_Login:
 
-                startActivity(new Intent(this, RegActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegActivity.class));
 
                 break;
+
+                //登录
             case R.id.mBt_Login:
-
+                String phone = mEtPhoneLogin.getText().toString().trim();
+                String pwd = mEtPwdLogin.getText().toString().trim();
+                String encrypt = EncryptUtil.encrypt(pwd);
+                loginPresenter.reqeust(phone,encrypt);
 
                 break;
+                //微信登录
             case R.id.mIv_WeChat:
                 break;
         }
@@ -82,5 +101,25 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
     @Override
     public float getSizeInDp() {
         return 720;
+    }
+
+    private class LoginCall implements DataCall<Result<User<UserInfo>>> {
+        @Override
+        public void success(Result<User<UserInfo>> data) {
+
+            if (data.getStatus().equals("0000")){
+
+                Toast.makeText(LoginActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this, FragActivity.class));
+                finish();
+            }
+
+        }
+
+        @Override
+        public void fail(ApiException e) {
+            Toast.makeText(LoginActivity.this, e.getCode()+"原因:"+e.getDisplayMessage(), Toast.LENGTH_SHORT).show();
+
+        }
     }
 }
