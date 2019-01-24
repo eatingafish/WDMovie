@@ -94,6 +94,7 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
         mRvSoon.setAdapter(soonAdapter_rv);
         //Banner
 
+
         BannerAdapter bannerAdapter = new BannerAdapter(getContext());
         bannerAdapter.setOnItemClick(new BannerAdapter.onItemClick() {
             @Override
