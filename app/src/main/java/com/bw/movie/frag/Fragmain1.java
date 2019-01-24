@@ -90,6 +90,7 @@ public class Fragmain1 extends Fragment implements CustomAdapt {
                 mList.smoothScrollToPosition(position);
             }
         });
+
         mList.setAdapter(bannerAdapter);
 
         return view;
