@@ -4,13 +4,33 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bw.movie.R;
+import com.bw.movie.adapter.BannerAdapter;
+import com.bw.movie.adapter.PopularAdapter_Rv;
+import com.bw.movie.adapter.SoonAdapter_Rv;
+import com.bw.movie.adapter.WellAdapter_Rv;
+import com.bw.movie.bean.MovieBean;
+import com.bw.movie.bean.Result;
+import com.bw.movie.bean.User;
+import com.bw.movie.core.DataCall;
+import com.bw.movie.exception.ApiException;
+import com.bw.movie.presenter.PopularPresenter;
+import com.bw.movie.presenter.SoonPresenter;
+import com.bw.movie.presenter.WellPresenter;
 
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import me.jessyan.autosize.internal.CustomAdapt;
+import recycler.coverflow.RecyclerCoverFlow;
 
 /**
  * 功能: 影片页面
