@@ -1,4 +1,4 @@
-package com.example.movie.util;
+package com.bw.movie.util;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.example.movie.core.WDActivity;
-import com.example.movie.core.WDApplication;
+import com.bw.movie.core.WDActivity;
+import com.bw.movie.core.WDApplication;
 
 import java.io.File;
 

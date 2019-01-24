@@ -1,4 +1,4 @@
-package com.example.movie.util;
+package com.bw.movie.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;

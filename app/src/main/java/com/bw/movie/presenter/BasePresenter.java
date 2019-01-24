@@ -1,9 +1,9 @@
-package com.example.movie.presenter;
+package com.bw.movie.presenter;
 
-import com.example.movie.bean.Result;
-import com.example.movie.core.DataCall;
-import com.example.movie.exception.CustomException;
-import com.example.movie.exception.ResponseTransformer;
+import com.bw.movie.bean.Result;
+import com.bw.movie.core.DataCall;
+import com.bw.movie.exception.CustomException;
+import com.bw.movie.exception.ResponseTransformer;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;

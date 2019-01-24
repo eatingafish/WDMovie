@@ -1,4 +1,4 @@
-package com.example.movie.util;
+package com.bw.movie.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

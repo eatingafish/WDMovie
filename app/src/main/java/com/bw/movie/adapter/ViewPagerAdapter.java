@@ -1,4 +1,4 @@
-package com.example.movie.adapter;
+package com.bw.movie.adapter;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;

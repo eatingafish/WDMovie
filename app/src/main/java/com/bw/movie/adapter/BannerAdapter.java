@@ -1,4 +1,4 @@
-package com.example.movie.adapter;
+package com.bw.movie.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.movie.R;
+import com.bw.movie.R;
 
 public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -20,7 +21,11 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             R.drawable.wdejiandie, R.drawable.wushuang, R.drawable.xueguai,
             R.drawable.ying, R.drawable.zhaodaoni, R.drawable.zuoriqingkong
     };
-
+    private String[] name = {"宝贝儿   101分钟", "嗝嗝老师   121分钟", "胡桃夹子和四个王国   108分钟"
+            , "李茶的姑妈   128分钟", "猛虫过江   114分钟", "暮光巴黎   135分钟", "铁血战士   140分钟", "为你写诗   97分钟"
+            , "我的间谍前男友   101分钟", "无双   101分钟", "雪怪大冒险   101分钟", "影   101分钟"
+            , "找到你   95分钟", "昨日青空   89分钟"
+    };
     public BannerAdapter(Context mActivity) {
         this.mActivity = mActivity;
     }
@@ -50,8 +55,11 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     if (onItemClick != null){
                         onItemClick.clickItem(i);
                     }
+
                 }
             });
+            ((Vh_Banner) viewHolder).textView.setBackgroundColor(0x55000000);
+            ((Vh_Banner) viewHolder).textView.setText(name[i % name.length]);
         }
 
     }
@@ -64,10 +72,12 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     class Vh_Banner extends RecyclerView.ViewHolder {
 
         private final ImageView mSdv;
+        private final TextView textView;
 
         public Vh_Banner(@NonNull View itemView) {
             super(itemView);
             mSdv = itemView.findViewById(R.id.mSdv);
+            textView = itemView.findViewById(R.id.tv);
 
         }
     }
@@ -76,8 +86,8 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.onItemClick = onItemClick;
     }
 
-    private onItemClick onItemClick;
-    interface  onItemClick{
+    public onItemClick onItemClick;
+    public interface  onItemClick{
         void clickItem(int position);
     }
 }

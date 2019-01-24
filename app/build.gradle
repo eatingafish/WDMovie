@@ -3,14 +3,14 @@ apply plugin: 'org.greenrobot.greendao'
 
 greendao {
     schemaVersion 1  //版本
-    daoPackage 'com.example.dao' // 一般为app包名+生成文件的文件夹名
+    daoPackage 'com.bw.movie.Dao' // 一般为app包名+生成文件的文件夹名
     targetGenDir 'src/main/java' //生成文件路径
 }
 
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.movie"
+        applicationId "com.bw.movie"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
@@ -54,4 +54,5 @@ dependencies {
     implementation 'me.jessyan:autosize:0.9.5'
     implementation 'com.chenlittleping:recyclercoverflow:1.0.6'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.contrarywind:Android-PickerView:3.2.6'
 }

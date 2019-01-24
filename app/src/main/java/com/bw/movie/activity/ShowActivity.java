@@ -1,9 +1,9 @@
-package com.example.movie.activity;
+package com.bw.movie.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.movie.R;
+import com.bw.movie.R;
 
 public class ShowActivity extends AppCompatActivity {
 

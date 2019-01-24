@@ -1,4 +1,4 @@
-package com.example.movie.activity;
+package com.bw.movie.activity;
 
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.movie.R;
-import com.example.movie.adapter.ViewPagerAdapter;
+import com.bw.movie.R;
+import com.bw.movie.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
 

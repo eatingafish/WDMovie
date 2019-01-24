@@ -1,4 +1,4 @@
-package com.example.movie.activity;
+package com.bw.movie.activity;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -9,10 +9,10 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.example.movie.R;
-import com.example.movie.frag.Fragmain1;
-import com.example.movie.frag.Fragmain2;
-import com.example.movie.frag.Fragmain3;
+import com.bw.movie.R;
+import com.bw.movie.frag.Fragmain1;
+import com.bw.movie.frag.Fragmain2;
+import com.bw.movie.frag.Fragmain3;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

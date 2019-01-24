@@ -1,4 +1,4 @@
-package com.example.movie.exception;
+package com.bw.movie.exception;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;

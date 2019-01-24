@@ -1,6 +1,6 @@
-package com.example.movie.core;
+package com.bw.movie.core;
 
-import com.example.movie.exception.ApiException;
+import com.bw.movie.exception.ApiException;
 
 /**
  * @author dingtao

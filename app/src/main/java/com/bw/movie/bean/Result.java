@@ -1,9 +1,23 @@
-package com.example.movie.bean;
+package com.bw.movie.bean;
 
 public class Result<T> {
+
+    /**
+     * message : 注册成功
+     * status : 0000
+     */
+
     private String message;
     private String status;
     private T result;
+
+    public T getResult() {
+        return result;
+    }
+
+    public void setResult(T result) {
+        this.result = result;
+    }
 
     public String getMessage() {
         return message;
@@ -19,13 +33,5 @@ public class Result<T> {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public T getResult() {
-        return result;
-    }
-
-    public void setResult(T result) {
-        this.result = result;
     }
 }

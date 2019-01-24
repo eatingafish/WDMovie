@@ -1,8 +1,8 @@
-package com.example.movie.util;
+package com.bw.movie.util;
 
 import android.os.Environment;
 
-import com.example.movie.core.WDApplication;
+import com.bw.movie.core.WDApplication;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

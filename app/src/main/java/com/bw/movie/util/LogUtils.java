@@ -3,7 +3,7 @@
  * History:
  * Created by mwqi on 2014-4-4
  */
-package com.example.movie.util;
+package com.bw.movie.util;
 
 import android.text.TextUtils;
 import android.util.Log;

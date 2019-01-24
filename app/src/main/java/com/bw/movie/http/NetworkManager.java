@@ -1,4 +1,4 @@
-package com.example.movie.http;
+package com.bw.movie.http;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +42,7 @@ public class NetworkManager {
 
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl("http://172.17.8.100/movieApi/")//base_url:http+域名
+                .baseUrl("http://172.17.8.100/")//base_url:http+域名
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//使用Rxjava对回调数据进行处理
                 .addConverterFactory(GsonConverterFactory.create())//响应结果的解析器，包含gson，xml，protobuf
                 .build();

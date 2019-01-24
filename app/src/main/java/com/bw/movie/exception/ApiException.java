@@ -1,4 +1,4 @@
-package com.example.movie.exception;
+package com.bw.movie.exception;
 
 public class ApiException extends Exception {
     private int code;
