@@ -4,6 +4,8 @@ import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
 import com.bw.movie.bean.cinema.Cinemabean;
+import com.bw.movie.bean.cinema.Cinemamovie;
+import com.bw.movie.bean.cinema.Cinemayingp;
 
 import java.util.List;
 
@@ -119,4 +121,16 @@ public interface IRequest {
                                               @Query("longitude") String longitude,
                                               @Query("latitude") String latitude
                                               );
+
+    /**
+     * 根据影院ID查询该影院下即将上映的电影列表
+     */
+    @GET("movieApi/movie/v1/findSoonMovieByCinemaId")
+    Observable<Result<List<Cinemamovie>>> moviel(@Query("cinemaId") int cinemaId);
+
+    /**
+     * 根据电影ID和影院ID查询电影排期列表
+     */
+    @GET("movieApi/movie/v1/findMovieScheduleList")
+    Observable<Result<List<Cinemayingp>>> dypaiqi(@Query("cinemasId") int cinemasId,@Query("movieId") int movieId);
 }

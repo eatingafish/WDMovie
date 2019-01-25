@@ -10,7 +10,7 @@ public class Result<T> {
     private String message;
     private String status;
     private T result;
-
+    private T movieList;
 
     public T getResult() {
         return result;
@@ -34,5 +34,13 @@ public class Result<T> {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public T getMovieList() {
+        return movieList;
+    }
+
+    public void setMovieList(T movieList) {
+        this.movieList = movieList;
     }
 }

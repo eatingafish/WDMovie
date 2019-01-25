@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bw.movie.R;
+import com.bw.movie.my.MyFeedBackActivity;
 import com.bw.movie.my.MyMessageActivity;
 import com.bw.movie.my.Myattention;
 
@@ -67,7 +68,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
             case R.id.mSdv_Ticket:
                 break;
             case R.id.mSdv_FeedBack:
-
+                startActivity(new Intent(getContext(),MyFeedBackActivity.class));
                 break;
             case R.id.mSdv_New:
                 break;

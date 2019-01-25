@@ -1,6 +1,7 @@
 package com.bw.movie.adapter.frag2adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.cinema.PaylistActivity;
 import com.bw.movie.bean.cinema.Cinemabean;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -38,7 +41,7 @@ public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VH vh, int i) {
+    public void onBindViewHolder(@NonNull VH vh, final int i) {
         vh.simple.setImageURI(list.get(i).getLogo());
         vh.name.setText(list.get(i).getName());
         vh.address.setText(list.get(i).getAddress());
@@ -47,6 +50,19 @@ public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,PaylistActivity.class);
+                intent.putExtra("id",list.get(i).getId());
+                intent.putExtra("logo",list.get(i).getLogo());
+                intent.putExtra("name",list.get(i).getName());
+                Toast.makeText(context, ""+list.get(i).getName(), Toast.LENGTH_SHORT).show();
+                intent.putExtra("address",list.get(i).getAddress());
+                context.startActivity(intent);
             }
         });
     }
