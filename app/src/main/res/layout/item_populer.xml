@@ -15,13 +15,13 @@
 
     <TextView
         android:id="@+id/mTv_Populer"
-        android:layout_width="103dp"
+        android:layout_width="126dp"
         android:layout_height="40dp"
         android:layout_alignBottom="@+id/mSdv_Populer"
-        android:layout_marginLeft="23dp"
+        android:paddingLeft="23dp"
         android:gravity="center_vertical"
         android:text="好好"
-        android:textColor="#ffffff"
+        android:textColor="#fff"
         android:textSize="14sp" />
 
     <View

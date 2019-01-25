@@ -38,13 +38,19 @@ public class WellAdapter_Rv extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
 
         if (viewHolder instanceof Vh_Well){
             Log.e("TAG", "onBindViewHolder: "+ list.get(i).getImageUrl());
             ((Vh_Well) viewHolder).mSdv_Well.setImageURI(Uri.parse(list.get(i).getImageUrl()));
             ((Vh_Well) viewHolder).mTv_Well.setText(list.get(i).getName());
             ((Vh_Well) viewHolder).mTv_Well.setBackgroundColor(0x55000000);
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendId.sendId(list.get(i).getId());
+                }
+            });
         }
 
     }
@@ -75,4 +81,12 @@ public class WellAdapter_Rv extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    public void setSendId(WellAdapter_Rv.sendId sendId) {
+        this.sendId = sendId;
+    }
+
+    private sendId sendId;
+    public interface sendId{
+        void sendId(int movieid);
+    }
 }

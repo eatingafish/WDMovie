@@ -1,6 +1,7 @@
 package com.bw.movie.core;
 
 import com.bw.movie.bean.MovieBean;
+import com.bw.movie.bean.MovieMessage;
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
 import com.bw.movie.bean.cinema.Cinemabean;
@@ -119,4 +120,28 @@ public interface IRequest {
                                               @Query("longitude") String longitude,
                                               @Query("latitude") String latitude
                                               );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @GET("movieApi/movie/v1/findMoviesById")
+    Observable<Result<MovieMessage>> movieMessage(@Header("userId") int userId,
+                                                  @Header("sessionId") String sessionId,
+                                                  @Query("movieId") int movieId);
 }

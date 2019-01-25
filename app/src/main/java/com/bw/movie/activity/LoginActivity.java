@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,15 +13,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
 
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
-import com.bw.movie.bean.UserInfo;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.exception.EncryptUtil;
 import com.bw.movie.presenter.LoginPresenter;
+
+import java.sql.SQLException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,13 +51,56 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
     ImageView mIvWeChat;
     boolean canSee = false;
     private LoginPresenter loginPresenter;
+    private List<User> student;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        /*try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
         loginPresenter = new LoginPresenter(new LoginCall());
+        try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (student.size()!=0){
+                if (student.get(0).getIsAuto()==1){
+                    Toast.makeText(this, "自动登录", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(LoginActivity.this, FragActivity.class));
+                    finish();
+                    mCbAutoLogin.setChecked(true);
+                    String phone = student.get(0).getPhone();
+                    String pwd = student.get(0).getPwd();
+                    String encrypt = EncryptUtil.encrypt(pwd);
+                    loginPresenter.reqeust(phone, encrypt);
+                }else {
+                    if (student.size()!=0) {
+                        if (student.get(0).getIsPwd() == 1) {
+
+                            mCbPwdLogin.setChecked(true);
+
+                            mEtPhoneLogin.setText(student.get(0).getPhone());
+
+                            mEtPwdLogin.setText(student.get(0).getPwd());
+
+                        }
+
+                    }
+                }
+            }
+
+
+
     }
 
     @OnClick({R.id.mIv_eye, R.id.mBt_ToReg_Login, R.id.mBt_Login, R.id.mIv_WeChat})
@@ -72,22 +119,22 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
                 }
 
                 break;
-                //注册
+            //注册
             case R.id.mBt_ToReg_Login:
 
                 startActivity(new Intent(LoginActivity.this, RegActivity.class));
 
                 break;
 
-                //登录
+            //登录
             case R.id.mBt_Login:
                 String phone = mEtPhoneLogin.getText().toString().trim();
                 String pwd = mEtPwdLogin.getText().toString().trim();
                 String encrypt = EncryptUtil.encrypt(pwd);
-                loginPresenter.reqeust(phone,encrypt);
+                loginPresenter.reqeust(phone, encrypt);
 
                 break;
-                //微信登录
+            //微信登录
             case R.id.mIv_WeChat:
                 break;
         }
@@ -106,19 +153,55 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
     private class LoginCall implements DataCall<Result<User>> {
         @Override
         public void success(Result<User> data) {
+            if (data.getStatus().equals("0000")) {
 
-            if (data.getStatus().equals("0000")){
-                Toast.makeText(LoginActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+                try {
+                    UserDao userDao = new UserDao(LoginActivity.this);
+                    data.getResult().setIsAuto(mCbAutoLogin.isChecked()?1:0);
+                    data.getResult().setIsPwd(mCbPwdLogin.isChecked()?1:0);
+                    data.getResult().setIsFirst(0);
+                    String s = mEtPhoneLogin.getText().toString();
+                    String s1 = mEtPwdLogin.getText().toString();
+                    data.getResult().setPhone(s);
+                    data.getResult().setPwd(s1);
+                    userDao.insertStudent(data.getResult());
+                    Toast.makeText(LoginActivity.this, "555", Toast.LENGTH_SHORT).show();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 startActivity(new Intent(LoginActivity.this, FragActivity.class));
                 finish();
             }
-
         }
 
         @Override
         public void fail(ApiException e) {
-            Toast.makeText(LoginActivity.this, e.getCode()+"原因:"+e.getDisplayMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, e.getCode() + "原因:" + e.getDisplayMessage(), Toast.LENGTH_SHORT).show();
 
         }
     }
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+
+        try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (student.size() != 0) {
+            if (student.get(0).getIsAuto() == 1) {
+
+                Log.e("TAG", "onResume: 自动登录");
+                mCbAutoLogin.setChecked(true);
+                String phone = student.get(0).getPhone();
+                String pwd = student.get(0).getPwd();
+                String encrypt = EncryptUtil.encrypt(pwd);
+                loginPresenter.reqeust(phone, encrypt);
+            }
+
+        }
+    }*/
 }

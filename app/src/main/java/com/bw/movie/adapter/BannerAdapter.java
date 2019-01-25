@@ -21,18 +21,7 @@ import java.util.List;
 
 public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-   /* private int[] mImages = {R.drawable.gegelaoshi,
-            R.drawable.baobei, R.drawable.hutaojiazi, R.drawable.lichadeguma,
-            R.drawable.menchongguojiang, R.drawable.muguangbali,
-            R.drawable.tiexuezhanshi, R.drawable.weinixieshi,
-            R.drawable.wdejiandie, R.drawable.wushuang, R.drawable.xueguai,
-            R.drawable.ying, R.drawable.zhaodaoni, R.drawable.zuoriqingkong
-    };
-    private String[] name = {"嗝嗝老师   121分钟","宝贝儿   101分钟", "胡桃夹子和四个王国   108分钟"
-            , "李茶的姑妈   128分钟", "猛虫过江   114分钟", "暮光巴黎   135分钟", "铁血战士   140分钟", "为你写诗   97分钟"
-            , "我的间谍前男友   101分钟", "无双   101分钟", "雪怪大冒险   101分钟", "影   101分钟"
-            , "找到你   95分钟", "昨日青空   89分钟"
-    };*/
+
 
    private ArrayList<MovieBean> list = new ArrayList<>();
     private Context mActivity;
@@ -116,6 +105,8 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         }
     }
+
+
 
 
 

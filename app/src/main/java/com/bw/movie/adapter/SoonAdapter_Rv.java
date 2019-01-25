@@ -37,10 +37,16 @@ public class SoonAdapter_Rv extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
         ((Vh_Soon) viewHolder).mSdv_Soon.setImageURI(Uri.parse(list.get(i).getImageUrl()));
         ((Vh_Soon) viewHolder).mTv_Soon.setText(list.get(i).getName());
         ((Vh_Soon) viewHolder).mTv_Soon.setBackgroundColor(0x55000000);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendId.sendId(list.get(i).getId());
+            }
+        });
     }
 
     @Override
@@ -70,4 +76,13 @@ public class SoonAdapter_Rv extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+
+    public void setSendId(SoonAdapter_Rv.sendId sendId) {
+        this.sendId = sendId;
+    }
+
+    private sendId sendId;
+    public interface sendId{
+        void sendId(int movieid);
+    }
 }

@@ -1,12 +1,21 @@
 package com.bw.movie.bean;
 
-public class UserInfo {
+import com.j256.ormlite.field.DatabaseField;
 
+import java.io.Serializable;
+
+public class UserInfo implements Serializable {
+    @DatabaseField
     private long birthday;
+    @DatabaseField(generatedId = true)
     private int id;
+    @DatabaseField
     private long lastLoginTime;
+    @DatabaseField
     private String nickName;
+    @DatabaseField
     private String phone;
+    @DatabaseField
     private int sex;
 
 
@@ -66,6 +75,7 @@ public class UserInfo {
         this.headPic = headPic;
     }
 
+    @DatabaseField
     private String headPic;
 
 }

@@ -1,6 +1,7 @@
 package com.bw.movie.frag;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,19 +14,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
+import com.bw.movie.activity.MovieMessageActivity;
 import com.bw.movie.adapter.BannerAdapter;
 import com.bw.movie.adapter.PopularAdapter_Rv;
 import com.bw.movie.adapter.SoonAdapter_Rv;
 import com.bw.movie.adapter.WellAdapter_Rv;
 import com.bw.movie.bean.MovieBean;
+import com.bw.movie.bean.MovieMessage;
 import com.bw.movie.bean.Result;
+import com.bw.movie.bean.User;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.presenter.PopularPresenter;
 import com.bw.movie.presenter.SoonPresenter;
 import com.bw.movie.presenter.WellPresenter;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -70,6 +76,13 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
 
         unbinder = ButterKnife.bind(this, view);
 
+        try {
+            UserDao userDao = new UserDao(getContext());
+            List<User> student = userDao.getStudent();
+            Toast.makeText(getContext(), student.size()+"", Toast.LENGTH_SHORT).show();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         //设置RecycleView
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -100,23 +113,9 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
         mList = view.findViewById(R.id.mBanner);
         bannerAdapter = new BannerAdapter(this, getContext());
         mList.setAdapter(bannerAdapter);
-       /* mList.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
-            @Override
-            public void onItemSelected(int position) {
-                Toast.makeText(getContext(), "123", Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
-        onDestroyView();
         return view;
     }
-    private void initList() {
-//        mList.setFlatFlow(true); //平面滚动
-//        mList.setGreyItem(true); //设置灰度渐变
-//        mList.setAlphaItem(true); //设置半透渐变
 
-
-    }
     @Override
     public void clickItem(int position) {
         mList.smoothScrollToPosition(position);
@@ -147,11 +146,6 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
 
 
 
-   /* @Override
-    public void clickItem(int position) {
-        mList.smoothScrollToPosition(position);
-    }*/
-
     /**
      * 热门电影请求接口返回值
      */
@@ -161,6 +155,15 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
 
             if (data.getStatus().equals("0000")){
                 popularAdapter_rv.addData(data.getResult());
+                popularAdapter_rv.setSendId(new PopularAdapter_Rv.sendId() {
+                    @Override
+                    public void sendId(int movieid) {
+                        Intent intent = new Intent(getContext(), MovieMessageActivity.class);
+                        intent.putExtra("movieid",movieid);
+                        startActivity(intent);
+                    }
+                });
+                popularAdapter_rv.notifyDataSetChanged();
 
             }
 
@@ -179,6 +182,15 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
         public void success(Result<List<MovieBean>> data) {
             if (data.getStatus().equals("0000")) {
                 wellAdapter_rv.addData(data.getResult());
+                wellAdapter_rv.setSendId(new WellAdapter_Rv.sendId() {
+                    @Override
+                    public void sendId(int movieid) {
+                        Intent intent = new Intent(getContext(), MovieMessageActivity.class);
+                        intent.putExtra("movieid",movieid);
+                        startActivity(intent);
+                    }
+                });
+                wellAdapter_rv.notifyDataSetChanged();
             }
 
         }
@@ -197,7 +209,17 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
         public void success(Result<List<MovieBean>> data) {
             if (data.getStatus().equals("0000")) {
                 soonAdapter_rv.addData(data.getResult());
+                soonAdapter_rv.notifyDataSetChanged();
+                soonAdapter_rv.setSendId(new SoonAdapter_Rv.sendId() {
+                    @Override
+                    public void sendId(int movieid) {
+                        Intent intent = new Intent(getContext(), MovieMessageActivity.class);
+                        intent.putExtra("movieid",movieid);
+                        startActivity(intent);
+                    }
+                });
                 bannerAdapter.addData(data.getResult());
+                bannerAdapter.notifyDataSetChanged();
             }
 
         }

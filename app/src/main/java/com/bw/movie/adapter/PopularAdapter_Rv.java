@@ -36,12 +36,18 @@ public class PopularAdapter_Rv extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
 
         if (viewHolder instanceof Vh_Popular){
             ((Vh_Popular) viewHolder).mSdv_populer.setImageURI(Uri.parse(list.get(i).getImageUrl()));
             ((Vh_Popular) viewHolder).mTv_populer.setText(list.get(i).getName());
             ((Vh_Popular) viewHolder).mTv_populer.setBackgroundColor(0x55000000);
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendId.sendId(list.get(i).getId());
+                }
+            });
         }
 
     }
@@ -71,6 +77,15 @@ public class PopularAdapter_Rv extends RecyclerView.Adapter<RecyclerView.ViewHol
             mTv_populer = itemView.findViewById(R.id.mTv_Populer);
 
         }
+    }
+
+    public void setSendId(PopularAdapter_Rv.sendId sendId) {
+        this.sendId = sendId;
+    }
+
+    private sendId sendId;
+    public interface sendId{
+        void sendId(int movieid);
     }
 
 }
