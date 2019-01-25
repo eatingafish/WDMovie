@@ -51,7 +51,6 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 break;
             case R.id.mBt_Advance:
 
-
                 break;
             case R.id.mBt_Photo:
 

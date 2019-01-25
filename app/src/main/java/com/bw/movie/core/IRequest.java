@@ -124,24 +124,13 @@ public interface IRequest {
                                               );
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * movieMessage
+     * @param userId
+     * @param sessionId
+     * @param movieId
+     * @return
+     */
     @GET("movieApi/movie/v1/findMoviesById")
     Observable<Result<MovieMessage>> movieMessage(@Header("userId") int userId,
                                                   @Header("sessionId") String sessionId,
