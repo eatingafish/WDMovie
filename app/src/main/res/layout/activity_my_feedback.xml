@@ -18,12 +18,16 @@
         android:layout_marginTop="30dp"
         />
     <EditText
-        android:id="@+id/myfeedback_edit"
+        android:id="@+id/myfeedback_edit_ganshou"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:hint="写下您对产品的感受吧！工作人员将会在第一时间评估处理"
+        android:textSize="12sp"
+        android:textColor="#999999"
+        android:layout_marginTop="30dp"
         />
     <Button
+        android:id="@+id/myfeedbace_button_tijiao"
         android:layout_width="48dp"
         android:layout_height="25dp"
         android:text="提交"
@@ -31,5 +35,14 @@
         android:textColor="#ffffff"
         android:textSize="12sp"
         android:layout_gravity="right"
+        android:layout_marginTop="20dp"
         />
+        <ImageView
+            android:id="@+id/myfeedback_back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/back"
+            android:layout_marginTop="450dp"
+            />
+
 </LinearLayout>

@@ -53,6 +53,9 @@
         <activity android:name=".my.MyMessageActivity" />
         <activity android:name=".my.Myattention" />
         <activity android:name=".my.MyFeedBackActivity" />
+        <activity android:name=".my.MypwdupActivity" />
+        <activity android:name=".activity.cinema.PaylistActivity"></activity>
+        <activity android:name=".my.MyFeedBackActivity" />
         <activity android:name=".activity.MovieMessageActivity"></activity>
     </application>
 

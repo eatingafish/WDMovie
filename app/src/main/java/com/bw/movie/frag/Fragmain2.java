@@ -1,5 +1,6 @@
 package com.bw.movie.frag;
 
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,11 +58,21 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
     @BindView(R.id.cinema_recycler)
     RecyclerView cinemaRecycler;
     Unbinder unbinder;
+    @BindView(R.id.imageView)
+    ImageView imageView;
+    @BindView(R.id.search_editext)
+    EditText acrchEditext;
+    @BindView(R.id.acrch_text)
+    TextView acrchText;
+    @BindView(R.id.search_linear2)
+    LinearLayout acrchLinear2;
     private CinemaAdapter1 cinemaAdapter1;
     private CinemaPresenter cinemaPresenter;
     private CinemaPresenter2 cinemaPresenter2;
     public LocationClient mLocationClient = null;
     private MyLocationListener myListener = new MyLocationListener();
+    private boolean animatort = false;
+    private boolean animatorf = false;
 
     @Nullable
     @Override
@@ -82,7 +95,39 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         cinemaPresenter2 = new CinemaPresenter2(new getData());
 
         initData();
+
+        //这是刚进页面设置的动画状态
+        ObjectAnimator animator = ObjectAnimator.ofFloat(acrchLinear2, "translationX", 30f, 510f);
+        animator.setDuration(0);
+        animator.start();
+
         return view;
+    }
+
+    @OnClick(R.id.imageView)
+    public void seacrch_linear2() {
+        if (animatort) {
+            return;
+        }
+        animatort = true;
+        animatorf = false;
+        //这是显示出现的动画
+        ObjectAnimator animator = ObjectAnimator.ofFloat(acrchLinear2, "translationX", 510f, 30f);
+        animator.setDuration(1500);
+        animator.start();
+    }
+
+    @OnClick(R.id.acrch_text)
+    public void seacrch_text() {
+        if (animatorf) {
+            return;
+        }
+        animatorf = true;
+        animatort = false;
+        //这是隐藏进去的动画
+        ObjectAnimator animator = ObjectAnimator.ofFloat(acrchLinear2, "translationX", 30f, 510f);
+        animator.setDuration(1500);
+        animator.start();
     }
 
     private void initData() {
@@ -133,7 +178,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
                 break;
         }
     }
-
+    //定位
     public class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -143,7 +188,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
             String locationDescribe = location.getLocationDescribe();    //获取位置描述信息
             String addr = location.getCity();    //获取详细地址信息
             cimemaText.setText(locationDescribe + addr);
-
+            mLocationClient.stop();
         }
     }
 
