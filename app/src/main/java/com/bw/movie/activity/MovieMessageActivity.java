@@ -4,17 +4,28 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.adapter.JuZhaoAdapter;
 import com.bw.movie.bean.MovieMessage;
+import com.bw.movie.bean.MovieMessageBean;
 import com.bw.movie.bean.Result;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.presenter.MovieMessagePresenter;
+import com.bw.movie.presenter.MoviesDPresenter;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +40,10 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     TextView mTvName;
     @BindView(R.id.mSDv_Movie)
     SimpleDraweeView mSDvMovie;
+    @BindView(R.id.lll)
+    LinearLayout lll;
+    private PopupWindow popupWindow;
+    MovieMessageBean MovieMessageBean = new MovieMessageBean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +54,9 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         Bundle extras = intent.getExtras();
         int movieid = extras.getInt("movieid");
         MovieMessagePresenter movieMessagePresenter = new MovieMessagePresenter(new MovieCall());
-        movieMessagePresenter.reqeust(0,"",movieid);
+        movieMessagePresenter.reqeust(0, "", movieid);
+        MoviesDPresenter moviesDPresenter = new MoviesDPresenter(new DianYing());
+        moviesDPresenter.reqeust(0,"",movieid);
         ButterKnife.bind(this);
     }
 
@@ -48,18 +65,67 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         switch (view.getId()) {
             case R.id.mBt_Message:
 
+                View inflate = View.inflate(this, R.layout.popu_movie, null);
+                popupWindow = new PopupWindow(inflate, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                popupWindow.showAtLocation(lll, 0, 0, 0);
+                SimpleDraweeView iv2 = inflate.findViewById(R.id.iv2);
+                iv2.setImageURI(MovieMessageBean.getImageUrl());
+                TextView leixing = inflate.findViewById(R.id.leixing);
+                leixing.setText("类型：" + MovieMessageBean.getMovieTypes());
+                TextView daoyan = inflate.findViewById(R.id.daoyan);
+                daoyan.setText("导演：" + MovieMessageBean.getDirector());
+                ImageView dowm = inflate.findViewById(R.id.down);
+                TextView shichang = inflate.findViewById(R.id.shichang);
+                shichang.setText("时长：" + MovieMessageBean.getDuration());
+                TextView chandi = inflate.findViewById(R.id.chandi);
+                TextView juqing = inflate.findViewById(R.id.juqing);
+                chandi.setText("产地：" + MovieMessageBean.getPlaceOrigin());
+                juqing.setText(MovieMessageBean.getSummary());
+                dowm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
+
                 break;
             case R.id.mBt_Advance:
-
+                View inflate2 = View.inflate(this, R.layout.popu_pian, null);
+                popupWindow = new PopupWindow(inflate2, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                popupWindow.showAtLocation(lll, 0, 0, 0);
+                ImageView back1 = inflate2.findViewById(R.id.back);
+                List<MovieMessageBean.ShortFilmListBean> shortFilmList = MovieMessageBean.getShortFilmList();
+                MovieMessageBean.ShortFilmListBean shortFilmListBean = shortFilmList.get(0);
+                back1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
                 break;
             case R.id.mBt_Photo:
-
+                View inflate1 = View.inflate(this, R.layout.popu_photo, null);
+                popupWindow = new PopupWindow(inflate1, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                popupWindow.showAtLocation(lll, 0, 0, 0);
+                ImageView back = inflate1.findViewById(R.id.back);
+                RecyclerView recyclerView = inflate1.findViewById(R.id.list3);
+                recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+                List<String> posterList = MovieMessageBean.getPosterList();
+                JuZhaoAdapter juZhaoAdapter = new JuZhaoAdapter(this, posterList);
+                recyclerView.setAdapter(juZhaoAdapter);
+                back.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
                 break;
             case R.id.mBt_Talk:
 
                 break;
             case R.id.mIv_Back:
 
+                finish();
                 break;
             case R.id.mBt_Buy:
 
@@ -81,7 +147,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         @Override
         public void success(Result<MovieMessage> data) {
 
-            if (data.getStatus().equals("0000")){
+            if (data.getStatus().equals("0000")) {
                 MovieMessage result = data.getResult();
                 String imageUrl = data.getResult().getImageUrl();
                 mSDvMovie.setImageURI(Uri.parse(imageUrl));
@@ -93,6 +159,24 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
 
         @Override
         public void fail(ApiException e) {
+
+        }
+    }
+    class DianYing implements DataCall<Result<MovieMessageBean>> {
+
+        @Override
+        public void success(Result<MovieMessageBean> data) {
+            Toast.makeText(MovieMessageActivity.this,  "11", Toast.LENGTH_SHORT).show();
+            MovieMessageBean = data.getResult();
+            String director = data.getResult().getDirector();
+            int followMovie = MovieMessageBean.getFollowMovie();
+            //dLove.setChecked(followMovie==1?true:false);
+
+        }
+
+        @Override
+        public void fail(ApiException e) {
+            Toast.makeText(MovieMessageActivity.this,  "11"+e.getCode(), Toast.LENGTH_SHORT).show();
 
         }
     }

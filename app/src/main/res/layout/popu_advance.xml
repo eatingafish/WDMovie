@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="110dp"
+    android:background="@drawable/popu_shape">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="24dp"
+        android:paddingTop="24dp"
+        android:paddingRight="24dp">
+
+        <TextView
+            android:id="@+id/adavance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="影评"
+            android:textColor="#333333"
+            android:textSize="16sp" />
+        <View
+            android:layout_marginTop="6dp"
+            android:background="@drawable/details_btn"
+            android:layout_below="@id/adavance"
+            android:layout_width="35dp"
+            android:layout_height="3dp"/>
+        <ImageButton
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/com_icon_down_default" />
+
+        <ImageButton
+            android:id="@+id/ad_return"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/back" />
+
+        <ImageButton
+            android:id="@+id/publish"
+            android:layout_alignParentRight="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/com_icon_publish_default" />
+    </RelativeLayout>
+</RelativeLayout>

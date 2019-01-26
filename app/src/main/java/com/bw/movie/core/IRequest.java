@@ -2,6 +2,7 @@ package com.bw.movie.core;
 
 import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.MovieMessage;
+import com.bw.movie.bean.MovieMessageBean;
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
 import com.bw.movie.bean.cinema.Cinemabean;
@@ -147,4 +148,16 @@ public interface IRequest {
      */
     @GET("movieApi/movie/v1/findMovieScheduleList")
     Observable<Result<List<Cinemayingp>>> dypaiqi(@Query("cinemasId") int cinemasId,@Query("movieId") int movieId);
+    /**
+     * 电影详情
+     *
+     * @param userId
+     * @param sessionId
+     * @param movieId
+     * @return
+     */
+    @GET("movieApi/movie/v1/findMoviesDetail")
+    Observable<Result<MovieMessageBean>> findMoviesDetail(@Header("userId") int userId,
+                                                          @Header("sessionId") String sessionId,
+                                                          @Query("movieId") int movieId);
 }
