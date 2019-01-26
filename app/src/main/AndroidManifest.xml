@@ -54,8 +54,9 @@
         <activity android:name=".my.Myattention" />
         <activity android:name=".my.MyFeedBackActivity" />
         <activity android:name=".my.MypwdupActivity" />
-        <activity android:name=".activity.cinema.PaylistActivity"></activity>
-        <activity android:name=".activity.MovieMessageActivity"></activity>
+        <activity android:name=".activity.cinema.PaylistActivity" />
+        <activity android:name=".activity.MovieMessageActivity" />
+        <activity android:name=".activity.cinema.CinemazuoweiActivity"></activity>
     </application>
 
 </manifest>

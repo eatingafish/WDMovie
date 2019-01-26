@@ -56,17 +56,20 @@ public class CinemabannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         if (viewHolder instanceof Vh_Banner) {
             ((Vh_Banner) viewHolder).mSdv.setImageURI(Uri.parse(list.get(i).getImageUrl()));
+            checkedMovieId.checkedMovieId(list.get(i).getId());
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (clickCb != null) {
                         clickCb.clickItem(i);
+                        checkedMovieId.checkedMovieId(list.get(i).getId());
                     }
 
                 }
             });
             ((Vh_Banner) viewHolder).textView.setBackgroundColor(0x55000000);
             ((Vh_Banner) viewHolder).textView.setText(list.get(i).getName() + "　" + list.get(i).getDuration());
+
         }
 
     }
@@ -77,9 +80,15 @@ public class CinemabannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void addItem(List<Cinemamovie> movieList) {
+        list.clear();
         if (movieList != null) {
             list.addAll(movieList);
         }
+    }
+
+    public void remove()
+    {
+        list.clear();
     }
 
     class Vh_Banner extends RecyclerView.ViewHolder {
@@ -96,5 +105,14 @@ public class CinemabannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public interface onItemClick {
         void clickItem(int position);
+    }
+
+    public void setCheckedMovieId(CinemabannerAdapter.checkedMovieId checkedMovieId) {
+        this.checkedMovieId = checkedMovieId;
+    }
+
+    private checkedMovieId checkedMovieId;
+    public interface checkedMovieId{
+        void checkedMovieId(int id);
     }
 }

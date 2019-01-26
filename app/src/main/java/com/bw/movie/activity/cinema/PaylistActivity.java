@@ -25,13 +25,15 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.jessyan.autosize.internal.CustomAdapt;
+import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
 
 /**
  * 点击影院获取影院详情
  */
-public class PaylistActivity extends AppCompatActivity implements CustomAdapt,CinemabannerAdapter.onItemClick {
+public class PaylistActivity extends AppCompatActivity implements CustomAdapt, CinemabannerAdapter.onItemClick, CinemabannerAdapter.checkedMovieId {
 
     @BindView(R.id.cinema_logo)
     SimpleDraweeView cinemaLogo;
@@ -47,12 +49,15 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt,Ci
     TextView cinemaTime;
     @BindView(R.id.cinema_pay_recycler)
     RecyclerView cinemaPayRecycler;
+    @BindView(R.id.payback)
+    ImageView payback;
     private CinemabannerAdapter cinemabannerAdapter;
     private CinemaMoviePresenter cinemaMoviePresenter;
     private CinemaPaiqiAdapter cinemaPaiqiAdapter;
     private CinemaMoviePaiqi cinemaMoviePaiqi;
     private int movieid;
     private int cinemaid;
+    private int movieid1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +67,7 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt,Ci
 
         //接收传过来的值
         Intent intent = getIntent();
-        cinemaid = intent.getIntExtra("id",1);
+        cinemaid = intent.getIntExtra("id", 1);
         String logo = intent.getStringExtra("logo");
         String name = intent.getStringExtra("name");
         String address = intent.getStringExtra("address");
@@ -72,21 +77,49 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt,Ci
 
         //banner 列表
         cinemaMoviePresenter = new CinemaMoviePresenter(new getData());
-        cinemaMoviePresenter.reqeust(1);
-        cinemabannerAdapter = new CinemabannerAdapter((Context) this,this);
+        cinemaMoviePresenter.reqeust(cinemaid);
+        cinemabannerAdapter = new CinemabannerAdapter((Context) this, this);
+        cinemabannerAdapter.setCheckedMovieId(this);
         cinemaRcf.setAdapter(cinemabannerAdapter);
 
         //影片排期
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         cinemaPayRecycler.setLayoutManager(linearLayoutManager);
 
         cinemaMoviePaiqi = new CinemaMoviePaiqi(new getResult());
-        cinemaMoviePaiqi.reqeust(cinemaid,3);
+
+        //banner滑动 选中影片的ID
+        cinemaRcf.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
+            @Override
+            public void onItemSelected(int position) {
+
+                cinemabannerAdapter.setCheckedMovieId(new CinemabannerAdapter.checkedMovieId() {
+                    @Override
+                    public void checkedMovieId(int id) {
+                        cinemaMoviePaiqi.reqeust(cinemaid, id);
+                    }
+                });
+                cinemaPaiqiAdapter.notifyDataSetChanged();
+            }
+        });
         cinemaPaiqiAdapter = new CinemaPaiqiAdapter(this);
         cinemaPayRecycler.setAdapter(cinemaPaiqiAdapter);
     }
 
+    @Override
+    public void checkedMovieId(int id) {
+        cinemaMoviePaiqi.reqeust(cinemaid, id);
+    }
+
+    @OnClick(R.id.payback)
+    public void onViewClicked() {
+        finish();
+    }
+
+
+
+    //Banner
     private class getData implements DataCall<Result<List<Cinemamovie>>> {
         @Override
         public void success(Result<List<Cinemamovie>> data) {
@@ -101,10 +134,12 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt,Ci
         }
     }
 
+    //排期列表展示成功
     private class getResult implements DataCall<Result<List<Cinemayingp>>> {
         @Override
         public void success(Result<List<Cinemayingp>> data) {
             List<Cinemayingp> result = data.getResult();
+            cinemaPaiqiAdapter.remove();
             cinemaPaiqiAdapter.addItem(result);
             cinemaPaiqiAdapter.notifyDataSetChanged();
         }
@@ -118,14 +153,11 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt,Ci
     @Override
     public void clickItem(int position) {
         cinemaRcf.smoothScrollToPosition(position);
-//        ArrayList<Cinemayingp> list = new ArrayList<>();
-//        movieid = list.get(position).getId();
-//        cinemaMoviePaiqi.reqeust(cinemaid,movieid);
-
     }
 
     /**
      * 屏幕适配
+     *
      * @return
      */
     @Override
