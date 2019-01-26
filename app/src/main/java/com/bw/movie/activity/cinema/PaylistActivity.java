@@ -51,6 +51,8 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt,Ci
     private CinemaMoviePresenter cinemaMoviePresenter;
     private CinemaPaiqiAdapter cinemaPaiqiAdapter;
     private CinemaMoviePaiqi cinemaMoviePaiqi;
+    private int movieid;
+    private int cinemaid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt,Ci
 
         //接收传过来的值
         Intent intent = getIntent();
-        int id = intent.getIntExtra("id",1);
+        cinemaid = intent.getIntExtra("id",1);
         String logo = intent.getStringExtra("logo");
         String name = intent.getStringExtra("name");
         String address = intent.getStringExtra("address");
@@ -80,7 +82,7 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt,Ci
         cinemaPayRecycler.setLayoutManager(linearLayoutManager);
 
         cinemaMoviePaiqi = new CinemaMoviePaiqi(new getResult());
-        cinemaMoviePaiqi.reqeust(id,3);
+        cinemaMoviePaiqi.reqeust(cinemaid,3);
         cinemaPaiqiAdapter = new CinemaPaiqiAdapter(this);
         cinemaPayRecycler.setAdapter(cinemaPaiqiAdapter);
     }
@@ -90,6 +92,7 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt,Ci
         public void success(Result<List<Cinemamovie>> data) {
             List<Cinemamovie> movieList = data.getMovieList();
             cinemabannerAdapter.addItem(movieList);
+            cinemabannerAdapter.notifyDataSetChanged();
         }
 
         @Override
@@ -112,6 +115,15 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt,Ci
         }
     }
 
+    @Override
+    public void clickItem(int position) {
+        cinemaRcf.smoothScrollToPosition(position);
+//        ArrayList<Cinemayingp> list = new ArrayList<>();
+//        movieid = list.get(position).getId();
+//        cinemaMoviePaiqi.reqeust(cinemaid,movieid);
+
+    }
+
     /**
      * 屏幕适配
      * @return
@@ -126,8 +138,5 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt,Ci
         return 720;
     }
 
-    @Override
-    public void clickItem(int position) {
-        cinemaRcf.smoothScrollToPosition(position);
-    }
+
 }

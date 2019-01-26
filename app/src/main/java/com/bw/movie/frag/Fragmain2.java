@@ -60,12 +60,13 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
     Unbinder unbinder;
     @BindView(R.id.imageView)
     ImageView imageView;
-    @BindView(R.id.search_editext)
-    EditText acrchEditext;
-    @BindView(R.id.acrch_text)
-    TextView acrchText;
-    @BindView(R.id.search_linear2)
-    LinearLayout acrchLinear2;
+    @BindView(R.id.seacrch_editext)
+    EditText seacrchEditext;
+    @BindView(R.id.seacrch_text)
+    TextView seacrchText;
+    @BindView(R.id.seacrch_linear2)
+    LinearLayout seacrchLinear2;
+
     private CinemaAdapter1 cinemaAdapter1;
     private CinemaPresenter cinemaPresenter;
     private CinemaPresenter2 cinemaPresenter2;
@@ -97,7 +98,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         initData();
 
         //这是刚进页面设置的动画状态
-        ObjectAnimator animator = ObjectAnimator.ofFloat(acrchLinear2, "translationX", 30f, 510f);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(seacrchLinear2, "translationX", 30f, 510f);
         animator.setDuration(0);
         animator.start();
 
@@ -112,12 +113,12 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         animatort = true;
         animatorf = false;
         //这是显示出现的动画
-        ObjectAnimator animator = ObjectAnimator.ofFloat(acrchLinear2, "translationX", 510f, 30f);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(seacrchLinear2, "translationX", 510f, 30f);
         animator.setDuration(1500);
         animator.start();
     }
 
-    @OnClick(R.id.acrch_text)
+    @OnClick(R.id.seacrch_text)
     public void seacrch_text() {
         if (animatorf) {
             return;
@@ -125,7 +126,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         animatorf = true;
         animatort = false;
         //这是隐藏进去的动画
-        ObjectAnimator animator = ObjectAnimator.ofFloat(acrchLinear2, "translationX", 30f, 510f);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(seacrchLinear2, "translationX", 30f, 510f);
         animator.setDuration(1500);
         animator.start();
     }
@@ -178,6 +179,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
                 break;
         }
     }
+
     //定位
     public class MyLocationListener implements BDLocationListener {
         @Override

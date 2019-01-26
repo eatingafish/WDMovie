@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     android:orientation="vertical"
-    android:background="@drawable/paylist_bg"
-    android:padding="10dp"
+    android:background="@drawable/item_shape"
     android:layout_marginTop="20dp"
     >
     <LinearLayout
         android:id="@+id/pl1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+
+        >
         <TextView
             android:id="@+id/pay_ting"
             android:layout_width="wrap_content"
@@ -30,7 +32,7 @@
         android:layout_below="@id/pl1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
         >
         <TextView
             android:id="@+id/pay_starttime"
@@ -76,7 +78,7 @@
             android:id="@+id/pay_y"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="25dp"
             android:layout_marginRight="6dp"
             android:text="￥" />
 
@@ -87,13 +89,16 @@
             android:layout_toRightOf="@id/pay_y"
             android:text="53.9"
             android:textColor="#a20055"
-            android:textSize="36sp" />
+            android:textSize="36sp"
+            android:layout_marginTop="10dp"
+            />
     </RelativeLayout>
-   <ImageView
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:src="@drawable/rest"
-       android:layout_alignParentRight="true"
-       android:layout_marginTop="20dp"
-       />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rest"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="5dp"
+        />
 </RelativeLayout>
