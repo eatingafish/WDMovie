@@ -5,6 +5,8 @@ import com.bw.movie.bean.MovieMessage;
 import com.bw.movie.bean.MovieMessageBean;
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
+import com.bw.movie.bean.UserBuyList;
+import com.bw.movie.bean.UserMessage;
 import com.bw.movie.bean.cinema.Cinemabean;
 import com.bw.movie.bean.cinema.Cinemamovie;
 import com.bw.movie.bean.cinema.Cinemayingp;
@@ -160,4 +162,56 @@ public interface IRequest {
     Observable<Result<MovieMessageBean>> findMoviesDetail(@Header("userId") int userId,
                                                           @Header("sessionId") String sessionId,
                                                           @Query("movieId") int movieId);
+
+    /**
+     * 查询会员首页信息
+     * @param userId
+     * @param sessionId
+     * @return
+     */
+    @GET("movieApi/user/v1/verify/findUserHomeInfo")
+    Observable<Result<MovieMessageBean>> selectVip(@Header("userId") int userId,
+                                                    @Header("sessionId") String sessionId);
+
+    /**
+     * 上传用户头像
+     * @param userId
+     * @param sessionId
+     * @return
+     */
+    @GET("movieApi/user/v1/verify/uploadHeadPic")
+    Observable<Result<MovieMessageBean>> upImage(@Header("userId") int userId,
+                                                    @Header("sessionId") String sessionId);
+
+    /**
+     * 根据用户ID查询用户信息
+     * @param userId
+     * @param sessionId
+     * @return
+     */
+    @GET("movieApi/user/v1/verify/getUserInfoByUserId")
+    Observable<Result<UserMessage>> selectUser(@Header("userId") int userId,
+                                               @Header("sessionId") String sessionId);
+
+    /**
+     * 签到
+     * @param userId
+     * @param sessionId
+     * @return
+     */
+    @GET("movieApi/user/v1/verify/userSignIn")
+    Observable<Result> Sign(@Header("userId") int userId,
+                                                    @Header("sessionId") String sessionId);
+
+    /**
+     * 用户购票记录查询列表
+     * @param userId
+     * @param sessionId
+     * @return
+     */
+    @GET("movieApi/user/v1/verify/findUserBuyTicketRecordList")
+    Observable<Result<List<UserBuyList>>> TicketRecord(@Header("userId") int userId,
+                                                       @Header("sessionId") String sessionId);
+
+
 }

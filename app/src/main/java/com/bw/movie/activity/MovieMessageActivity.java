@@ -1,6 +1,8 @@
 package com.bw.movie.activity;
 
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +32,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jzvd.JZVideoPlayer;
+import cn.jzvd.JZVideoPlayerStandard;
 import me.jessyan.autosize.internal.CustomAdapt;
 
 public class MovieMessageActivity extends AppCompatActivity implements CustomAdapt {
@@ -44,6 +48,8 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     LinearLayout lll;
     private PopupWindow popupWindow;
     MovieMessageBean MovieMessageBean = new MovieMessageBean();
+    private JZVideoPlayerStandard jzVideoPlayerStandard;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +91,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                     @Override
                     public void onClick(View v) {
                         popupWindow.dismiss();
+
                     }
                 });
 
@@ -94,8 +101,12 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 popupWindow = new PopupWindow(inflate2, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 popupWindow.showAtLocation(lll, 0, 0, 0);
                 ImageView back1 = inflate2.findViewById(R.id.back);
+                jzVideoPlayerStandard = inflate2.findViewById(R.id.mJC);
                 List<MovieMessageBean.ShortFilmListBean> shortFilmList = MovieMessageBean.getShortFilmList();
                 MovieMessageBean.ShortFilmListBean shortFilmListBean = shortFilmList.get(0);
+                jzVideoPlayerStandard.setUp(shortFilmListBean.getVideoUrl()
+                        , JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "饺子闭眼睛");
+                jzVideoPlayerStandard.thumbImageView.setImageURI(Uri.parse(shortFilmListBean.getImageUrl()));
                 back1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -152,7 +163,6 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 String imageUrl = data.getResult().getImageUrl();
                 mSDvMovie.setImageURI(Uri.parse(imageUrl));
                 mTvName.setText(result.getDirector());
-
             }
 
         }
@@ -180,4 +190,9 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
 
         }
     }
+
+
+
+
+
 }
