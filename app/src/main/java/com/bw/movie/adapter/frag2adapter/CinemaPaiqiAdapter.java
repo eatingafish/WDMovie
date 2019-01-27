@@ -44,7 +44,11 @@ public class CinemaPaiqiAdapter extends RecyclerView.Adapter<CinemaPaiqiAdapter.
         vh.money.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context,CinemazuoweiActivity.class));
+                Intent intent = new Intent(context, CinemazuoweiActivity.class);
+                intent.putExtra("price", list.get(i).getPrice());
+                intent.putExtra("id", list.get(i).getId());
+
+                context.startActivity(intent);
             }
         });
         vh.xuanzuo.setOnClickListener(new View.OnClickListener() {
@@ -54,14 +58,6 @@ public class CinemaPaiqiAdapter extends RecyclerView.Adapter<CinemaPaiqiAdapter.
                 Intent intent = new Intent(context, CinemazuoweiActivity.class);
                 intent.putExtra("price", list.get(i).getPrice());
                 intent.putExtra("id", list.get(i).getId());
-                /*intent.putExtra("movienamem",list.getName());
-                intent.putExtra("cinemaname",name);
-                intent.putExtra("address",address);
-                intent.putExtra("shijian",movieScheduleListBean.getBeginTime()+"-"+movieScheduleListBean.getEndTime());
-                intent.putExtra("ting",movieScheduleListBean.getScreeningHall());
-                intent.putExtra("paiqiid",movieScheduleListBean.getId());
-                intent.putExtra("price",movieScheduleListBean.getPrice());
-                startActivity(intent);*/
                 context.startActivity(intent);
             }
         });
