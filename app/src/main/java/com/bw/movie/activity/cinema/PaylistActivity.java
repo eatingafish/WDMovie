@@ -2,11 +2,20 @@ package com.bw.movie.activity.cinema;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bw.movie.R;
@@ -51,6 +60,8 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
     RecyclerView cinemaPayRecycler;
     @BindView(R.id.payback)
     ImageView payback;
+    @BindView(R.id.l1)
+    LinearLayout l1;
     private CinemabannerAdapter cinemabannerAdapter;
     private CinemaMoviePresenter cinemaMoviePresenter;
     private CinemaPaiqiAdapter cinemaPaiqiAdapter;
@@ -58,6 +69,11 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
     private int movieid;
     private int cinemaid;
     private int movieid1;
+    private PopupWindow popupWindow;
+    private ImageView plxq_down;
+    private RadioButton xiangqing;
+    private RadioButton pinglun;
+    private RadioGroup radiogroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +133,58 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
         finish();
     }
 
+    //点击弹出影院详情和评论
+    @OnClick(R.id.l1)
+    public void yingy() {
+        View inflate = LayoutInflater.from(this).inflate(R.layout.cinema_plxq, null);
+        plxq_down = inflate.findViewById(R.id.plxq_down);
+        xiangqing = inflate.findViewById(R.id.xiangqing);
+        pinglun = inflate.findViewById(R.id.pinglun);
+
+        radiogroup = inflate.findViewById(R.id.cinema_ragroup);
+
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        final Cinemafrag1 cinemafrag1 = new Cinemafrag1();
+//        final Cinemafrag2 cinemafrag2 = new Cinemafrag2();
+//        transaction.add(R.id.cinema_frag, cinemafrag1);
+//        transaction.add(R.id.cinema_frag,cinemafrag2);
+//        transaction.show(cinemafrag1).hide(cinemafrag2);
+//        transaction.commit();
+
+//        radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                switch (checkedId)
+//                {
+//                    case  R.id.xiangqing:
+//                        transaction1.show(cinemafrag1).hide(cinemafrag2);
+//                        break;
+//                    case R.id.pinglun:
+//                        transaction1.show(cinemafrag2).hide(cinemafrag1);
+//                        break;
+//                }
+//                transaction1.commit();
+//            }
+//        });
+        //点击popwindow 落下
+        plxq_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+        int height = getWindowManager().getDefaultDisplay().getHeight();
+        popupWindow = new PopupWindow(inflate, RelativeLayout.LayoutParams.MATCH_PARENT, height / 100 * 80);
+        //设置背景,这个没什么效果，不添加会报错
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        //设置点击弹窗外隐藏自身
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        //设置位置
+        popupWindow.showAtLocation(inflate, Gravity.BOTTOM, 0, 0);
+        //设置PopupWindow的View点击事件
+    }
 
 
     //Banner

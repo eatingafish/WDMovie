@@ -56,7 +56,9 @@
         <activity android:name=".my.MypwdupActivity" />
         <activity android:name=".activity.cinema.PaylistActivity" />
         <activity android:name=".activity.MovieMessageActivity" />
-        <activity android:name=".activity.cinema.CinemazuoweiActivity"></activity>
+        <activity android:name=".activity.cinema.CinemazuoweiActivity" />
+        <activity android:name=".activity.Movie_buy" />
+        <activity android:name=".activity.BuyMovieActivity"></activity>
     </application>
 
 </manifest>

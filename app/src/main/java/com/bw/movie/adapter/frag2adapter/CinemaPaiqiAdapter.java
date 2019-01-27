@@ -41,6 +41,12 @@ public class CinemaPaiqiAdapter extends RecyclerView.Adapter<CinemaPaiqiAdapter.
         vh.starttime.setText(list.get(i).getBeginTime());
         vh.endtime.setText(list.get(i).getEndTime());
         vh.money.setText(list.get(i).getPrice()+"");
+        vh.money.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context,CinemazuoweiActivity.class));
+            }
+        });
         vh.xuanzuo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

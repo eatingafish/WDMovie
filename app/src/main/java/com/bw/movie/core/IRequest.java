@@ -3,6 +3,7 @@ package com.bw.movie.core;
 import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.MovieMessage;
 import com.bw.movie.bean.MovieMessageBean;
+import com.bw.movie.bean.Moviecinema;
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
 import com.bw.movie.bean.UserBuyList;
@@ -213,5 +214,10 @@ public interface IRequest {
     Observable<Result<List<UserBuyList>>> TicketRecord(@Header("userId") int userId,
                                                        @Header("sessionId") String sessionId);
 
+    /**
+     * 根据电影ID查询当前排片该电影的影院列表
+     */
+    @GET("movieApi/movie/v1/findCinemasListByMovieId")
+    Observable<Result<List<Moviecinema>>> yingyuan(@Query("movieId") int movieId);
 
 }

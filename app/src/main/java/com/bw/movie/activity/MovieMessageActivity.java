@@ -1,8 +1,6 @@
 package com.bw.movie.activity;
 
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,15 +25,18 @@ import com.bw.movie.presenter.MovieMessagePresenter;
 import com.bw.movie.presenter.MoviesDPresenter;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 import me.jessyan.autosize.internal.CustomAdapt;
 
+/***
+ * 影片详情
+ */
 public class MovieMessageActivity extends AppCompatActivity implements CustomAdapt {
 
     @BindView(R.id.mIv_Love)
@@ -49,7 +50,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     private PopupWindow popupWindow;
     MovieMessageBean MovieMessageBean = new MovieMessageBean();
     private JZVideoPlayerStandard jzVideoPlayerStandard;
-
+    ArrayList<MovieMessage> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +140,15 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 finish();
                 break;
             case R.id.mBt_Buy:
-
+                Intent intent = new Intent(this,Movie_buy.class);
+                intent.putExtra("moviename",list.get(0).getName());
+                intent.putExtra("movieid",list.get(0).getId());
+                intent.putExtra("movieimage",list.get(0).getImageUrl());
+                intent.putExtra("type",MovieMessageBean.getMovieTypes());
+                intent.putExtra("director",MovieMessageBean.getDirector());
+                intent.putExtra("duration",MovieMessageBean.getDuration());
+                intent.putExtra("PlaceOrigin",MovieMessageBean.getPlaceOrigin());
+                startActivity(intent);
                 break;
         }
     }
@@ -159,7 +168,9 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         public void success(Result<MovieMessage> data) {
 
             if (data.getStatus().equals("0000")) {
+
                 MovieMessage result = data.getResult();
+                list.add(data.getResult());
                 String imageUrl = data.getResult().getImageUrl();
                 mSDvMovie.setImageURI(Uri.parse(imageUrl));
                 mTvName.setText(result.getDirector());
