@@ -1,6 +1,5 @@
 package com.bw.movie.frag;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,18 +10,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
+import com.bw.movie.activity.ListActivity;
 import com.bw.movie.activity.MovieMessageActivity;
 import com.bw.movie.adapter.BannerAdapter;
 import com.bw.movie.adapter.PopularAdapter_Rv;
 import com.bw.movie.adapter.SoonAdapter_Rv;
 import com.bw.movie.adapter.WellAdapter_Rv;
 import com.bw.movie.bean.MovieBean;
-import com.bw.movie.bean.MovieMessage;
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
 import com.bw.movie.core.DataCall;
@@ -36,9 +34,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import me.jessyan.autosize.internal.CustomAdapt;
-import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
 
 /**
@@ -47,7 +45,7 @@ import recycler.coverflow.RecyclerCoverFlow;
  * Well 正在热映
  * Soon 即将上映
  */
-public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onItemClick {
+public class Fragmain1 extends Fragment implements CustomAdapt, BannerAdapter.onItemClick {
 
 
     Unbinder unbinder;
@@ -79,7 +77,7 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
         try {
             UserDao userDao = new UserDao(getContext());
             List<User> student = userDao.getStudent();
-            Toast.makeText(getContext(), student.size()+"", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), student.size() + "", Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -92,20 +90,20 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
         layoutManager2.setOrientation(LinearLayoutManager.HORIZONTAL);
         //热门电影
         popularPresenter = new PopularPresenter(new PopularCall());
-        popularPresenter.reqeust(0,null,1,10);
+        popularPresenter.reqeust(0, null, 1, 10);
         mRvPopular.setLayoutManager(layoutManager);
         popularAdapter_rv = new PopularAdapter_Rv(getContext());
         mRvPopular.setAdapter(popularAdapter_rv);
         //正在上映
         wellPresenter = new WellPresenter(new WellCall());
-        wellPresenter.reqeust(0,null,1,10);
+        wellPresenter.reqeust(0, null, 1, 10);
         mRvWell.setLayoutManager(layoutManager1);
         wellAdapter_rv = new WellAdapter_Rv(getContext());
         mRvWell.setAdapter(wellAdapter_rv);
 
         //即将上映
         soonPresenter = new SoonPresenter(new SoonCall());
-        soonPresenter.reqeust(0,null,1,10);
+        soonPresenter.reqeust(0, null, 1, 10);
         mRvSoon.setLayoutManager(layoutManager2);
         soonAdapter_rv = new SoonAdapter_Rv(getContext());
         mRvSoon.setAdapter(soonAdapter_rv);
@@ -120,7 +118,6 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
     public void clickItem(int position) {
         mList.smoothScrollToPosition(position);
     }
-
 
 
     @Override
@@ -144,6 +141,22 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
         return 720;
     }
 
+    @OnClick({R.id.mRl_Popular, R.id.mRl_Well, R.id.mRl_Soon})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.mRl_Popular:
+
+                startActivity(new Intent(getContext(), ListActivity.class));
+
+                break;
+            case R.id.mRl_Well:
+                startActivity(new Intent(getContext(), ListActivity.class));
+                break;
+            case R.id.mRl_Soon:
+                startActivity(new Intent(getContext(), ListActivity.class));
+                break;
+        }
+    }
 
 
     /**
@@ -153,13 +166,13 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
         @Override
         public void success(Result<List<MovieBean>> data) {
 
-            if (data.getStatus().equals("0000")){
+            if (data.getStatus().equals("0000")) {
                 popularAdapter_rv.addData(data.getResult());
                 popularAdapter_rv.setSendId(new PopularAdapter_Rv.sendId() {
                     @Override
                     public void sendId(int movieid) {
                         Intent intent = new Intent(getContext(), MovieMessageActivity.class);
-                        intent.putExtra("movieid",movieid);
+                        intent.putExtra("movieid", movieid);
                         startActivity(intent);
                     }
                 });
@@ -174,6 +187,7 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
 
         }
     }
+
     /**
      * 正在热映请求接口返回值
      */
@@ -186,7 +200,7 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
                     @Override
                     public void sendId(int movieid) {
                         Intent intent = new Intent(getContext(), MovieMessageActivity.class);
-                        intent.putExtra("movieid",movieid);
+                        intent.putExtra("movieid", movieid);
                         startActivity(intent);
                     }
                 });
@@ -214,7 +228,7 @@ public class Fragmain1 extends Fragment implements CustomAdapt,BannerAdapter.onI
                     @Override
                     public void sendId(int movieid) {
                         Intent intent = new Intent(getContext(), MovieMessageActivity.class);
-                        intent.putExtra("movieid",movieid);
+                        intent.putExtra("movieid", movieid);
                         startActivity(intent);
                     }
                 });

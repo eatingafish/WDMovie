@@ -212,6 +212,65 @@ public interface IRequest {
     @GET("movieApi/user/v1/verify/findUserBuyTicketRecordList")
     Observable<Result<List<UserBuyList>>> TicketRecord(@Header("userId") int userId,
                                                        @Header("sessionId") String sessionId);
+    /**
+     * 关注电影  未完善bean类
+     *
+     * @param userId
+     * @param sessionId
+     * @param movieId
+     * @return
+     */
+    @GET("movie/v1/verify/followMovie")
+    Observable<Result> followMovie(@Header("userId") int userId,
+                                   @Header("sessionId") String sessionId,
+                                   @Query("movieId") int movieId);
+
+    /**
+     * 取消关注电影
+     * @param userId
+     * @param sessionId
+     * @param movieId
+     * @return
+     */
+    @GET("movie/v1/verify/cancelFollowMovie")
+    Observable<Result> cancelFollowMovie(@Header("userId") int userId,
+                                         @Header("sessionId") String sessionId,
+                                         @Query("movieId") int movieId);
+
+    /**
+     * 创建订单
+     *
+     * @param userId
+     * @param sessionId
+     * @param scheduleId
+     * @param amount
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("movieApi/movie/v1/verify/buyMovieTicket")
+    Observable<Result> buyMovieTicket(@Header("userId") int userId,
+                                      @Header("sessionId") String sessionId,
+                                      @Field("scheduleId") int scheduleId,
+                                      @Field("amount") int amount,
+                                      @Field("sign") String sign);
+
+
+    /**
+     * 支付
+     *
+     * @param userId
+     * @param sessionId
+     * @param payType
+     * @param orderId
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("movieApi/movie/v1/verify/pay")
+    Observable<Result> pay(@Header("userId") int userId,
+                            @Header("sessionId") String sessionId,
+                            @Field("payType") int payType,
+                            @Field("orderId") String orderId);
 
 
 }

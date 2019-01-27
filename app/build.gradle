@@ -4,9 +4,9 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'bw_movie '
+            keyAlias 'bw_movie'
             keyPassword '123456'
-            storeFile file('C:/Users/王洁/Desktop/movie.keystore')
+            storeFile file('C:/Users/V/Desktop/movie.keystore')
             storePassword '123456'
         }
     }
@@ -18,19 +18,25 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
         sourceSets {
             main {
                 jni.srcDirs = []
                 jniLibs.srcDirs = ['libs']
             }
         }
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
+        debug {
+            signingConfig signingConfigs.config
+        }
+    }
+    productFlavors {
     }
 }
 
@@ -64,4 +70,5 @@ dependencies {
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.4'
     implementation 'com.github.bumptech.glide:glide:4.3.1'
     implementation project(':SeatTable')
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 }

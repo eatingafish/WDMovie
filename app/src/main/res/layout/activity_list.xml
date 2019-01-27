@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context=".activity.ListActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/location2"/>
+
+
+            <TextView
+                android:id="@+id/addre"
+                android:layout_marginLeft="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                android:text="北京"/>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/search_shape"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/sou"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/search"/>
+                <EditText
+                    android:id="@+id/et_sou"
+                    android:layout_width="150dp"
+                    android:background="@null"
+                    android:textSize="10dp"
+                    android:hint="输入要搜索的影片"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/tv_sou"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffff"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="10dp"
+                    android:paddingRight="10dp"
+                    android:text="搜索"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+        <!--111111111111111111111111111111111111111111-->
+
+        <RadioGroup
+            android:id="@+id/rg_aa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_one"
+                android:layout_width="83dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/yyt_sel"
+                android:textSize="14sp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:textColor="#333333"
+                android:button="@null"
+                android:text="热门电影"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <RadioButton
+                android:id="@+id/rb_two"
+                android:layout_width="83dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/yyt_sel"
+                android:textSize="14sp"
+                android:padding="5dp"
+                android:textColor="#333333"
+                android:gravity="center"
+                android:button="@null"
+                android:text="正在热映"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <RadioButton
+                android:id="@+id/rb_three"
+                android:layout_width="83dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/yyt_sel"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:padding="5dp"
+                android:gravity="center"
+                android:button="@null"
+                android:text="即将上映"/>
+
+
+        </RadioGroup>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/back"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="24dp"
+        android:layout_marginBottom="24dp"/>
+
+</RelativeLayout>

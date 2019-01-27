@@ -30,13 +30,13 @@ public class CinemaPaiqiAdapter extends RecyclerView.Adapter<CinemaPaiqiAdapter.
 
     @NonNull
     @Override
-    public VH onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public VH onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
         View view = LinearLayout.inflate(context, R.layout.cinemapay_list, null);
         return new VH(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VH vh, int i) {
+    public void onBindViewHolder(@NonNull VH vh, final int i) {
         vh.ting.setText(list.get(i).getScreeningHall());
         vh.starttime.setText(list.get(i).getBeginTime());
         vh.endtime.setText(list.get(i).getEndTime());
@@ -44,7 +44,19 @@ public class CinemaPaiqiAdapter extends RecyclerView.Adapter<CinemaPaiqiAdapter.
         vh.xuanzuo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context,CinemazuoweiActivity.class));
+
+                Intent intent = new Intent(context, CinemazuoweiActivity.class);
+                intent.putExtra("price", list.get(i).getPrice());
+                intent.putExtra("id", list.get(i).getId());
+                /*intent.putExtra("movienamem",list.getName());
+                intent.putExtra("cinemaname",name);
+                intent.putExtra("address",address);
+                intent.putExtra("shijian",movieScheduleListBean.getBeginTime()+"-"+movieScheduleListBean.getEndTime());
+                intent.putExtra("ting",movieScheduleListBean.getScreeningHall());
+                intent.putExtra("paiqiid",movieScheduleListBean.getId());
+                intent.putExtra("price",movieScheduleListBean.getPrice());
+                startActivity(intent);*/
+                context.startActivity(intent);
             }
         });
     }

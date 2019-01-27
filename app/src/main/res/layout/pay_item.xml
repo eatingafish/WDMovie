@@ -95,6 +95,7 @@
             />
     </RadioGroup>
     <Button
+        android:id="@+id/mBt_Pay"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:text="微信支付53.9元"

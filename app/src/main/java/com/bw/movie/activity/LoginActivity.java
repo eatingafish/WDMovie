@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
             e.printStackTrace();
         }
 
-        if (student.size()!=0){
+        if (student.size()>0){
                 if (student.get(0).getIsAuto()==1){
                     Toast.makeText(this, "自动登录", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginActivity.this, FragActivity.class));
@@ -164,6 +164,7 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
                     String s1 = mEtPwdLogin.getText().toString();
                     data.getResult().setPhone(s);
                     data.getResult().setPwd(s1);
+                    student.clear();
                     userDao.insertStudent(data.getResult());
                     Toast.makeText(LoginActivity.this, "555", Toast.LENGTH_SHORT).show();
                 } catch (SQLException e) {
