@@ -101,7 +101,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 startActivity(new Intent(getContext(), Myattention.class));
                 break;
             case R.id.mSdv_Ticket:
-                ticketRecordPresenter.reqeust(userId,sessionId);
+                ticketRecordPresenter.reqeust((int)userId,sessionId);
                 break;
             case R.id.mSdv_FeedBack:
                 //
@@ -115,7 +115,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
 
     @OnClick(R.id.mBt_QIanDao)
     public void onViewClicked() {
-        signPresenter.reqeust(userId,sessionId);
+        signPresenter.reqeust((int)userId,sessionId);
 
     }
 

@@ -26,7 +26,7 @@ public class User  {
     @DatabaseField(generatedId = true)
     private int uid;
     @DatabaseField
-    private long userId;
+    private int userId;
     @DatabaseField
     private String sessionId;
     @DatabaseField
@@ -94,11 +94,11 @@ public class User  {
         this.sessionId = sessionId;
     }
 
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

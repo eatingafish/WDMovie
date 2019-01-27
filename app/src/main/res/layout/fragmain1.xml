@@ -56,7 +56,7 @@
                 android:layout_marginRight="24dp">
 
                 <RelativeLayout
-                    android:id="@+id/rl"
+                    android:id="@+id/mRl_Popular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -89,7 +89,7 @@
                     android:id="@+id/mRv_Popular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl"
+                    android:layout_below="@+id/mRl_Popular"
                     android:layout_marginTop="20dp"
                     ></android.support.v7.widget.RecyclerView>
             </RelativeLayout>
@@ -103,7 +103,7 @@
                 android:layout_marginRight="24dp">
 
                 <RelativeLayout
-                    android:id="@+id/rl1"
+                    android:id="@+id/mRl_Well"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -135,7 +135,7 @@
                     android:id="@+id/mRv_Well"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl1"
+                    android:layout_below="@+id/mRl_Well"
                     android:layout_marginTop="20dp"></android.support.v7.widget.RecyclerView>
             </RelativeLayout>
 
@@ -148,7 +148,7 @@
                 android:layout_marginRight="24dp">
 
                 <RelativeLayout
-                    android:id="@+id/rl2"
+                    android:id="@+id/mRl_Soon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -180,7 +180,7 @@
                     android:id="@+id/mRv_Soon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl2"
+                    android:layout_below="@+id/mRl_Soon"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"></android.support.v7.widget.RecyclerView>
             </RelativeLayout>

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,7 +64,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         MovieMessagePresenter movieMessagePresenter = new MovieMessagePresenter(new MovieCall());
         movieMessagePresenter.reqeust(0, "", movieid);
         MoviesDPresenter moviesDPresenter = new MoviesDPresenter(new DianYing());
-        moviesDPresenter.reqeust(0,"",movieid);
+        moviesDPresenter.reqeust(0, "", movieid);
         ButterKnife.bind(this);
     }
 
@@ -88,6 +89,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 TextView juqing = inflate.findViewById(R.id.juqing);
                 chandi.setText("产地：" + MovieMessageBean.getPlaceOrigin());
                 juqing.setText(MovieMessageBean.getSummary());
+               /* MovieMessageBean.get*/
                 dowm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -183,11 +185,12 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
 
         }
     }
+
     class DianYing implements DataCall<Result<MovieMessageBean>> {
 
         @Override
         public void success(Result<MovieMessageBean> data) {
-            Toast.makeText(MovieMessageActivity.this,  "11", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MovieMessageActivity.this, "11", Toast.LENGTH_SHORT).show();
             MovieMessageBean = data.getResult();
             String director = data.getResult().getDirector();
             int followMovie = MovieMessageBean.getFollowMovie();
@@ -197,13 +200,10 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
 
         @Override
         public void fail(ApiException e) {
-            Toast.makeText(MovieMessageActivity.this,  "11"+e.getCode(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MovieMessageActivity.this, "11" + e.getCode(), Toast.LENGTH_SHORT).show();
 
         }
     }
-
-
-
 
 
 }
