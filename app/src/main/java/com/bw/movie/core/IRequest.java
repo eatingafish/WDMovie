@@ -4,6 +4,7 @@ import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.MovieMessage;
 import com.bw.movie.bean.MovieMessageBean;
 import com.bw.movie.bean.Moviecinema;
+import com.bw.movie.bean.Movietalkbean;
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
 import com.bw.movie.bean.UserBuyList;
@@ -278,5 +279,24 @@ public interface IRequest {
      */
     @GET("movieApi/movie/v1/findCinemasListByMovieId")
     Observable<Result<List<Moviecinema>>> yingyuan(@Query("movieId") int movieId);
+
+    /**
+     * 查询影片评论
+     */
+    @GET("movieApi/movie/v1/findAllMovieComment")
+    Observable<Result<List<Movietalkbean>>> pinglun(@Query("movieId") int movieId,
+                                                    @Query("page") int page,
+                                                    @Query("count") int count);
+
+    /**
+     * 添加用户对评论的回复
+     */
+     @POST("movieApi/movie/v1/verify/commentReply")
+    @FormUrlEncoded
+    Observable<Result> write(@Header("userId") int userId,
+                             @Header("sessionId") String sessionId,
+                             @Field("movieId") int movieId,
+                             @Field("commentContent") String commentContent
+                             );
 
 }
