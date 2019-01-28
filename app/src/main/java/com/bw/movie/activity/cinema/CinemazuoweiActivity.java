@@ -85,7 +85,6 @@ public class CinemazuoweiActivity extends AppCompatActivity implements CustomAda
             if (student.size()>0){
                 userId = student.get(0).getUserId();
                 sessionId = student.get(0).getSessionId();
-                Toast.makeText(this, "sessionId"+sessionId, Toast.LENGTH_SHORT).show();
             }
 
 
@@ -147,10 +146,35 @@ public class CinemazuoweiActivity extends AppCompatActivity implements CustomAda
         seatTableView.setData(10, 15);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            UserDao userDao = new UserDao(this);
+            List<User> student = userDao.getStudent();
+            if (student.size()>0){
+                userId = student.get(0).getUserId();
+                sessionId = student.get(0).getSessionId();
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @OnClick({R.id.img_confirm, R.id.img_abandon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_confirm:
+                if (mount==0){
+                    Toast.makeText(CinemazuoweiActivity.this, "请选择座位", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if (mount >3){
+                    Toast.makeText(CinemazuoweiActivity.this, "最多3个", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 int height = getWindowManager().getDefaultDisplay().getHeight();
                 View inflate = LayoutInflater.from(this).inflate(R.layout.pay_item, null);
                 pay_down = inflate.findViewById(R.id.pay_down);
@@ -187,10 +211,10 @@ public class CinemazuoweiActivity extends AppCompatActivity implements CustomAda
 
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(CinemazuoweiActivity.this, "踢死", Toast.LENGTH_SHORT).show();
                         BuyPresenter buyMovieTicketPresenter = new BuyPresenter(new  BuyCall());
+
                         String md5=userId+""+id+""+mount+"movie";
-                        //Log.e("TAG", "onClick: "+md5 );
+                        Log.e("TAG", "onClick: "+md5 );
                         String s = MD5Utils.md5Password(md5);
                         buyMovieTicketPresenter.reqeust(userId,sessionId,id,mount,s);
                     }

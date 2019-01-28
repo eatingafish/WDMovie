@@ -8,6 +8,7 @@ import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
 import com.bw.movie.bean.UserBuyList;
 import com.bw.movie.bean.UserMessage;
+import com.bw.movie.bean.VipBean;
 import com.bw.movie.bean.cinema.Cinemabean;
 import com.bw.movie.bean.cinema.Cinemamovie;
 import com.bw.movie.bean.cinema.Cinemayingp;
@@ -171,8 +172,8 @@ public interface IRequest {
      * @return
      */
     @GET("movieApi/user/v1/verify/findUserHomeInfo")
-    Observable<Result<MovieMessageBean>> selectVip(@Header("userId") int userId,
-                                                    @Header("sessionId") String sessionId);
+    Observable<Result<VipBean>> selectVip(@Header("userId") int userId,
+                                          @Header("sessionId") String sessionId);
 
     /**
      * 上传用户头像
@@ -278,5 +279,13 @@ public interface IRequest {
      */
     @GET("movieApi/movie/v1/findCinemasListByMovieId")
     Observable<Result<List<Moviecinema>>> yingyuan(@Query("movieId") int movieId);
+
+
+
+    @POST("movieApi/tool/v1/verify/recordFeedBack")
+    @FormUrlEncoded
+    Observable<Result<User>> feedBack(@Field("phone") String phone,
+                                   @Field("pwd") String pwd);
+
 
 }

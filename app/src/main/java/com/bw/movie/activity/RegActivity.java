@@ -85,7 +85,9 @@ public class RegActivity extends AppCompatActivity implements CustomAdapt {
         public void success(Result data) {
 
             if (data.getStatus().equals("0000")){
-                Toast.makeText(RegActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(RegActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         }

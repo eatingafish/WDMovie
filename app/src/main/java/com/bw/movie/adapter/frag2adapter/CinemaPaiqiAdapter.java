@@ -58,6 +58,7 @@ public class CinemaPaiqiAdapter extends RecyclerView.Adapter<CinemaPaiqiAdapter.
                 Intent intent = new Intent(context, CinemazuoweiActivity.class);
                 intent.putExtra("price", list.get(i).getPrice());
                 intent.putExtra("id", list.get(i).getId());
+
                 context.startActivity(intent);
             }
         });

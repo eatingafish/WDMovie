@@ -154,6 +154,7 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
         @Override
         public void success(Result<User> data) {
             if (data.getStatus().equals("0000")) {
+                Toast.makeText(LoginActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
 
                 try {
                     UserDao userDao = new UserDao(LoginActivity.this);
@@ -164,14 +165,18 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
                     String s1 = mEtPwdLogin.getText().toString();
                     data.getResult().setPhone(s);
                     data.getResult().setPwd(s1);
+                    student = userDao.getStudent();
                     student.clear();
+                    userDao.deleteStudent(data.getResult());
                     userDao.insertStudent(data.getResult());
-                    Toast.makeText(LoginActivity.this, "555", Toast.LENGTH_SHORT).show();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                startActivity(new Intent(LoginActivity.this, FragActivity.class));
+               // startActivity(new Intent(LoginActivity.this, FragActivity.class));
                 finish();
+
+            }else {
+                Toast.makeText(LoginActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -181,28 +186,5 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
 
         }
     }
-    /*@Override
-    protected void onResume() {
-        super.onResume();
 
-        try {
-            UserDao userDao = new UserDao(this);
-            student = userDao.getStudent();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (student.size() != 0) {
-            if (student.get(0).getIsAuto() == 1) {
-
-                Log.e("TAG", "onResume: 自动登录");
-                mCbAutoLogin.setChecked(true);
-                String phone = student.get(0).getPhone();
-                String pwd = student.get(0).getPwd();
-                String encrypt = EncryptUtil.encrypt(pwd);
-                loginPresenter.reqeust(phone, encrypt);
-            }
-
-        }
-    }*/
 }

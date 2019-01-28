@@ -190,7 +190,6 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
 
         @Override
         public void success(Result<MovieMessageBean> data) {
-            Toast.makeText(MovieMessageActivity.this, "11", Toast.LENGTH_SHORT).show();
             MovieMessageBean = data.getResult();
             String director = data.getResult().getDirector();
             int followMovie = MovieMessageBean.getFollowMovie();
@@ -200,7 +199,6 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
 
         @Override
         public void fail(ApiException e) {
-            Toast.makeText(MovieMessageActivity.this, "11" + e.getCode(), Toast.LENGTH_SHORT).show();
 
         }
     }
