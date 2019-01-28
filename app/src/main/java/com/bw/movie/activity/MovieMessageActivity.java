@@ -1,31 +1,45 @@
 package com.bw.movie.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
 import com.bw.movie.adapter.JuZhaoAdapter;
+import com.bw.movie.adapter.MovietalkAdapter;
 import com.bw.movie.bean.MovieMessage;
 import com.bw.movie.bean.MovieMessageBean;
+import com.bw.movie.bean.Movietalkbean;
 import com.bw.movie.bean.Result;
+import com.bw.movie.bean.User;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.presenter.MovieMessagePresenter;
 import com.bw.movie.presenter.MoviesDPresenter;
+import com.bw.movie.presenter.MovietalkPresenter;
+import com.bw.movie.presenter.WritePresenter;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +66,11 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     MovieMessageBean MovieMessageBean = new MovieMessageBean();
     private JZVideoPlayerStandard jzVideoPlayerStandard;
     ArrayList<MovieMessage> list = new ArrayList<>();
+    private MovietalkAdapter movietalkAdapter;
+    int page = 1;
+    private MovietalkPresenter movietalkPresenter;
+    private int userId;
+    private String sessionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +85,22 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         MoviesDPresenter moviesDPresenter = new MoviesDPresenter(new DianYing());
         moviesDPresenter.reqeust(0, "", movieid);
         ButterKnife.bind(this);
+
+        try {
+            UserDao userDao = new UserDao(this);
+            List<User> student = userDao.getStudent();
+            if (student.size() != 0)
+            {
+                sessionId = student.get(0).getSessionId();
+                userId = student.get(0).getUserId();
+                Log.e("wj","MovieMessageActivity=======sessionId"+sessionId);
+                Log.e("wj","MovieMessageActivity=======userId"+userId);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @OnClick({R.id.mBt_Message, R.id.mBt_Advance, R.id.mBt_Photo, R.id.mBt_Talk, R.id.mIv_Back, R.id.mBt_Buy})
@@ -89,7 +124,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 TextView juqing = inflate.findViewById(R.id.juqing);
                 chandi.setText("产地：" + MovieMessageBean.getPlaceOrigin());
                 juqing.setText(MovieMessageBean.getSummary());
-               /* MovieMessageBean.get*/
+                /* MovieMessageBean.get*/
                 dowm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -135,25 +170,96 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 });
                 break;
             case R.id.mBt_Talk:
+                View inflate3 = View.inflate(this, R.layout.movietalk, null);
+                popupWindow = new PopupWindow(inflate3, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                popupWindow.showAtLocation(lll, 0, 0, 0);
+                ImageView movieback = inflate3.findViewById(R.id.movietalk_back);
+                final XRecyclerView talklist = inflate3.findViewById(R.id.movietalk_list);
+                ImageView writetalk = inflate3.findViewById(R.id.writetalk);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                talklist.setLayoutManager(linearLayoutManager);
+                final int movieid = list.get(0).getId();
+                movietalkPresenter = new MovietalkPresenter(new getData());
+                movietalkPresenter.reqeust(movieid, page, 5);
+                talklist.setLoadingListener(new XRecyclerView.LoadingListener() {
+                    @Override
+                    public void onRefresh() {
+                        page = 1;
+                        movietalkAdapter.remove();
+                        movietalkPresenter.reqeust(movieid, page, 10);
+                        movietalkAdapter.notifyDataSetChanged();
+                        talklist.refreshComplete();
+                    }
+
+                    @Override
+                    public void onLoadMore() {
+                        page++;
+                        movietalkAdapter.remove();
+                        movietalkPresenter.reqeust(movieid, page, 10);
+                        movietalkAdapter.notifyDataSetChanged();
+                        talklist.loadMoreComplete();
+                    }
+                });
+                movietalkAdapter = new MovietalkAdapter(this);
+                talklist.setAdapter(movietalkAdapter);
+
+                movieback.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
+                //点击填写评论
+                writetalk.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        int height = getWindowManager().getDefaultDisplay().getHeight();
+                        View inflate4 = View.inflate(MovieMessageActivity.this, R.layout.writetalk, null);
+                        popupWindow = new PopupWindow(inflate4, RelativeLayout.LayoutParams.MATCH_PARENT, height / 100 * 10);
+                        //设置背景,这个没什么效果，不添加会报错
+                        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+                        //设置点击弹窗外隐藏自身
+                        popupWindow.setFocusable(true);
+                        popupWindow.setOutsideTouchable(true);
+                        //设置位置
+                        popupWindow.showAtLocation(inflate4, Gravity.BOTTOM, 0, 0);
+                        //设置PopupWindow的View点击事件
+
+                        Button fabiao = inflate4.findViewById(R.id.but_fabiao);
+                        EditText edittalk = inflate4.findViewById(R.id.edit_talk);
+                        final String commentContent = edittalk.getText().toString().trim();
+                        final int movieId = list.get(0).getId();
+                        fabiao.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                WritePresenter writePresenter = new WritePresenter(new getWrite());
+                                writePresenter.reqeust(userId,sessionId,movieId,commentContent);
+
+                            }
+                        });
+                    }
+                });
 
                 break;
             case R.id.mIv_Back:
-
                 finish();
                 break;
             case R.id.mBt_Buy:
-                Intent intent = new Intent(this,Movie_buy.class);
-                intent.putExtra("moviename",list.get(0).getName());
-                intent.putExtra("movieid",list.get(0).getId());
-                intent.putExtra("movieimage",list.get(0).getImageUrl());
-                intent.putExtra("type",MovieMessageBean.getMovieTypes());
-                intent.putExtra("director",MovieMessageBean.getDirector());
-                intent.putExtra("duration",MovieMessageBean.getDuration());
-                intent.putExtra("PlaceOrigin",MovieMessageBean.getPlaceOrigin());
+                Intent intent = new Intent(this, Movie_buy.class);
+                intent.putExtra("moviename", list.get(0).getName());
+                intent.putExtra("movieid", list.get(0).getId());
+                intent.putExtra("movieimage", list.get(0).getImageUrl());
+                intent.putExtra("type", MovieMessageBean.getMovieTypes());
+                intent.putExtra("director", MovieMessageBean.getDirector());
+                intent.putExtra("duration", MovieMessageBean.getDuration());
+                intent.putExtra("PlaceOrigin", MovieMessageBean.getPlaceOrigin());
                 startActivity(intent);
                 break;
         }
     }
+
 
     @Override
     public boolean isBaseOnWidth() {
@@ -203,5 +309,59 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         }
     }
 
+    /**
+     * 影评成功
+     */
+    private class getData implements DataCall<Result<List<Movietalkbean>>> {
+        @Override
+        public void success(Result<List<Movietalkbean>> data) {
+            List<Movietalkbean> result = data.getResult();
+            movietalkAdapter.addItem(result);
+            movietalkAdapter.notifyDataSetChanged();
+        }
 
+        @Override
+        public void fail(ApiException e) {
+
+        }
+    }
+
+    /**
+     * 评论成功
+     */
+    private class getWrite implements DataCall<Result> {
+        @Override
+        public void success(Result data) {
+            if (data.getStatus().equals("9999"))
+            {
+                startActivity(new Intent(MovieMessageActivity.this, LoginActivity.class));
+            }
+            else {
+                Toast.makeText(MovieMessageActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void fail(ApiException e) {
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        try {
+            UserDao userDao = new UserDao(this);
+            List<User> student = userDao.getStudent();
+            if (student.size() != 0)
+            {
+                sessionId = student.get(0).getSessionId();
+                userId = student.get(0).getUserId();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
