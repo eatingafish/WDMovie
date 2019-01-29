@@ -320,7 +320,7 @@ public interface IRequest {
     /**
      * 添加用户对评论的回复
      */
-     @POST("movieApi/movie/v1/verify/commentReply")
+     @POST("movieApi/movie/v1/verify/movieComment")
     @FormUrlEncoded
     Observable<Result> write(@Header("userId") int userId,
                              @Header("sessionId") String sessionId,
@@ -335,5 +335,12 @@ public interface IRequest {
     Observable<Result<User>> feedBack(@Field("phone") String phone,
                                    @Field("pwd") String pwd);
 
+
+    /**
+     * 微信登录
+     */
+    @POST("movieApi/user/v1/weChatBindingLogin")
+    @FormUrlEncoded
+    Observable<Result<User>> weixin(@Field("code") String code);
 
 }

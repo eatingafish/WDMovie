@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,13 +14,14 @@ import android.widget.Toast;
 
 import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
-
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.exception.EncryptUtil;
+import com.bw.movie.http.WeiXinUtil;
 import com.bw.movie.presenter.LoginPresenter;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -125,6 +125,16 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
                 break;
             //微信登录
             case R.id.mIv_WeChat:
+                //微信登录
+                if (!WeiXinUtil.success(this)) {
+                    Toast.makeText(this, "请先安装应用", Toast.LENGTH_SHORT).show();
+                } else {
+                    //  验证
+                    SendAuth.Req req = new SendAuth.Req();
+                    req.scope = "snsapi_userinfo";
+                    req.state = "wechat_sdk_demo_test";
+                    WeiXinUtil.reg(LoginActivity.this).sendReq(req);
+                }
                 break;
         }
     }

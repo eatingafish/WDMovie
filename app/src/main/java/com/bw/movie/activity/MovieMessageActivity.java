@@ -1,7 +1,7 @@
 package com.bw.movie.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +74,8 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     private MovietalkPresenter movietalkPresenter;
     private int userId;
     private String sessionId;
+    private View inflate4;
+    private Dialog bottomDialog;
     private MyLovePresenter myLovePresenter;
     private MyCanclePresenter myCanclePresenter;
     private int movieid;
@@ -84,6 +85,19 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_message);
+
+        //Dialog弹框
+        bottomDialog = new Dialog(MovieMessageActivity.this, R.style.BottomDialog);
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        int movieid = extras.getInt("movieid");
+        MovieMessagePresenter movieMessagePresenter = new MovieMessagePresenter(new MovieCall());
+        movieMessagePresenter.reqeust(0, "", movieid);
+        MoviesDPresenter moviesDPresenter = new MoviesDPresenter(new DianYing());
+        moviesDPresenter.reqeust(0, "", movieid);
+        ButterKnife.bind(this);
+
         try {
             UserDao userDao = new UserDao(this);
             List<User> student = userDao.getStudent();
@@ -211,6 +225,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                     @Override
                     public void onLoadMore() {
                         page++;
+                        movietalkPresenter.reqeust(movieid, page, 10);
                         movietalkAdapter.remove();
                         movietalkPresenter.reqeust(userId,sessionId,movieid, page, 10);
                         movietalkAdapter.notifyDataSetChanged();
@@ -226,36 +241,34 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                         popupWindow.dismiss();
                     }
                 });
+                inflate4 = View.inflate(MovieMessageActivity.this, R.layout.writetalk, null);
+                Button fabiao = inflate4.findViewById(R.id.but_fabiao);
+                final EditText edittalk = inflate4.findViewById(R.id.edit_talk);
+                final int movieId = list.get(0).getId();
                 //点击填写评论
                 writetalk.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
-                        int height = getWindowManager().getDefaultDisplay().getHeight();
-                        View inflate4 = View.inflate(MovieMessageActivity.this, R.layout.writetalk, null);
-                        popupWindow = new PopupWindow(inflate4, RelativeLayout.LayoutParams.MATCH_PARENT, height / 100 * 10);
-                        //设置背景,这个没什么效果，不添加会报错
-                        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-                        //设置点击弹窗外隐藏自身
-                        popupWindow.setFocusable(true);
-                        popupWindow.setOutsideTouchable(true);
-                        //设置位置
-                        popupWindow.showAtLocation(inflate4, Gravity.BOTTOM, 0, 0);
-                        //设置PopupWindow的View点击事件
+                        //   Dialog 弹框
+                        bottomDialog.setContentView(inflate4);
+                        ViewGroup.LayoutParams layoutParamsthreefilmreview = inflate4.getLayoutParams();
+                        layoutParamsthreefilmreview.width = getResources().getDisplayMetrics().widthPixels;
+                        inflate4.setLayoutParams(layoutParamsthreefilmreview);
+                        bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
+                        bottomDialog.setCanceledOnTouchOutside(true);
+                        bottomDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+                        bottomDialog.show();
+                    }
+                });
+                fabiao.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String commentContent = edittalk.getText().toString().trim();
+                        WritePresenter writePresenter = new WritePresenter(new getWrite());
+                        writePresenter.reqeust(userId,sessionId,movieId,commentContent);
+                        bottomDialog.dismiss();
 
-                        Button fabiao = inflate4.findViewById(R.id.but_fabiao);
-                        EditText edittalk = inflate4.findViewById(R.id.edit_talk);
-                        final String commentContent = edittalk.getText().toString().trim();
-                        final int movieId = list.get(0).getId();
-                        fabiao.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                WritePresenter writePresenter = new WritePresenter(new getWrite());
-                                writePresenter.reqeust(userId,sessionId,movieId,commentContent);
-
-                            }
-                        });
                     }
                 });
 
@@ -359,8 +372,8 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
             {
                 startActivity(new Intent(MovieMessageActivity.this, LoginActivity.class));
             }
-            else {
-                Toast.makeText(MovieMessageActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
+            if (data.getStatus().equals("0000")) {
+                Toast.makeText(MovieMessageActivity.this, "评论成功"+data.getStatus(), Toast.LENGTH_SHORT).show();
             }
         }
 
