@@ -13,6 +13,7 @@ import com.bw.movie.R;
 import com.bw.movie.frag.Fragmain1;
 import com.bw.movie.frag.Fragmain2;
 import com.bw.movie.frag.Fragmain3;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -207,6 +208,18 @@ public class FragActivity extends AppCompatActivity implements CustomAdapt, View
     public float getSizeInDp() {
         return 720;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
 
 
 }

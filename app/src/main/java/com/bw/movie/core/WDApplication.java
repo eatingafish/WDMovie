@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.commonsdk.UMConfigure;
 
 /**
  * @name: MyApplication
@@ -43,6 +45,9 @@ public class WDApplication extends Application {
         mMainLooper = getMainLooper();
         sharedPreferences = getSharedPreferences("share.xml",MODE_PRIVATE);
         Fresco.initialize(this);
+        UMConfigure.init(this,  UMConfigure.DEVICE_TYPE_PHONE, null);
+        //腾讯bugly
+        CrashReport.initCrashReport(getApplicationContext(), "b7b8d362e0", false);
     }
 
     public static SharedPreferences getShare(){
