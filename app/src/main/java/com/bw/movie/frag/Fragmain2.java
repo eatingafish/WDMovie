@@ -95,6 +95,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         View view = inflater.inflate(R.layout.fragmain2, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        cinemaAdapter1 = new CinemaAdapter1(getContext());
 
         //请求关注/取消关注影院接口
         myLoveCinemaPresenter = new MyLoveCinemaPresenter(new LoveCinemaCall());
@@ -107,10 +108,11 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
 
 
         //默认推荐影院
-        cinemaPresenter = new CinemaPresenter(new getData());
+        cinemaPresenter = new CinemaPresenter(new getData2());
+        cinemaPresenter2 = new CinemaPresenter2(new getData());
         cinemaPresenter.reqeust(userId,sessionId,1, 10);
 
-        cinemaPresenter2 = new CinemaPresenter2(new getData());
+
 
 
         initData();
@@ -119,7 +121,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         ObjectAnimator animator = ObjectAnimator.ofFloat(seacrchLinear2, "translationX", 30f, 510f);
         animator.setDuration(0);
         animator.start();
-
+        cinemaRecycler.setAdapter(cinemaAdapter1);
         return view;
     }
 
@@ -202,6 +204,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
                 cinemaNear.setTextColor(Color.DKGRAY);
                 cinemaAdapter1.remove();
                 cinemaPresenter.reqeust(userId,sessionId,1, 10);
+                cinemaAdapter1.notifyDataSetChanged();
 
                 break;
             case R.id.cinema_near:
@@ -211,7 +214,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
                 cinemaTuijian.setTextColor(Color.DKGRAY);
                 cinemaAdapter1.remove();
                 cinemaPresenter2.reqeust(userId,sessionId,1, 10, "116.30551391385724", "40.04571807462411");
-
+                cinemaAdapter1.notifyDataSetChanged();
                 break;
         }
     }
@@ -232,38 +235,6 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
     }
 
 
-    private class getData implements DataCall<Result<List<Cinemabean>>> {
-        @Override
-        public void success(Result<List<Cinemabean>> data) {
-
-            if (data.getStatus().equals("0000")) {
-                //适配器
-
-                cinemaAdapter1 = new CinemaAdapter1(getContext());
-                cinemaRecycler.setAdapter(cinemaAdapter1);
-                List<Cinemabean> result = data.getResult();
-                cinemaAdapter1.addItem(result);
-                cinemaAdapter1.notifyDataSetChanged();
-                cinemaAdapter1.setOnItemClick(new CinemaAdapter1.onItemClick() {
-                    @Override
-                    public void onClick(boolean isChecked, int id, CheckBox xin) {
-                        xins=xin;
-                        if (isChecked) {
-                            myLoveCinemaPresenter.reqeust(userId, sessionId, id);
-                        } else {
-                            myCancelCinemaPresenter.reqeust(userId, sessionId, id);
-                        }
-                    }
-                });
-            }
-
-        }
-
-        @Override
-        public void fail(ApiException e) {
-            Toast.makeText(getContext(), "失败" + e.getCode(), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public boolean isBaseOnWidth() {
@@ -311,6 +282,71 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
                 Toast.makeText(getContext(), data.getMessage(), Toast.LENGTH_SHORT).show();
             } else if (data.getStatus().equals("9999")) {
                 startActivity(new Intent(getContext(), LoginActivity.class));
+            }
+        }
+
+        @Override
+        public void fail(ApiException e) {
+
+        }
+    }
+
+    private class getData implements DataCall<Result<List<Cinemabean>>> {
+        @Override
+        public void success(Result<List<Cinemabean>> data) {
+
+            if (data.getStatus().equals("0000")) {
+                //适配器
+
+
+                List<Cinemabean> result = data.getResult();
+                cinemaAdapter1.addItem(result);
+                cinemaAdapter1.notifyDataSetChanged();
+                cinemaAdapter1.setOnItemClick(new CinemaAdapter1.onItemClick() {
+                    @Override
+                    public void onClick(boolean isChecked, int id, CheckBox xin) {
+                        xins=xin;
+                        if (isChecked) {
+                            myLoveCinemaPresenter.reqeust(userId, sessionId, id);
+                        } else {
+                            myCancelCinemaPresenter.reqeust(userId, sessionId, id);
+                        }
+                    }
+                });
+            }
+
+        }
+
+        @Override
+        public void fail(ApiException e) {
+            Toast.makeText(getContext(), "失败" + e.getCode(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private class getData2 implements DataCall<Result<List<Cinemabean>>> {
+        @Override
+        public void success(Result<List<Cinemabean>> data) {
+            if (data.getStatus().equals("0000")) {
+                //适配器
+
+
+                List<Cinemabean> result = data.getResult();
+
+
+                cinemaAdapter1.addItem(result);
+                cinemaAdapter1.notifyDataSetChanged();
+                cinemaAdapter1.setOnItemClick(new CinemaAdapter1.onItemClick() {
+                    @Override
+                    public void onClick(boolean isChecked, int id, CheckBox xin) {
+                        xins=xin;
+                        if (isChecked) {
+                            myLoveCinemaPresenter.reqeust(userId, sessionId, id);
+                        } else {
+                            myCancelCinemaPresenter.reqeust(userId, sessionId, id);
+                        }
+                    }
+                });
             }
         }
 

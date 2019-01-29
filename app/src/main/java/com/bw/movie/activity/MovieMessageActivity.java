@@ -80,6 +80,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     private MyCanclePresenter myCanclePresenter;
     private int movieid;
     private MoviesDPresenter moviesDPresenter;
+    private MovieMessagePresenter movieMessagePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +92,10 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        int movieid = extras.getInt("movieid");
-        MovieMessagePresenter movieMessagePresenter = new MovieMessagePresenter(new MovieCall());
-        movieMessagePresenter.reqeust(0, "", movieid);
-        MoviesDPresenter moviesDPresenter = new MoviesDPresenter(new DianYing());
-        moviesDPresenter.reqeust(0, "", movieid);
+        movieid = extras.getInt("movieid");
+        movieMessagePresenter = new MovieMessagePresenter(new MovieCall());
+         moviesDPresenter = new MoviesDPresenter(new DianYing());
+        moviesDPresenter.reqeust(userId, sessionId, movieid);
         ButterKnife.bind(this);
 
         try {
@@ -110,10 +110,6 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        movieid = extras.getInt("movieid");
-        MovieMessagePresenter movieMessagePresenter = new MovieMessagePresenter(new MovieCall());
         movieMessagePresenter.reqeust(userId,sessionId, movieid);
         moviesDPresenter = new MoviesDPresenter(new DianYing());
         moviesDPresenter.reqeust(userId,sessionId, movieid);
@@ -124,9 +120,9 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    myLovePresenter.reqeust(userId,sessionId,movieid);
+                    myLovePresenter.reqeust(userId,sessionId, movieid);
                 }else {
-                    myCanclePresenter.reqeust(userId,sessionId,movieid);
+                    myCanclePresenter.reqeust(userId,sessionId, movieid);
                 }
             }
         });
@@ -156,6 +152,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 TextView juqing = inflate.findViewById(R.id.juqing);
                 chandi.setText("产地：" + MovieMessageBean.getPlaceOrigin());
                 juqing.setText(MovieMessageBean.getSummary());
+                 /*MovieMessageBean.get*/
                 dowm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -225,7 +222,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                     @Override
                     public void onLoadMore() {
                         page++;
-                        movietalkPresenter.reqeust(movieid, page, 10);
+                        movietalkPresenter.reqeust(userId,sessionId,movieid, page, 10);
                         movietalkAdapter.remove();
                         movietalkPresenter.reqeust(userId,sessionId,movieid, page, 10);
                         movietalkAdapter.notifyDataSetChanged();
@@ -328,11 +325,12 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         public void success(Result<MovieMessageBean> data) {
             MovieMessageBean = data.getResult();
             String director = data.getResult().getDirector();
-            mSDvMovie.setImageURI(Uri.parse(data.getResult().getImageUrl()));
-            if (MovieMessageBean.isFollowMovie()){
+            int followMovie = data.getResult().isFollowMovie();
+            MovieMessageBean.isFollowMovie();
+            if (followMovie==1){
                 mIvLove.setBackgroundResource(R.drawable.xin2);
 
-            }else {
+            }else if (followMovie==2){
                 mIvLove.setBackgroundResource(R.drawable.xin1);
             }
             //dLove.setChecked(followMovie==1?true:false);
@@ -346,8 +344,8 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     }
 
     /**
-     * 影评成功
-     */
+     * 影评成功*/
+
     private class getData implements DataCall<Result<List<Movietalkbean>>> {
         @Override
         public void success(Result<List<Movietalkbean>> data) {
@@ -363,8 +361,8 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     }
 
     /**
-     * 评论成功
-     */
+     * 评论成功*/
+
     private class getWrite implements DataCall<Result> {
         @Override
         public void success(Result data) {
@@ -437,3 +435,5 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         }
     }
 }
+
+

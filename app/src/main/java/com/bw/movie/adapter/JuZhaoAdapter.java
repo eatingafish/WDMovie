@@ -12,12 +12,7 @@ import com.bw.movie.R;
 
 import java.util.List;
 
-/**
- * @author happy_movie
- * @date 2019/1/23 19:42
- * QQ:45198565
- * 佛曰：永无BUG 盘他！
- */
+
 public class JuZhaoAdapter extends RecyclerView.Adapter<JuZhaoAdapter.MyViewHolder>  {
     private List<String> mDatas;
     private Context mContext;
@@ -46,6 +41,9 @@ public class JuZhaoAdapter extends RecyclerView.Adapter<JuZhaoAdapter.MyViewHold
         View view = inflater.inflate(R.layout.juzhao_item,parent,false);
         MyViewHolder holder=new MyViewHolder(view);
         return holder;
+    }
+
+    public void addData(List<String> posterList) {
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder { //承载Item视图的子布局
