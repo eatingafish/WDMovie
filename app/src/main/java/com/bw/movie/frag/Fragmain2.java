@@ -1,6 +1,7 @@
 package com.bw.movie.frag;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,15 +25,21 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
+import com.bw.movie.activity.LoginActivity;
 import com.bw.movie.adapter.frag2adapter.CinemaAdapter1;
 import com.bw.movie.bean.Result;
+import com.bw.movie.bean.User;
 import com.bw.movie.bean.cinema.Cinemabean;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
+import com.bw.movie.presenter.MyCancelCinemaPresenter;
+import com.bw.movie.presenter.MyLoveCinemaPresenter;
 import com.bw.movie.presenter.cinema.CinemaPresenter;
 import com.bw.movie.presenter.cinema.CinemaPresenter2;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -74,6 +82,12 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
     private MyLocationListener myListener = new MyLocationListener();
     private boolean animatort = false;
     private boolean animatorf = false;
+    private MyLoveCinemaPresenter myLoveCinemaPresenter;
+    private MyCancelCinemaPresenter myCancelCinemaPresenter;
+    private List<User> student;
+    private String sessionId;
+    private int userId;
+    private CheckBox xins;
 
     @Nullable
     @Override
@@ -81,19 +95,23 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         View view = inflater.inflate(R.layout.fragmain2, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+
+        //请求关注/取消关注影院接口
+        myLoveCinemaPresenter = new MyLoveCinemaPresenter(new LoveCinemaCall());
+        myCancelCinemaPresenter = new MyCancelCinemaPresenter(new CancelCinemaCall());
+
+
         //默认布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         cinemaRecycler.setLayoutManager(linearLayoutManager);
 
-        //适配器
-        cinemaAdapter1 = new CinemaAdapter1(getContext());
-        cinemaRecycler.setAdapter(cinemaAdapter1);
 
         //默认推荐影院
         cinemaPresenter = new CinemaPresenter(new getData());
-        cinemaPresenter.reqeust(1, 10);
+        cinemaPresenter.reqeust(userId,sessionId,1, 10);
 
         cinemaPresenter2 = new CinemaPresenter2(new getData());
+
 
         initData();
 
@@ -131,6 +149,24 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         animator.start();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        try {
+            UserDao userDao = new UserDao(getContext());
+            student = userDao.getStudent();
+            if (student.size() != 0) {
+                sessionId = student.get(0).getSessionId();
+                userId = student.get(0).getUserId();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void initData() {
         mLocationClient = new LocationClient(getActivity());
         //声明LocationClient类
@@ -165,7 +201,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
                 cinemaNear.setBackgroundResource(R.drawable.myattention_bg2);
                 cinemaNear.setTextColor(Color.DKGRAY);
                 cinemaAdapter1.remove();
-                cinemaPresenter.reqeust(1, 10);
+                cinemaPresenter.reqeust(userId,sessionId,1, 10);
 
                 break;
             case R.id.cinema_near:
@@ -174,11 +210,12 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
                 cinemaTuijian.setBackgroundResource(R.drawable.myattention_bg2);
                 cinemaTuijian.setTextColor(Color.DKGRAY);
                 cinemaAdapter1.remove();
-                cinemaPresenter2.reqeust(1, 10, "116.30551391385724", "40.04571807462411");
+                cinemaPresenter2.reqeust(userId,sessionId,1, 10, "116.30551391385724", "40.04571807462411");
 
                 break;
         }
     }
+
 
     //定位
     public class MyLocationListener implements BDLocationListener {
@@ -200,9 +237,24 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         public void success(Result<List<Cinemabean>> data) {
 
             if (data.getStatus().equals("0000")) {
+                //适配器
+
+                cinemaAdapter1 = new CinemaAdapter1(getContext());
+                cinemaRecycler.setAdapter(cinemaAdapter1);
                 List<Cinemabean> result = data.getResult();
                 cinemaAdapter1.addItem(result);
                 cinemaAdapter1.notifyDataSetChanged();
+                cinemaAdapter1.setOnItemClick(new CinemaAdapter1.onItemClick() {
+                    @Override
+                    public void onClick(boolean isChecked, int id, CheckBox xin) {
+                        xins=xin;
+                        if (isChecked) {
+                            myLoveCinemaPresenter.reqeust(userId, sessionId, id);
+                        } else {
+                            myCancelCinemaPresenter.reqeust(userId, sessionId, id);
+                        }
+                    }
+                });
             }
 
         }
@@ -229,4 +281,42 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         unbinder.unbind();
     }
 
+    /**
+     * 关注影院
+     */
+    private class LoveCinemaCall implements DataCall<Result> {
+        @Override
+        public void success(Result data) {
+
+            if (data.getStatus().equals("0000")) {
+                xins.setBackgroundResource(R.drawable.xin2);
+                Toast.makeText(getContext(), data.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (data.getStatus().equals("9999")) {
+                startActivity(new Intent(getContext(), LoginActivity.class));
+            }
+
+        }
+
+        @Override
+        public void fail(ApiException e) {
+
+        }
+    }
+
+    private class CancelCinemaCall implements DataCall<Result> {
+        @Override
+        public void success(Result data) {
+            if (data.getStatus().equals("0000")) {
+                xins.setBackgroundResource(R.drawable.xin3);
+                Toast.makeText(getContext(), data.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (data.getStatus().equals("9999")) {
+                startActivity(new Intent(getContext(), LoginActivity.class));
+            }
+        }
+
+        @Override
+        public void fail(ApiException e) {
+
+        }
+    }
 }

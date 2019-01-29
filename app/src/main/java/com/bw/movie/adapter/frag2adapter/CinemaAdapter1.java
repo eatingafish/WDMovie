@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import java.util.List;
  */
 public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
 
+
     private Context context;
 
     public CinemaAdapter1(Context context) {
@@ -31,24 +34,35 @@ public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
     }
 
     private ArrayList<Cinemabean> list = new ArrayList<>();
-
+    public onItemClick onItemClick;
 
     @NonNull
     @Override
-    public VH onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public VH onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
         View view = LinearLayout.inflate(context, R.layout.crinema_recycler, null);
         return new VH(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VH vh, final int i) {
+    public void onBindViewHolder(@NonNull final VH vh, final int i) {
         vh.simple.setImageURI(list.get(i).getLogo());
         vh.name.setText(list.get(i).getName());
         vh.address.setText(list.get(i).getAddress());
-        vh.distance.setText(list.get(i).getDistance()+"km");
-        vh.xin.setOnClickListener(new View.OnClickListener() {
+        vh.distance.setText(list.get(i).getDistance() + "km");
+        if (list.get(i).getFollowCinema()==1){
+            vh.xin.setBackgroundResource(R.drawable.xin2);
+        }else if (list.get(i).getFollowCinema()==2){
+            vh.xin.setBackgroundResource(R.drawable.xin3);
+        }
+        vh.xin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (onItemClick != null){
+                    onItemClick.onClick(isChecked, list.get(i).getId(),vh.xin);
+                }
+
 
             }
         });
@@ -56,12 +70,12 @@ public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,PaylistActivity.class);
-                intent.putExtra("id",list.get(i).getId());
-                intent.putExtra("logo",list.get(i).getLogo());
-                intent.putExtra("name",list.get(i).getName());
-                Toast.makeText(context, ""+list.get(i).getName(), Toast.LENGTH_SHORT).show();
-                intent.putExtra("address",list.get(i).getAddress());
+                Intent intent = new Intent(context, PaylistActivity.class);
+                intent.putExtra("id", list.get(i).getId());
+                intent.putExtra("logo", list.get(i).getLogo());
+                intent.putExtra("name", list.get(i).getName());
+                Toast.makeText(context, "" + list.get(i).getName(), Toast.LENGTH_SHORT).show();
+                intent.putExtra("address", list.get(i).getAddress());
                 context.startActivity(intent);
             }
         });
@@ -89,7 +103,7 @@ public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
         private final SimpleDraweeView simple;
         private final TextView name;
         private final TextView address;
-        private final ImageView xin;
+        private final CheckBox xin;
         private final TextView distance;
 
         public VH(@NonNull View itemView) {
@@ -101,4 +115,14 @@ public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
             distance = itemView.findViewById(R.id.crinema_distance);
         }
     }
+
+
+    public void setOnItemClick(CinemaAdapter1.onItemClick onItemClick) {
+        this.onItemClick = onItemClick;
+    }
+
+    public interface onItemClick {
+        void onClick(boolean isChecked, int id,CheckBox xin);
+    }
+
 }

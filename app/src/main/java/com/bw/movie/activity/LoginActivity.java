@@ -74,29 +74,18 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
         }
 
         if (student.size()>0){
-                if (student.get(0).getIsAuto()==1){
-                    Toast.makeText(this, "自动登录", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(LoginActivity.this, FragActivity.class));
-                    finish();
-                    mCbAutoLogin.setChecked(true);
-                    String phone = student.get(0).getPhone();
-                    String pwd = student.get(0).getPwd();
-                    String encrypt = EncryptUtil.encrypt(pwd);
-                    loginPresenter.reqeust(phone, encrypt);
-                }else {
-                    if (student.size()!=0) {
-                        if (student.get(0).getIsPwd() == 1) {
+            if (student.size()!=0) {
+                if (student.get(0).getIsPwd() == 1) {
 
-                            mCbPwdLogin.setChecked(true);
+                    mCbPwdLogin.setChecked(true);
 
-                            mEtPhoneLogin.setText(student.get(0).getPhone());
+                    mEtPhoneLogin.setText(student.get(0).getPhone());
 
-                            mEtPwdLogin.setText(student.get(0).getPwd());
+                    mEtPwdLogin.setText(student.get(0).getPwd());
 
-                        }
-
-                    }
                 }
+
+            }
             }
 
 

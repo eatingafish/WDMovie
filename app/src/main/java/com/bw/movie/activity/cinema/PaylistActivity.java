@@ -18,10 +18,13 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
 import com.bw.movie.adapter.frag2adapter.CinemaPaiqiAdapter;
 import com.bw.movie.adapter.frag2adapter.CinemabannerAdapter;
 import com.bw.movie.bean.Result;
+import com.bw.movie.bean.User;
+import com.bw.movie.bean.UserInfo;
 import com.bw.movie.bean.cinema.Cinemamovie;
 import com.bw.movie.bean.cinema.Cinemayingp;
 import com.bw.movie.core.DataCall;
@@ -30,6 +33,7 @@ import com.bw.movie.presenter.cinema.CinemaMoviePaiqi;
 import com.bw.movie.presenter.cinema.CinemaMoviePresenter;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -74,6 +78,25 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
     private RadioButton xiangqing;
     private RadioButton pinglun;
     private RadioGroup radiogroup;
+    private List<User> student;
+    private int userId;
+    private String sessionId;
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+            if (student.size()!=0){
+                userId = student.get(0).getUserId();
+                sessionId = student.get(0).getSessionId();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +104,17 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
         setContentView(R.layout.activity_paylist);
         ButterKnife.bind(this);
 
+
+        try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+            if (student.size()!=0){
+                userId = student.get(0).getUserId();
+                sessionId = student.get(0).getSessionId();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         //接收传过来的值
         Intent intent = getIntent();
         cinemaid = intent.getIntExtra("id", 1);
@@ -93,7 +127,7 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
 
         //banner 列表
         cinemaMoviePresenter = new CinemaMoviePresenter(new getData());
-        cinemaMoviePresenter.reqeust(cinemaid);
+        cinemaMoviePresenter.reqeust(userId,sessionId,cinemaid);
         cinemabannerAdapter = new CinemabannerAdapter((Context) this, this);
         cinemabannerAdapter.setCheckedMovieId(this);
         cinemaRcf.setAdapter(cinemabannerAdapter);
@@ -113,7 +147,7 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
                 cinemabannerAdapter.setCheckedMovieId(new CinemabannerAdapter.checkedMovieId() {
                     @Override
                     public void checkedMovieId(int id) {
-                        cinemaMoviePaiqi.reqeust(cinemaid, id);
+                        cinemaMoviePaiqi.reqeust(userId,sessionId,cinemaid, id);
                     }
                 });
                 cinemaPaiqiAdapter.notifyDataSetChanged();
@@ -125,7 +159,7 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
 
     @Override
     public void checkedMovieId(int id) {
-        cinemaMoviePaiqi.reqeust(cinemaid, id);
+        cinemaMoviePaiqi.reqeust(userId,sessionId,cinemaid, id);
     }
 
     @OnClick(R.id.payback)

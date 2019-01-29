@@ -117,13 +117,12 @@ public interface IRequest {
      * @return
      */
     @GET("movieApi/cinema/v1/findRecommendCinemas")
-    Observable<Result<List<Cinemabean>>> yingpian(@Query("page") int page,
-                                                  @Query("count") int count);
+    Observable<Result<List<Cinemabean>>> yingpian(@Header("userId") int userId,@Header("sessionId") String sessionId,@Query("page") int page, @Query("count") int count);
     /**
      * 查询附近影院
      */
     @GET("movieApi/cinema/v1/findNearbyCinemas")
-    Observable<Result<List<Cinemabean>>> near(@Query("page") int page,
+    Observable<Result<List<Cinemabean>>> near(@Header("userId") int userId,@Header("sessionId") String sessionId,@Query("page") int page,
                                               @Query("count") int count,
                                               @Query("longitude") String longitude,
                                               @Query("latitude") String latitude
@@ -146,13 +145,15 @@ public interface IRequest {
      * 根据影院ID查询该影院下即将上映的电影列表
      */
     @GET("movieApi/movie/v1/findSoonMovieByCinemaId")
-    Observable<Result<List<Cinemamovie>>> moviel(@Query("cinemaId") int cinemaId);
+    Observable<Result<List<Cinemamovie>>> moviel(@Header("userId") int userId,
+                                                 @Header("sessionId") String sessionId,@Query("cinemaId") int cinemaId);
 
     /**
      * 根据电影ID和影院ID查询电影排期列表
      */
     @GET("movieApi/movie/v1/findMovieScheduleList")
-    Observable<Result<List<Cinemayingp>>> dypaiqi(@Query("cinemasId") int cinemasId,@Query("movieId") int movieId);
+    Observable<Result<List<Cinemayingp>>> dypaiqi(@Header("userId") int userId,
+                                                  @Header("sessionId") String sessionId,@Query("cinemasId") int cinemasId,@Query("movieId") int movieId);
     /**
      * 电影详情
      *
@@ -223,7 +224,7 @@ public interface IRequest {
      * @param movieId
      * @return
      */
-    @GET("movie/v1/verify/followMovie")
+    @GET("movieApi/movie/v1/verify/followMovie")
     Observable<Result> followMovie(@Header("userId") int userId,
                                    @Header("sessionId") String sessionId,
                                    @Query("movieId") int movieId);
@@ -235,10 +236,35 @@ public interface IRequest {
      * @param movieId
      * @return
      */
-    @GET("movie/v1/verify/cancelFollowMovie")
+    @GET("movieApi/movie/v1/verify/cancelFollowMovie")
     Observable<Result> cancelFollowMovie(@Header("userId") int userId,
                                          @Header("sessionId") String sessionId,
                                          @Query("movieId") int movieId);
+
+
+    /**
+     * 关注影院
+     * @param userId
+     * @param sessionId
+     * @param movieId
+     * @return
+     */
+    @GET("movieApi/cinema/v1/verify/followCinema")
+    Observable<Result> followCinama(@Header("userId") int userId,
+                                         @Header("sessionId") String sessionId,
+                                         @Query("movieId") int movieId);
+
+    /**
+     * 取消关注影院
+     * @param userId
+     * @param sessionId
+     * @param movieId
+     * @return
+     */
+    @GET("movieApi/cinema/v1/verify/cancelFollowCinema")
+    Observable<Result> cancelFollowCinama(@Header("userId") int userId,
+                                          @Header("sessionId") String sessionId,
+                                          @Query("movieId") int movieId);
 
     /**
      * 创建订单
@@ -279,13 +305,15 @@ public interface IRequest {
      * 根据电影ID查询当前排片该电影的影院列表
      */
     @GET("movieApi/movie/v1/findCinemasListByMovieId")
-    Observable<Result<List<Moviecinema>>> yingyuan(@Query("movieId") int movieId);
+    Observable<Result<List<Moviecinema>>> yingyuan(@Header("userId") int userId,
+                                                   @Header("sessionId") String sessionId,@Query("movieId") int movieId);
 
     /**
      * 查询影片评论
      */
     @GET("movieApi/movie/v1/findAllMovieComment")
-    Observable<Result<List<Movietalkbean>>> pinglun(@Query("movieId") int movieId,
+    Observable<Result<List<Movietalkbean>>> pinglun(@Header("userId") int userId,
+                                                    @Header("sessionId") String sessionId,@Query("movieId") int movieId,
                                                     @Query("page") int page,
                                                     @Query("count") int count);
 

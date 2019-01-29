@@ -8,14 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
 import com.bw.movie.adapter.MoviebuyAdapter;
 import com.bw.movie.bean.Moviecinema;
 import com.bw.movie.bean.Result;
+import com.bw.movie.bean.User;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.presenter.MoviebuyPresenter;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,11 +42,42 @@ public class Movie_buy extends AppCompatActivity implements CustomAdapt {
     private MoviebuyPresenter moviebuyPresenter;
     private MoviebuyAdapter moviebuyAdapter;
 
+    private List<User> student;
+    private int userId;
+    private String sessionId;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+            if (student.size()!=0){
+                userId = student.get(0).getUserId();
+                sessionId = student.get(0).getSessionId();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moviebuy);
         ButterKnife.bind(this);
+        try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+            if (student.size()!=0){
+                userId = student.get(0).getUserId();
+                sessionId = student.get(0).getSessionId();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         final Intent intent = getIntent();
         final int movieid = intent.getIntExtra ("movieid", 1);//影片id
         final String moviename = intent.getStringExtra("moviename"); //接受传过来的 电影姓名
@@ -58,7 +92,7 @@ public class Movie_buy extends AppCompatActivity implements CustomAdapt {
         movieCinema.setLayoutManager(linearLayoutManager);
 
         moviebuyPresenter = new MoviebuyPresenter(new getData());
-        moviebuyPresenter.reqeust(movieid);
+        moviebuyPresenter.reqeust(userId,sessionId,movieid);
         moviebuyAdapter = new MoviebuyAdapter(this);
         movieCinema.setAdapter(moviebuyAdapter);
 

@@ -11,15 +11,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
 import com.bw.movie.adapter.frag2adapter.CinemaPaiqiAdapter;
 import com.bw.movie.bean.Result;
+import com.bw.movie.bean.User;
 import com.bw.movie.bean.cinema.Cinemayingp;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.presenter.cinema.CinemaMoviePaiqi;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,6 +63,25 @@ public class BuyMovieActivity extends AppCompatActivity implements CustomAdapt {
     ImageView payback;
     private CinemaPaiqiAdapter cinemaPaiqiAdapter;
     private CinemaMoviePaiqi cinemaMoviePaiqi;
+    private List<User> student;
+    private int userId;
+    private String sessionId;
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+            if (student.size()!=0){
+                userId = student.get(0).getUserId();
+                sessionId = student.get(0).getSessionId();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +89,16 @@ public class BuyMovieActivity extends AppCompatActivity implements CustomAdapt {
         setContentView(R.layout.activity_buymovie);
         ButterKnife.bind(this);
         Intent intent = getIntent();
+        try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+            if (student.size()!=0){
+                userId = student.get(0).getUserId();
+                sessionId = student.get(0).getSessionId();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         String cinemaname = intent.getStringExtra("cinemaname");
         String cinemaaddress = intent.getStringExtra("cinemaaddress");
         int movieid = intent.getIntExtra("movieid", 1);
@@ -91,7 +123,7 @@ public class BuyMovieActivity extends AppCompatActivity implements CustomAdapt {
         cinemaPayRecycler.setLayoutManager(linearLayoutManager);
 
         cinemaMoviePaiqi = new CinemaMoviePaiqi(new getData());
-        cinemaMoviePaiqi.reqeust(cinemaid, movieid);
+        cinemaMoviePaiqi.reqeust(userId,sessionId,cinemaid, movieid);
 
         cinemaPaiqiAdapter = new CinemaPaiqiAdapter(this);
         cinemaPayRecycler.setAdapter(cinemaPaiqiAdapter);

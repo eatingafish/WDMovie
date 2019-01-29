@@ -15,6 +15,6 @@ public class CinemaMoviePresenter extends BasePresenter {
     @Override
     protected Observable observable(Object... args) {
         IRequest iRequest = NetworkManager.instance().create(IRequest.class);
-        return iRequest.moviel((int) args[0]);
+        return iRequest.moviel((int) args[0], (String) args[1],(int) args[2]);
     }
 }

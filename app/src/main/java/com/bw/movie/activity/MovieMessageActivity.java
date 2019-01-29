@@ -13,6 +13,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +37,8 @@ import com.bw.movie.exception.ApiException;
 import com.bw.movie.presenter.MovieMessagePresenter;
 import com.bw.movie.presenter.MoviesDPresenter;
 import com.bw.movie.presenter.MovietalkPresenter;
+import com.bw.movie.presenter.MyCanclePresenter;
+import com.bw.movie.presenter.MyLovePresenter;
 import com.bw.movie.presenter.WritePresenter;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -55,7 +59,7 @@ import me.jessyan.autosize.internal.CustomAdapt;
 public class MovieMessageActivity extends AppCompatActivity implements CustomAdapt {
 
     @BindView(R.id.mIv_Love)
-    ImageView mIvLove;
+    CheckBox mIvLove;
     @BindView(R.id.mTv_Name)
     TextView mTvName;
     @BindView(R.id.mSDv_Movie)
@@ -71,21 +75,15 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     private MovietalkPresenter movietalkPresenter;
     private int userId;
     private String sessionId;
+    private MyLovePresenter myLovePresenter;
+    private MyCanclePresenter myCanclePresenter;
+    private int movieid;
+    private MoviesDPresenter moviesDPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_message);
-
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        int movieid = extras.getInt("movieid");
-        MovieMessagePresenter movieMessagePresenter = new MovieMessagePresenter(new MovieCall());
-        movieMessagePresenter.reqeust(0, "", movieid);
-        MoviesDPresenter moviesDPresenter = new MoviesDPresenter(new DianYing());
-        moviesDPresenter.reqeust(0, "", movieid);
-        ButterKnife.bind(this);
-
         try {
             UserDao userDao = new UserDao(this);
             List<User> student = userDao.getStudent();
@@ -93,13 +91,33 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
             {
                 sessionId = student.get(0).getSessionId();
                 userId = student.get(0).getUserId();
-                Log.e("wj","MovieMessageActivity=======sessionId"+sessionId);
-                Log.e("wj","MovieMessageActivity=======userId"+userId);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        movieid = extras.getInt("movieid");
+        MovieMessagePresenter movieMessagePresenter = new MovieMessagePresenter(new MovieCall());
+        movieMessagePresenter.reqeust(userId,sessionId, movieid);
+        moviesDPresenter = new MoviesDPresenter(new DianYing());
+        moviesDPresenter.reqeust(userId,sessionId, movieid);
+        ButterKnife.bind(this);
+        myLovePresenter = new MyLovePresenter(new LoveCall());
+        myCanclePresenter = new MyCanclePresenter(new CancleCall());
+        mIvLove.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    myLovePresenter.reqeust(userId,sessionId,movieid);
+                }else {
+                    myCanclePresenter.reqeust(userId,sessionId,movieid);
+                }
+            }
+        });
+
+
 
     }
 
@@ -124,7 +142,6 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 TextView juqing = inflate.findViewById(R.id.juqing);
                 chandi.setText("产地：" + MovieMessageBean.getPlaceOrigin());
                 juqing.setText(MovieMessageBean.getSummary());
-                /* MovieMessageBean.get*/
                 dowm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -180,13 +197,13 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 talklist.setLayoutManager(linearLayoutManager);
                 final int movieid = list.get(0).getId();
                 movietalkPresenter = new MovietalkPresenter(new getData());
-                movietalkPresenter.reqeust(movieid, page, 5);
+                movietalkPresenter.reqeust(userId,sessionId,movieid, page, 5);
                 talklist.setLoadingListener(new XRecyclerView.LoadingListener() {
                     @Override
                     public void onRefresh() {
                         page = 1;
                         movietalkAdapter.remove();
-                        movietalkPresenter.reqeust(movieid, page, 10);
+                        movietalkPresenter.reqeust(userId,sessionId,movieid, page, 10);
                         movietalkAdapter.notifyDataSetChanged();
                         talklist.refreshComplete();
                     }
@@ -195,7 +212,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                     public void onLoadMore() {
                         page++;
                         movietalkAdapter.remove();
-                        movietalkPresenter.reqeust(movieid, page, 10);
+                        movietalkPresenter.reqeust(userId,sessionId,movieid, page, 10);
                         movietalkAdapter.notifyDataSetChanged();
                         talklist.loadMoreComplete();
                     }
@@ -298,7 +315,13 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         public void success(Result<MovieMessageBean> data) {
             MovieMessageBean = data.getResult();
             String director = data.getResult().getDirector();
-            int followMovie = MovieMessageBean.getFollowMovie();
+            mSDvMovie.setImageURI(Uri.parse(data.getResult().getImageUrl()));
+            if (MovieMessageBean.isFollowMovie()){
+                mIvLove.setBackgroundResource(R.drawable.xin2);
+
+            }else {
+                mIvLove.setBackgroundResource(R.drawable.xin1);
+            }
             //dLove.setChecked(followMovie==1?true:false);
 
         }
@@ -362,6 +385,42 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private class LoveCall implements DataCall<Result> {
+        @Override
+        public void success(Result data) {
+
+            if (data.getStatus().equals("0000")){
+                mIvLove.setBackgroundResource(R.drawable.xin2);
+                Toast.makeText(MovieMessageActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void fail(ApiException e) {
+
+        }
+    }
+
+    private class CancleCall implements DataCall<Result> {
+        @Override
+        public void success(Result data) {
+
+
+            if (data.getStatus().equals("0000")){
+                mIvLove.setBackgroundResource(R.drawable.xin1);
+                Toast.makeText(MovieMessageActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            }else if (data.getStatus().equals("9999")){
+                startActivity(new Intent(MovieMessageActivity.this, LoginActivity.class));
+            }
+
+        }
+
+        @Override
+        public void fail(ApiException e) {
+
         }
     }
 }

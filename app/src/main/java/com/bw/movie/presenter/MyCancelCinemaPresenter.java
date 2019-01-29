@@ -6,14 +6,14 @@ import com.bw.movie.http.NetworkManager;
 
 import io.reactivex.Observable;
 
-public class MoviebuyPresenter extends BasePresenter{
-    public MoviebuyPresenter(DataCall dataCall) {
+public class MyCancelCinemaPresenter extends BasePresenter {
+    public MyCancelCinemaPresenter(DataCall dataCall) {
         super(dataCall);
     }
 
     @Override
     protected Observable observable(Object... args) {
         IRequest iRequest = NetworkManager.instance().create(IRequest.class);
-        return iRequest.yingyuan((int) args[0], (String) args[1],(int) args[2]);
+        return iRequest.cancelFollowCinama((int) args[0], (String) args[1],(int) args[2]);
     }
 }

@@ -6,7 +6,9 @@ public class MovieMessageBean {
 
     private String director;
     private String duration;
-    private int followMovie;
+
+
+    private boolean followMovie;
     private int id;
     private String imageUrl;
     private String movieTypes;
@@ -34,11 +36,11 @@ public class MovieMessageBean {
         this.duration = duration;
     }
 
-    public int getFollowMovie() {
+    public boolean isFollowMovie() {
         return followMovie;
     }
 
-    public void setFollowMovie(int followMovie) {
+    public void setFollowMovie(boolean followMovie) {
         this.followMovie = followMovie;
     }
 

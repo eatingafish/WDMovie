@@ -14,6 +14,6 @@ public class MovietalkPresenter extends BasePresenter{
     @Override
     protected Observable observable(Object... args) {
         IRequest iRequest = NetworkManager.instance().create(IRequest.class);
-        return iRequest.pinglun((int) args[0],(int) args[1],(int) args[2]);
+        return iRequest.pinglun((int) args[0], (String) args[1],(int) args[2],(int) args[3],(int) args[4]);
     }
 }
