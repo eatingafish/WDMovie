@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import com.bw.movie.presenter.SelectUserPresenter;
 import com.bw.movie.presenter.SignPresenter;
 import com.bw.movie.presenter.TicketRecordPresenter;
 import com.bw.movie.presenter.VipPresenter;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -50,7 +52,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
 
     Unbinder unbinder;
     @BindView(R.id.mSdv_Head)
-    ImageView mSdvHead;
+    SimpleDraweeView mSdvHead;
     @BindView(R.id.mTv_Name)
     TextView mTvName;
     @BindView(R.id.mBt_QIanDao)
@@ -63,8 +65,8 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
     private UserDao userDao;
     private int userId;
     private VipPresenter vipPresenter;
-    User user = new User();
-    private List<User> student1;
+
+
 
     @Nullable
     @Override
@@ -85,7 +87,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         selectUserPresenter = new SelectUserPresenter(new UserCall());
         signPresenter = new SignPresenter(new SignCall());
         vipPresenter = new VipPresenter(new VipCall());
-
+        //vipPresenter.reqeust(userId,sessionId);
         ticketRecordPresenter = new TicketRecordPresenter(new TicketCall());
         mBtQIanDao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +112,8 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
             if (student.size() != 0) {
                 sessionId = student.get(0).getSessionId();
                 userId = student.get(0).getUserId();
-                vipPresenter.reqeust(userId,sessionId);
+                //vipPresenter.reqeust(userId,sessionId);
+
             }
             Toast.makeText(getContext(), student.size() + "", Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
@@ -148,7 +151,8 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 break;
             case R.id.mSdv_Message:
                 selectUserPresenter.reqeust((int) userId, sessionId);
-
+                Log.e("TAG", "userId: userId+"+userId );
+                Log.e("TAG", "sessionId: sessionId+"+sessionId );
                 break;
             case R.id.mSdv_Like:
                 startActivity(new Intent(getContext(), Myattention.class));
@@ -157,7 +161,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 ticketRecordPresenter.reqeust((int) userId, sessionId);
                 break;
             case R.id.mSdv_FeedBack:
-                //
+                startActivity(new Intent(getContext(), MyFeedBackActivity.class));
                 break;
             case R.id.mSdv_New:
                 break;
@@ -196,8 +200,8 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 //    显示出该对话框
                 builder.show();
 
-                /*student.clear();
-                startActivity(new Intent(getContext(), LoginActivity.class));*/
+                student.clear();
+                //startActivity(new Intent(getContext(), LoginActivity.class));
                 break;
         }
     }
@@ -208,7 +212,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         public void success(Result<UserMessage> data) {
             if (data.getStatus().equals("9999")) {
                 startActivity(new Intent(getContext(), LoginActivity.class));
-            } else /*if (data.getStatus().equals("0000"))*/ {
+            } else if (data.getStatus().equals("0000")) {
                 startActivity(new Intent(getContext(), MyMessageActivity.class));
 
             }
@@ -243,9 +247,8 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         @Override
         public void success(Result<List<UserBuyList>> data) {
             if (data.getStatus().equals("9999")) {
-                startActivity(new Intent(getContext(), LoginActivity.class));
+               startActivity(new Intent(getContext(), LoginActivity.class));
             } else if (data.getStatus().equals("0000")) {
-                //startActivity(new Intent(getContext(), MyFeedBackActivity.class));
                 Toast.makeText(getContext(), "购票记录", Toast.LENGTH_SHORT).show();
             }
         }
@@ -261,11 +264,11 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         public void success(final Result<VipBean> data) {
 
             if (data.getStatus().equals("9999")) {
-                startActivity(new Intent(getContext(), LoginActivity.class));
+               startActivity(new Intent(getContext(), LoginActivity.class));
             } else if (data.getStatus().equals("0000")) {
 
                 mTvName.setText(data.getResult().getNickName());
-                mSdvHead.setImageURI(Uri.parse(data.getResult().getHeadPic()));
+                mSdvHead.setBackgroundResource(R.drawable.touxiang);
                 if (data.getResult().getUserSignStatus()==1){
 
                     mBtQIanDao.setText("签到");
@@ -277,7 +280,6 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                     return;
 
                 }
-
             }
 
 

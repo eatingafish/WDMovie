@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -17,13 +18,14 @@
             android:layout_marginTop="30dp"
             android:src="@drawable/remind" />
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/mSdv_Head"
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
-            android:src="@drawable/myhead" />
+            android:background="@drawable/myhead"
+            app:roundAsCircle="true" />
 
         <TextView
             android:id="@+id/mTv_Name"

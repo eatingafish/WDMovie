@@ -66,6 +66,6 @@
         android:layout_height="129dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
-        app:roundedCornerRadius="5dp" />
+        app:roundedCornerRadius="5dp" ></com.facebook.drawee.view.SimpleDraweeView>
 
 </RelativeLayout>

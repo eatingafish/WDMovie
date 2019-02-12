@@ -2,6 +2,7 @@ package com.bw.movie.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -61,7 +62,7 @@ import java.util.List;
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder,final int i) {
 
         if (viewHolder instanceof MyViewHolder){
-            ((MyViewHolder) viewHolder).simpleDraweeView.setImageURI(mDatas.get(i).getImageUrl());
+            ((MyViewHolder) viewHolder).simpleDraweeView.setImageURI(Uri.parse(mDatas.get(i).getImageUrl()));
             ((MyViewHolder) viewHolder).name.setText(mDatas.get(i).getName());
             ((MyViewHolder) viewHolder).cont.setText(mDatas.get(i).getSummary());
             int followMovie = mDatas.get(i).isFollowMovie();

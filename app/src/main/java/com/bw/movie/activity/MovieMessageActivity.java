@@ -303,7 +303,6 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         public void success(Result<MovieMessage> data) {
 
             if (data.getStatus().equals("0000")) {
-
                 MovieMessage result = data.getResult();
                 list.add(data.getResult());
                 String imageUrl = data.getResult().getImageUrl();

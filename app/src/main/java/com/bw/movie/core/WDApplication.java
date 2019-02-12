@@ -10,13 +10,8 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 
-/**
- * @name: MyApplication
- * @describe: 程序入口
- * @author: 康海涛 QQ2541849981
- * @time: 2018/8/14 12:45
- * @remark:
- */
+
+
 public class WDApplication extends Application {
 
     /** 主线程ID */

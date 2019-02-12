@@ -134,6 +134,7 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
                     req.scope = "snsapi_userinfo";
                     req.state = "wechat_sdk_demo_test";
                     WeiXinUtil.reg(LoginActivity.this).sendReq(req);
+                    finish();
                 }
                 break;
         }
@@ -154,7 +155,6 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
         public void success(Result<User> data) {
             if (data.getStatus().equals("0000")) {
                 Toast.makeText(LoginActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
-
                 try {
                     UserDao userDao = new UserDao(LoginActivity.this);
                     data.getResult().setIsAuto(mCbAutoLogin.isChecked()?1:0);
@@ -171,7 +171,7 @@ public class LoginActivity extends AppCompatActivity implements CustomAdapt {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-               // startActivity(new Intent(LoginActivity.this, FragActivity.class));
+
                 finish();
 
             }else {
