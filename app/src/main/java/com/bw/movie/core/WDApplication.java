@@ -5,8 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 
@@ -43,6 +47,23 @@ public class WDApplication extends Application {
         UMConfigure.init(this,  UMConfigure.DEVICE_TYPE_PHONE, null);
         //腾讯bugly
         CrashReport.initCrashReport(getApplicationContext(), "b7b8d362e0", false);
+
+        XGPushConfig.enableOtherPush(getApplicationContext(), true);
+        XGPushConfig.setMiPushAppId(getApplicationContext(), "APPID");
+        XGPushConfig.setMiPushAppKey(getApplicationContext(), "APPKEY");
+        XGPushConfig.setMzPushAppId(this, "APPID");
+        XGPushConfig.setMzPushAppKey(this, "APPKEY");
+        XGPushManager.registerPush(this, new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object data, int flag) {
+                //token在设备卸载重装的时候有可能会变
+                Log.d("TPush", "注册成功，设备token为：" + data);
+            }
+            @Override
+            public void onFail(Object data, int errCode, String msg) {
+                Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+            }
+        });
     }
 
     public static SharedPreferences getShare(){

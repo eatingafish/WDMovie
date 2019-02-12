@@ -63,19 +63,21 @@
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:exported="true"
-           />
-
+            android:exported="true" />
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5c4efcfbf1f556f6fa000f42"/>// 自己产品的key
+            android:value="5c4efcfbf1f556f6fa000f42" />
+        // 自己产品的key
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="WDMoive"/>// 名字
+            android:value="WDMoive" />
+        // 名字
+        <activity android:name=".my.MyFankuiSuccess"></activity>
+        <activity android:name=".my.MyTicketActivity"></activity>
     </application>
 
 </manifest>

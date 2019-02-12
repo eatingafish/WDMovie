@@ -23,7 +23,7 @@
                 android:layout_width="83dp"
                 android:layout_height="25dp"
                 android:layout_marginRight="32dp"
-                android:background="@drawable/myattention_bg2"
+                android:background="@drawable/myattention_bg"
                 android:text="电影"
                 android:textColor="#666666"
                 android:textSize="14sp" />

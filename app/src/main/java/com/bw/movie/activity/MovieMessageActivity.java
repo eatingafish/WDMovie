@@ -105,6 +105,9 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
             {
                 sessionId = student.get(0).getSessionId();
                 userId = student.get(0).getUserId();
+                Log.e("wj","MovieMessageActivity======"+sessionId);
+                Log.e("wj","MovieMessageActivity======"+userId);
+
             }
 
         } catch (SQLException e) {

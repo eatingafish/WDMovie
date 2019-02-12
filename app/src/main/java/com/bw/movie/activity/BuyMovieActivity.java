@@ -21,6 +21,7 @@ import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.presenter.cinema.CinemaMoviePaiqi;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.analytics.MobclickAgent;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -81,6 +82,8 @@ public class BuyMovieActivity extends AppCompatActivity implements CustomAdapt {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        MobclickAgent.onPageStart(String.valueOf(this)); // 统计页面
     }
 
     @Override
@@ -157,4 +160,12 @@ public class BuyMovieActivity extends AppCompatActivity implements CustomAdapt {
 
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //if (!MTStringUtils.isEmpty(getPageName()))
+        MobclickAgent.onPageEnd(String.valueOf(this));// 统计页面
+    }
+
 }
