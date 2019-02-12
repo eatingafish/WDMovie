@@ -112,9 +112,6 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         cinemaPresenter2 = new CinemaPresenter2(new getData());
         cinemaPresenter.reqeust(userId,sessionId,1, 10);
 
-
-
-
         initData();
 
         //这是刚进页面设置的动画状态

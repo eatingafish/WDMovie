@@ -28,6 +28,7 @@ import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.my.MyFeedBackActivity;
 import com.bw.movie.my.MyMessageActivity;
+import com.bw.movie.my.MyTicketActivity;
 import com.bw.movie.my.Myattention;
 import com.bw.movie.presenter.SelectUserPresenter;
 import com.bw.movie.presenter.SignPresenter;
@@ -154,10 +155,11 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 startActivity(new Intent(getContext(), Myattention.class));
                 break;
             case R.id.mSdv_Ticket:
-                ticketRecordPresenter.reqeust((int) userId, sessionId);
+                startActivity(new Intent(getContext(), MyTicketActivity.class));
+               // ticketRecordPresenter.reqeust((int) userId, sessionId);
                 break;
             case R.id.mSdv_FeedBack:
-                //
+                startActivity(new Intent(getContext(), MyFeedBackActivity.class));
                 break;
             case R.id.mSdv_New:
                 break;

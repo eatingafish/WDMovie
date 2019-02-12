@@ -5,7 +5,9 @@ import com.bw.movie.bean.MovieMessage;
 import com.bw.movie.bean.MovieMessageBean;
 import com.bw.movie.bean.Moviecinema;
 import com.bw.movie.bean.Movietalkbean;
+import com.bw.movie.bean.MyIsFollowListBean;
 import com.bw.movie.bean.Result;
+import com.bw.movie.bean.TicketBean;
 import com.bw.movie.bean.User;
 import com.bw.movie.bean.UserBuyList;
 import com.bw.movie.bean.UserMessage;
@@ -343,4 +345,41 @@ public interface IRequest {
     @FormUrlEncoded
     Observable<Result<User>> weixin(@Field("code") String code);
 
+    /**
+     * 查询用户关注的影片关注
+     */
+    @GET("movieApi/movie/v1/verify/findMoviePageList")
+    Observable<Result<List<MyIsFollowListBean>>> guanzhu(@Header("userId") int userId,
+                                                         @Header("sessionId") String sessionId,
+                                                         @Query("page") int page,
+                                                         @Query("count") int count
+                                                         );
+    /**
+     * 查询用户关注的影院
+     */
+    @GET("movieApi/cinema/v1/verify/findCinemaPageList")
+    Observable<Result<List<MyIsFollowListBean>>> GZyy(@Header("userId") int userId,
+                                                     @Header("sessionId") String sessionId,
+                                                     @Query("page") int page,
+                                                     @Query("count") int count);
+
+    /**
+     * 反馈意见
+     */
+    @POST("movieApi/tool/v1/verify/recordFeedBack")
+    @FormUrlEncoded
+    Observable<Result> fankui(@Header("userId") int userId,
+                              @Header("sessionId") String sessionId,
+                              @Field("content") String content
+                              );
+
+    /**
+     * 购票记录
+     */
+    @GET("movieApi/user/v1/verify/findUserBuyTicketRecordList")
+    Observable<Result<List<TicketBean>>> findTicket(@Header("userId") int userId,
+                                                    @Header("sessionId") String sessionId,
+                                                    @Query("page") int page,
+                                                    @Query("count")int count,
+                                                    @Query("status")int status);
 }
