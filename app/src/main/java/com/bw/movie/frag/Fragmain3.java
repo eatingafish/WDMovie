@@ -2,18 +2,15 @@ package com.bw.movie.frag;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,7 +85,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         selectUserPresenter = new SelectUserPresenter(new UserCall());
         signPresenter = new SignPresenter(new SignCall());
         vipPresenter = new VipPresenter(new VipCall());
-        //vipPresenter.reqeust(userId,sessionId);
+        vipPresenter.reqeust(userId,sessionId);
         ticketRecordPresenter = new TicketRecordPresenter(new TicketCall());
         mBtQIanDao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +110,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
             if (student.size() != 0) {
                 sessionId = student.get(0).getSessionId();
                 userId = student.get(0).getUserId();
-                //vipPresenter.reqeust(userId,sessionId);
+                vipPresenter.reqeust(userId,sessionId);
 
             }
             Toast.makeText(getContext(), student.size() + "", Toast.LENGTH_SHORT).show();
@@ -149,11 +146,11 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
             case R.id.mSdv_Sound:
                 break;
             case R.id.mSdv_Head:
+
                 break;
             case R.id.mSdv_Message:
                 selectUserPresenter.reqeust((int) userId, sessionId);
-                Log.e("TAG", "userId: userId+"+userId );
-                Log.e("TAG", "sessionId: sessionId+"+sessionId );
+
                 break;
             case R.id.mSdv_Like:
                 startActivity(new Intent(getContext(), Myattention.class));
@@ -216,7 +213,6 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 startActivity(new Intent(getContext(), LoginActivity.class));
             } else if (data.getStatus().equals("0000")) {
                 startActivity(new Intent(getContext(), MyMessageActivity.class));
-
             }
 
         }
@@ -265,12 +261,11 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         @Override
         public void success(final Result<VipBean> data) {
 
-            if (data.getStatus().equals("9999")) {
-               startActivity(new Intent(getContext(), LoginActivity.class));
-            } else if (data.getStatus().equals("0000")) {
+             if (data.getStatus().equals("0000")) {
 
                 mTvName.setText(data.getResult().getNickName());
-                mSdvHead.setBackgroundResource(R.drawable.touxiang);
+
+                mSdvHead.setImageURI(data.getResult().getHeadPic());
                 if (data.getResult().getUserSignStatus()==1){
 
                     mBtQIanDao.setText("签到");

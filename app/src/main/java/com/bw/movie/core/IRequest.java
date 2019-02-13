@@ -19,6 +19,8 @@ import com.bw.movie.bean.cinema.Cinemayingp;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -382,4 +384,25 @@ public interface IRequest {
                                                     @Query("page") int page,
                                                     @Query("count")int count,
                                                     @Query("status")int status);
+
+    //修改用户信息
+    @POST("movieApi/user/v1/verify/modifyUserInfo")
+    @FormUrlEncoded
+    Observable<Result> Update(@Header("userId")int userId,
+                              @Header("sessionId")String sessionId,
+                              @Field("nickName")String nickName,
+                              @Field("sex") int sex,
+                              @Field("email")String email);
+
+    //上传用户头像
+    @POST("movieApi/user/v1/verify/uploadHeadPic")
+    @FormUrlEncoded
+    Observable<Result> uploadHeadPic(@Header("userId") String userId,
+                                     @Header("sessionId") String sessionId,
+                                     @Field("image") String image);
+    /**
+     * 修改用户头像
+     */
+    @POST("movieApi/user/v1/verify/uploadHeadPic")
+    Observable<Result> uploadHeadPic(@Header("userId") int userId, @Header("sessionId") String sessionId, @Body MultipartBody body);
 }
