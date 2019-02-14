@@ -84,6 +84,8 @@
             android:layout_marginRight="32dp"
             android:textSize="14sp"
             android:textColor="#ffffff"
+            android:button="@null"
+            android:gravity="center"
             android:layout_width="83dp"
             android:layout_height="25dp" />
         <RadioButton
