@@ -412,7 +412,6 @@ public interface IRequest {
      * 修改用户头像
      */
     @POST("movieApi/user/v1/verify/uploadHeadPic")
-    @FormUrlEncoded
     Observable<Result> uploadHeadPic(@Header("userId") int userId, @Header("sessionId") String sessionId, @Body MultipartBody body);
 
     /**
