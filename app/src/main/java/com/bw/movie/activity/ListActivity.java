@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -17,11 +18,13 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
 import com.bw.movie.adapter.ThreeListAdapter;
 import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.Result;
+import com.bw.movie.bean.User;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.presenter.MyCanclePresenter;
@@ -30,6 +33,7 @@ import com.bw.movie.presenter.PopularPresenter;
 import com.bw.movie.presenter.SoonPresenter;
 import com.bw.movie.presenter.WellPresenter;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +46,6 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
     private RadioButton rb_one;
     private RadioButton rb_two;
     private RadioButton rb_three;
-    int userId =1771;
-    String sessionId="15482908826721771";
     int page=1;
     int count=10;
     List<MovieBean> remendianyinglist = new ArrayList<>();
@@ -54,19 +56,27 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
     private LocationClient mLocationClient =null;
     private TextView addre;
     private MyLocationListener myListener = new MyLocationListener();
-
+    private List<User> student;
+    private String sessionId;
+    private int userId;
+    CheckBox xins;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-       /* List<UserBean> userBeans = MApp.userBeanDao.loadAll();
-        if(userBeans.size()>0){
-            userId=  userBeans.get(0).getUserId();
-            sessionId =  userBeans.get(0).getSessionId();
-        }*/
+        try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+            if (student.size() != 0) {
+                sessionId = student.get(0).getSessionId();
+                userId = student.get(0).getUserId();
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         hotMoviePresenter = new WellPresenter(this);
         hotMoviePresenter.reqeust(userId,sessionId,page,count);
         releaseMoviePresenter = new PopularPresenter(new Zhengzai());
@@ -154,7 +164,8 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
         threeListAdapter = new ThreeListAdapter(this, remendianyinglist);
         threeListAdapter.xihuan(new ThreeListAdapter.MyLove() {
             @Override
-            public void onLove(int possion) {
+            public void onLove(int possion,CheckBox xin) {
+                xins = xin;
                 MovieBean MovieBean = remendianyinglist.get(possion);
                 int id = MovieBean.getId();
                 MyLovePresenter myLovePresenter = new MyLovePresenter(new Xihuan());
@@ -162,7 +173,8 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
             }
 
             @Override
-            public void onCancle(int possion) {
+            public void onCancle(int possion, CheckBox xin) {
+                xins = xin;
                 MovieBean MovieBean = remendianyinglist.get(possion);
                 int id = MovieBean.getId();
                 MyCanclePresenter myCanclePresenter = new MyCanclePresenter(new Cancle());
@@ -251,6 +263,7 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
 
         @Override
         public void success(Result data) {
+            xins.setBackgroundResource(R.drawable.xin2);
             Toast.makeText(ListActivity.this, ""+data.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
@@ -265,6 +278,7 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
 
         @Override
         public void success(Result data) {
+            xins.setBackgroundResource(R.drawable.xin1);
             Toast.makeText( ListActivity.this,  ""+data.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
@@ -272,5 +286,22 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
         public void fail(ApiException e) {
 
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+            if (student.size() != 0) {
+                sessionId = student.get(0).getSessionId();
+                userId = student.get(0).getUserId();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

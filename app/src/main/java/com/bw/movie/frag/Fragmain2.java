@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +47,10 @@ import com.bw.movie.presenter.cinema.CinemaPresenter;
 import com.bw.movie.presenter.cinema.CinemaPresenter2;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.security.auth.login.LoginException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,9 +70,9 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
     @BindView(R.id.cinema_relative)
     RelativeLayout cinemaRelative;
     @BindView(R.id.cinema_tuijian)
-    Button cinemaTuijian;
+    RadioButton cinemaTuijian;
     @BindView(R.id.cinema_near)
-    Button cinemaNear;
+    RadioButton cinemaNear;
     @BindView(R.id.cinema_recycler)
     RecyclerView cinemaRecycler;
     Unbinder unbinder;
@@ -78,6 +84,8 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
     TextView seacrchText;
     @BindView(R.id.seacrch_linear2)
     LinearLayout seacrchLinear2;
+    @BindView(R.id.mGp)
+    RadioGroup mGp;
 
     private CinemaAdapter1 cinemaAdapter1;
     private CinemaPresenter cinemaPresenter;
@@ -90,6 +98,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
     private MyCancelCinemaPresenter myCancelCinemaPresenter;
     private List<User> student;
     private String sessionId;
+    List<Cinemabean> cinemabeans = new ArrayList<>();
     private int userId;
     private CheckBox xins;
 
@@ -98,7 +107,17 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmain2, container, false);
         unbinder = ButterKnife.bind(this, view);
+        try {
+            UserDao userDao = new UserDao(getContext());
+            student = userDao.getStudent();
+            if (student.size() != 0) {
+                sessionId = student.get(0).getSessionId();
+                userId = student.get(0).getUserId();
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         cinemaAdapter1 = new CinemaAdapter1(getContext());
 
         //请求关注/取消关注影院接口
@@ -114,7 +133,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         //默认推荐影院
         cinemaPresenter = new CinemaPresenter(new getData2());
         cinemaPresenter2 = new CinemaPresenter2(new getData());
-        cinemaPresenter.reqeust(userId,sessionId,1, 10);
+        cinemaPresenter.reqeust(userId, sessionId, 1, 10);
 
         //这是刚进页面设置的动画状态
         ObjectAnimator animator = ObjectAnimator.ofFloat(seacrchLinear2, "translationX", 30f, 510f);
@@ -123,14 +142,36 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         cinemaRecycler.setAdapter(cinemaAdapter1);
 
         //动态权限
-        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){//未开启定位权限
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {//未开启定位权限
             //开启定位权限,200是标识码
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},200);
-        }else{
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+        } else {
             initData();//开始定位
-            Toast.makeText(getActivity(),"已开启定位权限",Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "已开启定位权限", Toast.LENGTH_LONG).show();
         }
+        mGp.check(mGp.getChildAt(0).getId());
+        mGp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.cinema_tuijian:
+                        cinemaTuijian.setBackgroundResource(R.drawable.myattention_bg);
+                        cinemaTuijian.setTextColor(Color.WHITE);
+                        cinemaNear.setBackgroundResource(R.drawable.myattention_bg2);
+                        cinemaNear.setTextColor(Color.DKGRAY);
+                        cinemaPresenter.reqeust(userId, sessionId, 1, 10);
+                        break;
+                    case R.id.cinema_near:
+                        cinemaNear.setBackgroundResource(R.drawable.myattention_bg);
+                        cinemaNear.setTextColor(Color.WHITE);
+                        cinemaTuijian.setBackgroundResource(R.drawable.myattention_bg2);
+                        cinemaTuijian.setTextColor(Color.DKGRAY);
+                        cinemaPresenter2.reqeust(userId, sessionId, "116.306744", "40.047403", 1, 10);
+                        break;
+                }
+            }
+        });
         return view;
     }
 
@@ -203,46 +244,20 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch (requestCode) {
             case 200://刚才的识别码
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){//用户同意权限,执行我们的操作
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {//用户同意权限,执行我们的操作
                     initData();//开始定位
-                }else{//用户拒绝之后,当然我们也可以弹出一个窗口,直接跳转到系统设置页面
-                    Toast.makeText(getContext(), "未开启定位权限,请手动到设置去开启权限",Toast.LENGTH_LONG).show();
+                } else {//用户拒绝之后,当然我们也可以弹出一个窗口,直接跳转到系统设置页面
+                    Toast.makeText(getContext(), "未开启定位权限,请手动到设置去开启权限", Toast.LENGTH_LONG).show();
                 }
                 break;
-            default:break;
-        }
-    }
-
-    @OnClick({R.id.cinema_location, R.id.cinema_tuijian, R.id.cinema_near})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.cinema_location:
-
-
-                break;
-            case R.id.cinema_tuijian:
-                cinemaTuijian.setBackgroundResource(R.drawable.myattention_bg);
-                cinemaTuijian.setTextColor(Color.WHITE);
-                cinemaNear.setBackgroundResource(R.drawable.myattention_bg2);
-                cinemaNear.setTextColor(Color.DKGRAY);
-                cinemaAdapter1.remove();
-                cinemaPresenter.reqeust(userId,sessionId,1, 10);
-                cinemaAdapter1.notifyDataSetChanged();
-
-                break;
-            case R.id.cinema_near:
-                cinemaNear.setBackgroundResource(R.drawable.myattention_bg);
-                cinemaNear.setTextColor(Color.WHITE);
-                cinemaTuijian.setBackgroundResource(R.drawable.myattention_bg2);
-                cinemaTuijian.setTextColor(Color.DKGRAY);
-                cinemaAdapter1.remove();
-                cinemaPresenter2.reqeust(userId,sessionId,1, 10, "116.30551391385724", "40.04571807462411");
-                cinemaAdapter1.notifyDataSetChanged();
+            default:
                 break;
         }
     }
+
+
 
 
     //定位
@@ -253,7 +268,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
             //以下只列举部分获取地址相关的结果信息
             //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
 
-            if(!location.equals("")){
+            if (!location.equals("")) {
                 mLocationClient.stop();
             }
 
@@ -263,7 +278,6 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
 
         }
     }
-
 
 
     @Override
@@ -327,19 +341,19 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
 
             if (data.getStatus().equals("0000")) {
                 //适配器
-
-
                 List<Cinemabean> result = data.getResult();
                 cinemaAdapter1.addItem(result);
                 cinemaAdapter1.notifyDataSetChanged();
                 cinemaAdapter1.setOnItemClick(new CinemaAdapter1.onItemClick() {
                     @Override
-                    public void onClick(boolean isChecked, int id, CheckBox xin) {
-                        xins=xin;
-                        if (isChecked) {
+                    public void onClick(boolean isChecked, int id, CheckBox xin,int s) {
+                        xins = xin;
+                        if (s==2) {
                             myLoveCinemaPresenter.reqeust(userId, sessionId, id);
+                            Log.e("sss", "onClick: "+userId+"灌灌灌灌"+sessionId+id);
                         } else {
                             myCancelCinemaPresenter.reqeust(userId, sessionId, id);
+                            Log.e("sss", "onClick: "+userId+"灌灌灌灌"+sessionId);
                         }
                     }
                 });
@@ -359,24 +373,20 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         public void success(Result<List<Cinemabean>> data) {
             if (data.getStatus().equals("0000")) {
                 //适配器
-
-
                 List<Cinemabean> result = data.getResult();
-
-
                 cinemaAdapter1.addItem(result);
-                cinemaAdapter1.notifyDataSetChanged();
                 cinemaAdapter1.setOnItemClick(new CinemaAdapter1.onItemClick() {
                     @Override
-                    public void onClick(boolean isChecked, int id, CheckBox xin) {
-                        xins=xin;
-                        if (isChecked) {
+                    public void onClick(boolean isChecked, int id, CheckBox xin,int s) {
+                        xins = xin;
+                        if (s==2) {
                             myLoveCinemaPresenter.reqeust(userId, sessionId, id);
                         } else {
                             myCancelCinemaPresenter.reqeust(userId, sessionId, id);
                         }
                     }
                 });
+                cinemaAdapter1.notifyDataSetChanged();
             }
         }
 

@@ -122,15 +122,20 @@ public interface IRequest {
      * @return
      */
     @GET("movieApi/cinema/v1/findRecommendCinemas")
-    Observable<Result<List<Cinemabean>>> yingpian(@Header("userId") int userId,@Header("sessionId") String sessionId,@Query("page") int page, @Query("count") int count);
+    Observable<Result<List<Cinemabean>>> yingpian(@Header("userId") int userId,
+                                                  @Header("sessionId") String sessionId,
+                                                  @Query("page") int page,
+                                                  @Query("count") int count);
     /**
      * 查询附近影院
      */
     @GET("movieApi/cinema/v1/findNearbyCinemas")
-    Observable<Result<List<Cinemabean>>> near(@Header("userId") int userId,@Header("sessionId") String sessionId,@Query("page") int page,
-                                              @Query("count") int count,
+    Observable<Result<List<Cinemabean>>> near(@Header("userId") int userId,
+                                              @Header("sessionId") String sessionId,
                                               @Query("longitude") String longitude,
-                                              @Query("latitude") String latitude
+                                              @Query("latitude") String latitude,
+                                              @Query("page") int page,
+                                              @Query("count") int count
                                               );
 
 

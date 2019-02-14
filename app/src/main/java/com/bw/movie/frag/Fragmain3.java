@@ -114,7 +114,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
     @Override
     public void onResume() {
         super.onResume();
-        vipPresenter.reqeust(userId,sessionId);
+       // vipPresenter.reqeust(userId,sessionId);
         try {
             UserDao userDao = new UserDao(getContext());
             student = userDao.getStudent();
@@ -124,7 +124,8 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 vipPresenter.reqeust(userId,sessionId);
 
             }else if (student.size()==0){
-
+                mTvName.setText("登录/注册");
+                mSdvHead.setImageResource(R.drawable.myhead);
             }
             Toast.makeText(getContext(), student.size() + "", Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
@@ -157,26 +158,39 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mSdv_Sound:
-                startActivity(new Intent(getContext(),MyAlllistActivity.class));
+                if (student.size()==0){
+                    Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
+                }else {
+                    startActivity(new Intent(getContext(),MyAlllistActivity.class));
+                }
                 break;
             case R.id.mSdv_Head:
 
                 break;
             case R.id.mSdv_Message:
+
+            case R.id.mymessages:
                 if (student.size()==1){
                     selectUserPresenter.reqeust((int) userId, sessionId);
                 }else {
                     Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
                 }
-            case R.id.mymessages:
-                selectUserPresenter.reqeust((int) userId, sessionId);
 
                 break;
             case R.id.mylike:
-                startActivity(new Intent(getContext(), Myattention.class));
+                if (student.size()==1){
+                    startActivity(new Intent(getContext(), Myattention.class));
+                }else {
+                    Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.myticket:
-                startActivity(new Intent(getContext(), MyTicketActivity.class));
+                if (student.size()==1){
+                    startActivity(new Intent(getContext(), MyTicketActivity.class));
+                }else {
+                    Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
+                }
                // ticketRecordPresenter.reqeust((int) userId, sessionId);
                 break;
             case R.id.myfeedback:
@@ -209,11 +223,11 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                             e.printStackTrace();
                         }
 
-                        /*Intent intent = new Intent(getContext(), LoginActivity.class);
+                        Intent intent = new Intent(getContext(), LoginActivity.class);
                         // 清空当前栈 ，并且创建新的栈
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         // 跳转
-                       startActivity(intent);*/
+                      // startActivity(intent);
                         mTvName.setText("登录/注册");
                         mSdvHead.setImageResource(R.drawable.myhead);
 
@@ -307,7 +321,10 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
 
                 }
             }
-                 Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
+                 mTvName.setText("登录/注册");
+                 mSdvHead.setImageResource(R.drawable.myhead);
+
+               //  Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
 
 
 

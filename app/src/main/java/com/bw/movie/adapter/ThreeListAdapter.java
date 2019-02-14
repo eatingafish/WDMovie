@@ -59,13 +59,18 @@ import java.util.List;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder,final int i) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int i) {
 
         if (viewHolder instanceof MyViewHolder){
             ((MyViewHolder) viewHolder).simpleDraweeView.setImageURI(Uri.parse(mDatas.get(i).getImageUrl()));
             ((MyViewHolder) viewHolder).name.setText(mDatas.get(i).getName());
             ((MyViewHolder) viewHolder).cont.setText(mDatas.get(i).getSummary());
             int followMovie = mDatas.get(i).isFollowMovie();
+            if (followMovie==2){
+                ((MyViewHolder) viewHolder).love.setBackgroundResource(R.drawable.xin1);
+            }else {
+                ((MyViewHolder) viewHolder).love.setBackgroundResource(R.drawable.xin2);
+            }
             ((MyViewHolder) viewHolder).love.setChecked(followMovie==1? true:false);
             ((MyViewHolder) viewHolder).love.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,9 +78,9 @@ import java.util.List;
                     CheckBox checkBox = (CheckBox) v;
                     boolean checked = checkBox.isChecked();
                     if(checked){
-                        myLove.onLove(i);
+                        myLove.onLove(i,((MyViewHolder) viewHolder).love);
                     }else {
-                        myLove.onCancle(i);
+                        myLove.onCancle(i,((MyViewHolder) viewHolder).love);
                     }
                 }
             });
@@ -109,8 +114,8 @@ import java.util.List;
     }
 
     public interface MyLove{
-        void onLove(int possion);
-        void onCancle(int possion);
+        void onLove(int possion,CheckBox love);
+        void onCancle(int possion,CheckBox love);
     }
 
 

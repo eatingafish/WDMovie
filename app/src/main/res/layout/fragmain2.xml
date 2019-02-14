@@ -65,32 +65,37 @@
         </LinearLayout>
 
     </RelativeLayout>
-    <LinearLayout
+    <RadioGroup
+        android:id="@+id/mGp"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <RadioButton
             android:id="@+id/cinema_tuijian"
             android:text="推荐影院"
             android:background="@drawable/myattention_bg"
             android:layout_marginRight="32dp"
             android:textSize="14sp"
             android:textColor="#333333"
+            android:gravity="center"
+            android:button="@null"
             android:layout_width="83dp"
             android:layout_height="25dp" />
-        <Button
+        <RadioButton
             android:id="@+id/cinema_near"
             android:text="附近影院"
             android:background="@drawable/myattention_bg2"
             android:textSize="14sp"
             android:textColor="#333333"
+            android:gravity="center"
             android:layout_width="83dp"
+            android:button="@null"
             android:layout_height="25dp" />
 
-    </LinearLayout>
+    </RadioGroup>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cinema_recycler"
         android:layout_marginLeft="24dp"
@@ -98,5 +103,5 @@
         android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 </LinearLayout>

@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -49,6 +50,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 import me.jessyan.autosize.internal.CustomAdapt;
 
@@ -138,7 +140,11 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
 
 
     }
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        jzVideoPlayerStandard.releaseAllVideos();
+        return super.onKeyDown(keyCode, event);
+    }
     @OnClick({R.id.mBt_Message, R.id.mBt_Advance, R.id.mBt_Photo, R.id.mBt_Talk, R.id.mIv_Back, R.id.mBt_Buy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -176,7 +182,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
-
+                        jzVideoPlayerStandard.releaseAllVideos();
                     }
                 });
                 popupWindow.showAtLocation(lll, 0, 0, 0);

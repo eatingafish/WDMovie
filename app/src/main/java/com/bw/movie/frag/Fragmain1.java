@@ -77,7 +77,6 @@ public class Fragmain1 extends Fragment implements CustomAdapt, BannerAdapter.on
         try {
             UserDao userDao = new UserDao(getContext());
             List<User> student = userDao.getStudent();
-            //student.clear();
             Toast.makeText(getContext(), student.size() + "", Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
             e.printStackTrace();

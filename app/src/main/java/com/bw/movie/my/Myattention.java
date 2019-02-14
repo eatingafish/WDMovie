@@ -47,6 +47,7 @@ public class Myattention extends AppCompatActivity implements CustomAdapt {
     private MyIsFollowAdapter myIsFollowAdapter;
     private CinemaAttentionPresenter cinemaAttentionPresenter;
     private MyattentcinemaPresenter myattentcinemaPresenter;
+    private List<User> student;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class Myattention extends AppCompatActivity implements CustomAdapt {
         ButterKnife.bind(this);
         try {
             UserDao userDao = new UserDao(this);
-            List<User> student = userDao.getStudent();
+            student = userDao.getStudent();
             if (student.size() != 0)
             {
                 sessionId = student.get(0).getSessionId();
@@ -83,6 +84,26 @@ public class Myattention extends AppCompatActivity implements CustomAdapt {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            UserDao userDao = new UserDao(this);
+            student = userDao.getStudent();
+            if (student.size() != 0)
+            {
+                sessionId = student.get(0).getSessionId();
+                userId = student.get(0).getUserId();
+                Log.e("wj","MovieMessageActivity======"+ sessionId);
+                Log.e("wj","MovieMessageActivity======"+ userId);
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @OnClick({R.id.myattention_bt_movie, R.id.myattention_bt_cinema, R.id.myattention_iv_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -102,7 +123,6 @@ public class Myattention extends AppCompatActivity implements CustomAdapt {
                 myattentionBtCinema.setTextColor(Color.WHITE);
                 myattentionBtMovie.setBackgroundResource(R.drawable.myattention_bg2);
                 myattentionBtMovie.setTextColor(Color.DKGRAY);
-
                 myIsFollowAdapter = new MyIsFollowAdapter(this);
                 myattentionRecycler.setAdapter(myIsFollowAdapter);
                 myattentcinemaPresenter.reqeust(userId,sessionId,1,10);

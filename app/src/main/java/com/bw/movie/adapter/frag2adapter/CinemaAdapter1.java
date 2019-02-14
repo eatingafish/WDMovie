@@ -50,19 +50,19 @@ public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
         vh.name.setText(list.get(i).getName());
         vh.address.setText(list.get(i).getAddress());
         vh.distance.setText(list.get(i).getDistance() + "km");
-        Log.e("TAG---", "onBindViewHolder: "+list.get(i).getFollowCinema() );
+        Log.e("TAG---", "onBindViewHolder: "+list.get(i).getFollowCinema()+list.get(i).getName() );
         if (list.get(i).getFollowCinema()==1){
             vh.xin.setBackgroundResource(R.drawable.xin2);
-        }/*else if (list.get(i).getFollowCinema()==2){
+        }else {
             vh.xin.setBackgroundResource(R.drawable.xin3);
-        }*/
+        }
         vh.xin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (onItemClick != null){
-                    onItemClick.onClick(isChecked, list.get(i).getId(),vh.xin);
+                    onItemClick.onClick(isChecked, list.get(i).getId(),vh.xin,list.get(i).getFollowCinema());
                 }
 
 
@@ -89,6 +89,7 @@ public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
     }
 
     public void addItem(List<Cinemabean> result) {
+        list.clear();
         if (result != null) {
             list.addAll(result);
         }
@@ -124,7 +125,7 @@ public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
     }
 
     public interface onItemClick {
-        void onClick(boolean isChecked, int id,CheckBox xin);
+        void onClick(boolean isChecked, int id,CheckBox xin,int isc);
     }
 
 }
