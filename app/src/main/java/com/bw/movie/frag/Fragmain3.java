@@ -97,13 +97,23 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
 
             }
         });
+        mTvName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (student.size() == 0){
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    // 跳转
+                    startActivity(intent);
+                }
+            }
+        });
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        vipPresenter.reqeust(userId,sessionId);
         try {
             UserDao userDao = new UserDao(getContext());
             student = userDao.getStudent();
@@ -111,6 +121,8 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 sessionId = student.get(0).getSessionId();
                 userId = student.get(0).getUserId();
                 vipPresenter.reqeust(userId,sessionId);
+
+            }else if (student.size()==0){
 
             }
             Toast.makeText(getContext(), student.size() + "", Toast.LENGTH_SHORT).show();
@@ -149,8 +161,11 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
 
                 break;
             case R.id.mSdv_Message:
-                selectUserPresenter.reqeust((int) userId, sessionId);
-
+                if (student.size()==1){
+                    selectUserPresenter.reqeust((int) userId, sessionId);
+                }else {
+                    Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.mSdv_Like:
                 startActivity(new Intent(getContext(), Myattention.class));
@@ -168,7 +183,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 //退出登录
                 if (student.size()==0){
                     Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getContext(),LoginActivity.class));
+                    //startActivity(new Intent(getContext(),LoginActivity.class));
                     return;
                 }
                 // 通过AlertDialog.Builder这个类来实例化我们的一个AlertDialog的对象
@@ -183,17 +198,23 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                     public void onClick(DialogInterface dialog, int which) {
                         //  有用户就删除
                         try {
+                            List<User> student = userDao.getStudent();
                             userDao.deleteStudent(student.get(0));
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
-                        Intent intent = new Intent(getContext(), LoginActivity.class);
+
+                        /*Intent intent = new Intent(getContext(), LoginActivity.class);
                         // 清空当前栈 ，并且创建新的栈
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         // 跳转
-                        startActivity(intent);
+                       startActivity(intent);*/
+                        mTvName.setText("登录/注册");
+                        mSdvHead.setImageResource(R.drawable.myhead);
+
                     }
                 });
+                builder.setCancelable(false);
                 //    设置一个NegativeButton
                 builder.setNegativeButton("暂不退出", null);
                 //    显示出该对话框
@@ -210,7 +231,8 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         @Override
         public void success(Result<UserMessage> data) {
             if (data.getStatus().equals("9999")) {
-                startActivity(new Intent(getContext(), LoginActivity.class));
+                //startActivity(new Intent(getContext(), LoginActivity.class));
+                Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
             } else if (data.getStatus().equals("0000")) {
                 startActivity(new Intent(getContext(), MyMessageActivity.class));
             }
@@ -227,7 +249,8 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         @Override
         public void success(Result data) {
             if (data.getStatus().equals("9999")) {
-                startActivity(new Intent(getContext(), LoginActivity.class));
+                //startActivity(new Intent(getContext(), LoginActivity.class));
+                Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
             } else if (data.getStatus().equals("0000")){
 
                 mBtQIanDao.setText("已签到");
@@ -245,7 +268,8 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         @Override
         public void success(Result<List<UserBuyList>> data) {
             if (data.getStatus().equals("9999")) {
-               startActivity(new Intent(getContext(), LoginActivity.class));
+              // startActivity(new Intent(getContext(), LoginActivity.class));
+                Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
             } else if (data.getStatus().equals("0000")) {
                 Toast.makeText(getContext(), "购票记录", Toast.LENGTH_SHORT).show();
             }
@@ -262,9 +286,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         public void success(final Result<VipBean> data) {
 
              if (data.getStatus().equals("0000")) {
-
                 mTvName.setText(data.getResult().getNickName());
-
                 mSdvHead.setImageURI(data.getResult().getHeadPic());
                 if (data.getResult().getUserSignStatus()==1){
 
@@ -278,6 +300,9 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
 
                 }
             }
+                 Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
+
+
 
 
         }

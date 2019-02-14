@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -49,11 +50,12 @@ public class CinemaAdapter1 extends RecyclerView.Adapter<CinemaAdapter1.VH> {
         vh.name.setText(list.get(i).getName());
         vh.address.setText(list.get(i).getAddress());
         vh.distance.setText(list.get(i).getDistance() + "km");
+        Log.e("TAG---", "onBindViewHolder: "+list.get(i).getFollowCinema() );
         if (list.get(i).getFollowCinema()==1){
             vh.xin.setBackgroundResource(R.drawable.xin2);
-        }else if (list.get(i).getFollowCinema()==2){
+        }/*else if (list.get(i).getFollowCinema()==2){
             vh.xin.setBackgroundResource(R.drawable.xin3);
-        }
+        }*/
         vh.xin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 

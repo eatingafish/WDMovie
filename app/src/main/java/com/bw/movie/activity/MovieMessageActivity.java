@@ -82,10 +82,15 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     private MoviesDPresenter moviesDPresenter;
     private MovieMessagePresenter movieMessagePresenter;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_message);
+
+        int p[] = {5};
 
         //Dialog弹框
         bottomDialog = new Dialog(MovieMessageActivity.this, R.style.BottomDialog);
@@ -168,13 +173,19 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
             case R.id.mBt_Advance:
                 View inflate2 = View.inflate(this, R.layout.popu_pian, null);
                 popupWindow = new PopupWindow(inflate2, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+
+                    }
+                });
                 popupWindow.showAtLocation(lll, 0, 0, 0);
                 ImageView back1 = inflate2.findViewById(R.id.back);
                 jzVideoPlayerStandard = inflate2.findViewById(R.id.mJC);
                 List<MovieMessageBean.ShortFilmListBean> shortFilmList = MovieMessageBean.getShortFilmList();
                 MovieMessageBean.ShortFilmListBean shortFilmListBean = shortFilmList.get(0);
                 jzVideoPlayerStandard.setUp(shortFilmListBean.getVideoUrl()
-                        , JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "饺子闭眼睛");
+                        , JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
                 jzVideoPlayerStandard.thumbImageView.setImageURI(Uri.parse(shortFilmListBean.getImageUrl()));
                 back1.setOnClickListener(new View.OnClickListener() {
                     @Override

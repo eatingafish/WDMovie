@@ -6,7 +6,7 @@ android {
         config {
             keyAlias 'bw_movie'
             keyPassword '123456'
-            storeFile file('C:/Users/王洁/Desktop/movie.keystore')
+            storeFile file('C:/Users/V/Desktop/movie.keystore')
             storePassword '123456'
         }
     }
@@ -96,7 +96,6 @@ dependencies {
     implementation 'com.umeng.umsdk:analytics:8.0.0'
     implementation 'com.umeng.umsdk:common:2.0.0'
     implementation 'com.umeng.umsdk:utdid:1.1.5.3'
-
     //信鸽jar
     implementation 'com.tencent.xinge:xinge:3.2.7-Release'
     //jg包

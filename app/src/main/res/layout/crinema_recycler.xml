@@ -54,7 +54,6 @@
                android:id="@+id/crinema_xin"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:background="@drawable/xin3"
                android:button="@null"
                android:layout_alignParentRight="true"
                android:layout_marginRight="20dp"
