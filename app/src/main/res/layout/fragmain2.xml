@@ -52,7 +52,9 @@
                 android:hint="CCTV影城"
                 android:textColor="#ffffff"
                 android:textColorHint="#ffffff"
-                android:textSize="14sp" />
+                android:textSize="12sp"
+
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -60,7 +62,9 @@
                 android:layout_marginRight="20dp"
                 android:id="@+id/seacrch_text"
                 android:text="搜索"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:textSize="12sp"
+                />
 
         </LinearLayout>
 
@@ -79,9 +83,7 @@
             android:background="@drawable/myattention_bg"
             android:layout_marginRight="32dp"
             android:textSize="14sp"
-            android:textColor="#333333"
-            android:gravity="center"
-            android:button="@null"
+            android:textColor="#ffffff"
             android:layout_width="83dp"
             android:layout_height="25dp" />
         <RadioButton

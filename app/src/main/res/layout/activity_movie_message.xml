@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/lll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/details"
-    android:orientation="vertical"
     tools:context=".activity.MovieMessageActivity"
     tools:ignore="MissingDefaultResource">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/lll"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,15 +56,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="30dp"
         android:text="铁血战士"
         android:textColor="#ffffff"
         android:textSize="20sp" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/mSDv_Movie"
-        android:layout_width="260dp"
-        android:layout_height="360dp"
+        android:layout_width="280dp"
+        android:layout_height="400dp"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
         android:src="@drawable/details" />
@@ -123,13 +126,17 @@
             android:text="影评"
             android:textColor="#ffffff" />
     </LinearLayout>
+</LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="12dp"
-        android:layout_marginRight="24dp">
+        android:layout_marginRight="24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        >
 
         <ImageView
             android:id="@+id/mIv_Back"
@@ -154,4 +161,4 @@
             android:textColor="#ffffff"
             android:textSize="18sp" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

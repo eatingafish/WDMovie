@@ -1,5 +1,7 @@
 package com.bw.movie.core;
 
+import com.bw.movie.bean.CommentData;
+import com.bw.movie.bean.DetailsData;
 import com.bw.movie.bean.FindAllSysMsgList;
 import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.MovieMessage;
@@ -434,5 +436,19 @@ public interface IRequest {
                                                         @Query("page") int page,
                                                         @Query("count") int count
                                                         );
+
+    //影院详情明细
+    @GET("movieApi/cinema/v1/findCinemaInfo")
+    Observable<Result<DetailsData>> getDetails(@Header("userId") int userId,
+                                               @Header("sessionId") String sessionId,
+                                               @Query("cinemaId") int cinemaId);
+
+    //影院评论明细
+    @GET("movieApi/cinema/v1/findAllCinemaComment")
+    Observable<Result<List<CommentData>>> getComment(@Header("userId") int userId,
+                                                     @Header("sessionId") String sessionId,
+                                                     @Query("cinemaId") int cinemaId,
+                                                     @Query("page") int page,
+                                                     @Query("count") int count);
 
 }

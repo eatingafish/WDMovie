@@ -221,7 +221,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
     }
 
     private void initData() {
-        mLocationClient = new LocationClient(getActivity());
+        mLocationClient = new LocationClient(getActivity().getApplicationContext());
         //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);
         //注册监听函数
@@ -267,17 +267,20 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
             //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
             //以下只列举部分获取地址相关的结果信息
             //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
+            String locationDescribe = location.getLocationDescribe();    //获取位置描述信息
+            String addr = location.getAddrStr();    //获取详细地址信息
+            location.getAddress();
 
             if (!location.equals("")) {
                 mLocationClient.stop();
             }
 
-            String locationDescribe = location.getLocationDescribe();    //获取位置描述信息
-            String addr = location.getCity();    //获取详细地址信息
-            cimemaText.setText(locationDescribe + addr);
-
+            double weidu = location.getLongitude();
+            double jingdu = location.getLatitude();
+            cimemaText.setText(addr);
         }
     }
+
 
 
     @Override
@@ -341,6 +344,8 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
 
             if (data.getStatus().equals("0000")) {
                 //适配器
+
+
                 List<Cinemabean> result = data.getResult();
                 cinemaAdapter1.addItem(result);
                 cinemaAdapter1.notifyDataSetChanged();
@@ -373,8 +378,13 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         public void success(Result<List<Cinemabean>> data) {
             if (data.getStatus().equals("0000")) {
                 //适配器
+
+
                 List<Cinemabean> result = data.getResult();
+
+
                 cinemaAdapter1.addItem(result);
+                cinemaAdapter1.notifyDataSetChanged();
                 cinemaAdapter1.setOnItemClick(new CinemaAdapter1.onItemClick() {
                     @Override
                     public void onClick(boolean isChecked, int id, CheckBox xin,int s) {
