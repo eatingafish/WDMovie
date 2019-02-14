@@ -26,8 +26,8 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:padding="6dp"
                     android:src="@drawable/com_icon_loc_white_default" />
 

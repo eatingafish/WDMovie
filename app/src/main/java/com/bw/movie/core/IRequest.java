@@ -1,5 +1,6 @@
 package com.bw.movie.core;
 
+import com.bw.movie.bean.FindAllSysMsgList;
 import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.MovieMessage;
 import com.bw.movie.bean.MovieMessageBean;
@@ -404,5 +405,29 @@ public interface IRequest {
      * 修改用户头像
      */
     @POST("movieApi/user/v1/verify/uploadHeadPic")
+    @FormUrlEncoded
     Observable<Result> uploadHeadPic(@Header("userId") int userId, @Header("sessionId") String sessionId, @Body MultipartBody body);
+
+    /**
+     * 修改密码
+     */
+    @POST("movieApi/user/v1/verify/modifyUserPwd")
+    @FormUrlEncoded
+    Observable<Result> updatepwd(@Header("userId") int userId,
+                                 @Header("sessionId") String sessionId,
+                                 @Field("oldPwd") String oldPwd,
+                                 @Field("newPwd") String newPwd,
+                                 @Field("newPwd2") String newPwd2
+                                 );
+
+    /**
+     * 查看系统消息
+     */
+    @GET("movieApi/tool/v1/verify/findAllSysMsgList")
+    Observable<Result<List<FindAllSysMsgList>>> findall(@Header("userId") int userId,
+                                                        @Header("sessionId") String sessionId,
+                                                        @Query("page") int page,
+                                                        @Query("count") int count
+                                                        );
+
 }
