@@ -27,17 +27,24 @@
                 android:text="当前密码"
                 android:textColor="#333333"
                 android:textSize="14sp"
-                android:layout_weight="1"
                 android:layout_marginLeft="20dp"
                 />
-            <TextView
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="#999999"
-                android:text="19836***56"
-                android:layout_marginRight="20dp"
-                />
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/dq_pwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#999999"
+                    android:hint="请输入当前密码"
+                    android:layout_marginRight="25dp"
+                    android:background="@null"
+                    />
+
+            </RelativeLayout>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -58,17 +65,23 @@
                 android:text="重置密码为"
                 android:textColor="#333333"
                 android:textSize="14sp"
-                android:layout_weight="1"
                 android:layout_marginLeft="20dp"
                 />
-            <TextView
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="#999999"
-                android:text="13520965296"
-                android:layout_marginRight="20dp"
-                />
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/cz_pwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#999999"
+                    android:hint="请输入新密码     "
+                    android:layout_marginRight="20dp"
+                    android:background="@null"
+                    />
+            </RelativeLayout>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -89,18 +102,26 @@
                 android:text="请再次输入密码"
                 android:textColor="#333333"
                 android:textSize="14sp"
-                android:layout_weight="1"
                 android:layout_marginLeft="20dp"
                 />
-            <TextView
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="#999999"
-                android:text="13520965296"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
-                />
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/zc_pwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#999999"
+                    android:hint="请再次输入密码 "
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@null"
+                    />
+
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
     <ImageView

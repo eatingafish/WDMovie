@@ -1,12 +1,16 @@
 package com.bw.movie.frag;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -112,13 +116,21 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         cinemaPresenter2 = new CinemaPresenter2(new getData());
         cinemaPresenter.reqeust(userId,sessionId,1, 10);
 
-        initData();
-
         //这是刚进页面设置的动画状态
         ObjectAnimator animator = ObjectAnimator.ofFloat(seacrchLinear2, "translationX", 30f, 510f);
         animator.setDuration(0);
         animator.start();
         cinemaRecycler.setAdapter(cinemaAdapter1);
+
+        //动态权限
+        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){//未开启定位权限
+            //开启定位权限,200是标识码
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},200);
+        }else{
+            initData();//开始定位
+            Toast.makeText(getActivity(),"已开启定位权限",Toast.LENGTH_LONG).show();
+        }
         return view;
     }
 
@@ -164,6 +176,7 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
             e.printStackTrace();
         }
 
+        initData();
     }
 
     private void initData() {
@@ -185,6 +198,21 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         mLocationClient.setLocOption(option);
         mLocationClient.start();
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 200://刚才的识别码
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){//用户同意权限,执行我们的操作
+                    initData();//开始定位
+                }else{//用户拒绝之后,当然我们也可以弹出一个窗口,直接跳转到系统设置页面
+                    Toast.makeText(getContext(), "未开启定位权限,请手动到设置去开启权限",Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:break;
+        }
     }
 
     @OnClick({R.id.cinema_location, R.id.cinema_tuijian, R.id.cinema_near})
@@ -224,10 +252,15 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
             //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
             //以下只列举部分获取地址相关的结果信息
             //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
+
+            if(!location.equals("")){
+                mLocationClient.stop();
+            }
+
             String locationDescribe = location.getLocationDescribe();    //获取位置描述信息
             String addr = location.getCity();    //获取详细地址信息
             cimemaText.setText(locationDescribe + addr);
-            mLocationClient.stop();
+
         }
     }
 

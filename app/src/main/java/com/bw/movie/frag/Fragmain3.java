@@ -24,6 +24,7 @@ import com.bw.movie.bean.UserMessage;
 import com.bw.movie.bean.VipBean;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
+import com.bw.movie.my.MyAlllistActivity;
 import com.bw.movie.my.MyFeedBackActivity;
 import com.bw.movie.my.MyMessageActivity;
 import com.bw.movie.my.MyTicketActivity;
@@ -152,10 +153,11 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.mSdv_Sound, R.id.mSdv_Head, R.id.mSdv_Message, R.id.mSdv_Like, R.id.mSdv_Ticket, R.id.mSdv_FeedBack, R.id.mSdv_New, R.id.mSdv_LoginOut})
+    @OnClick({R.id.mSdv_Sound, R.id.mSdv_Head, R.id.mymessages, R.id.mylike, R.id.myticket, R.id.myfeedback, R.id.mynew, R.id.myloginout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mSdv_Sound:
+                startActivity(new Intent(getContext(),MyAlllistActivity.class));
                 break;
             case R.id.mSdv_Head:
 
@@ -166,20 +168,23 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 }else {
                     Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
                 }
+            case R.id.mymessages:
+                selectUserPresenter.reqeust((int) userId, sessionId);
+
                 break;
-            case R.id.mSdv_Like:
+            case R.id.mylike:
                 startActivity(new Intent(getContext(), Myattention.class));
                 break;
-            case R.id.mSdv_Ticket:
+            case R.id.myticket:
                 startActivity(new Intent(getContext(), MyTicketActivity.class));
                // ticketRecordPresenter.reqeust((int) userId, sessionId);
                 break;
-            case R.id.mSdv_FeedBack:
+            case R.id.myfeedback:
                 startActivity(new Intent(getContext(), MyFeedBackActivity.class));
                 break;
-            case R.id.mSdv_New:
+            case R.id.mynew:
                 break;
-            case R.id.mSdv_LoginOut:
+            case R.id.myloginout:
                 //退出登录
                 if (student.size()==0){
                     Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
@@ -286,7 +291,9 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         public void success(final Result<VipBean> data) {
 
              if (data.getStatus().equals("0000")) {
+
                 mTvName.setText(data.getResult().getNickName());
+
                 mSdvHead.setImageURI(data.getResult().getHeadPic());
                 if (data.getResult().getUserSignStatus()==1){
 
