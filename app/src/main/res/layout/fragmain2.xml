@@ -27,7 +27,7 @@
         <LinearLayout
             android:id="@+id/seacrch_linear2"
             android:layout_width="220dp"
-            android:layout_height="30dp"
+            android:layout_height="24dp"
             android:layout_alignParentRight="true"
             android:layout_marginTop="22dp"
             android:focusable="true"
@@ -40,7 +40,9 @@
                 android:layout_height="24dp"
                 android:id="@+id/imageView"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/search" />
+                android:src="@drawable/search"
+                android:padding="6dp"
+                />
 
             <EditText
                 android:id="@+id/seacrch_editext"
@@ -52,7 +54,9 @@
                 android:hint="CCTV影城"
                 android:textColor="#ffffff"
                 android:textColorHint="#ffffff"
-                android:textSize="14sp" />
+                android:textSize="12sp"
+
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -60,7 +64,9 @@
                 android:layout_marginRight="20dp"
                 android:id="@+id/seacrch_text"
                 android:text="搜索"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:textSize="12sp"
+                />
 
         </LinearLayout>
 
@@ -78,7 +84,7 @@
             android:background="@drawable/myattention_bg"
             android:layout_marginRight="32dp"
             android:textSize="14sp"
-            android:textColor="#333333"
+            android:textColor="#ffffff"
             android:layout_width="83dp"
             android:layout_height="25dp" />
         <Button

@@ -1,13 +1,15 @@
 package com.bw.movie.activity;
 
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -19,7 +21,6 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.bw.movie.R;
 import com.bw.movie.adapter.ThreeListAdapter;
-import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.Result;
 import com.bw.movie.core.DataCall;
@@ -33,45 +34,51 @@ import com.bw.movie.presenter.WellPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.jessyan.autosize.internal.CustomAdapt;
 
-public class ListActivity extends AppCompatActivity  implements DataCall<Result<List<MovieBean>>>,CustomAdapt {
+public class ListActivity extends AppCompatActivity implements DataCall<Result<List<MovieBean>>>, CustomAdapt {
 
+    @BindView(R.id.seacrch_editext)
+    EditText seacrchEditext;
+    @BindView(R.id.seacrch_text)
+    TextView seacrchText;
+    @BindView(R.id.seacrch_linear2)
+    LinearLayout seacrchLinear2;
     private EditText et_sou;
     private TextView tv_sou;
     private RadioButton rb_one;
     private RadioButton rb_two;
     private RadioButton rb_three;
-    int userId =1771;
-    String sessionId="15482908826721771";
-    int page=1;
-    int count=10;
+    int userId = 1771;
+    String sessionId = "15482908826721771";
+    int page = 1;
+    int count = 10;
     List<MovieBean> remendianyinglist = new ArrayList<>();
     private ThreeListAdapter threeListAdapter;
     private PopularPresenter releaseMoviePresenter;
     private WellPresenter hotMoviePresenter;
     private SoonPresenter comingSoonMoviePresenter;
-    private LocationClient mLocationClient =null;
+    private LocationClient mLocationClient = null;
     private TextView addre;
     private MyLocationListener myListener = new MyLocationListener();
-
+    private boolean animatort = false;
+    private boolean animatorf = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
-       /* List<UserBean> userBeans = MApp.userBeanDao.loadAll();
-        if(userBeans.size()>0){
-            userId=  userBeans.get(0).getUserId();
-            sessionId =  userBeans.get(0).getSessionId();
-        }*/
+        ButterKnife.bind(this);
 
         hotMoviePresenter = new WellPresenter(this);
-        hotMoviePresenter.reqeust(userId,sessionId,page,count);
+        hotMoviePresenter.reqeust(userId, sessionId, page, count);
         releaseMoviePresenter = new PopularPresenter(new Zhengzai());
         comingSoonMoviePresenter = new SoonPresenter(new Jjiang());
 
+        //定位
         addre = findViewById(R.id.addre);
         mLocationClient = new LocationClient(getApplicationContext());
         //声明LocationClient类
@@ -92,6 +99,11 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
         mLocationClient.start();
 
 
+        //这是刚进页面设置的动画状态
+        ObjectAnimator animator = ObjectAnimator.ofFloat(seacrchLinear2, "translationX", 30f, 510f);
+        animator.setDuration(0);
+        animator.start();
+
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,23 +111,7 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
                 finish();
             }
         });
-        ImageView sou = findViewById(R.id.sou);
-        et_sou = findViewById(R.id.et_sou);
-        tv_sou = findViewById(R.id.tv_sou);
-        sou.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                et_sou.setVisibility(View.VISIBLE);
-                tv_sou.setVisibility(View.VISIBLE);
-            }
-        });
-        tv_sou.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                et_sou.setVisibility(View.GONE);
-                tv_sou.setVisibility(View.GONE);
-            }
-        });
+
 
         rb_one = findViewById(R.id.rb_one);
         rb_two = findViewById(R.id.rb_two);
@@ -126,24 +122,24 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rb_one:
                         rb_one.setTextColor(Color.WHITE);
                         rb_two.setTextColor(Color.BLACK);
                         rb_three.setTextColor(Color.BLACK);
-                        hotMoviePresenter.reqeust(userId,sessionId,page,count);
+                        hotMoviePresenter.reqeust(userId, sessionId, page, count);
                         break;
                     case R.id.rb_two:
                         rb_two.setTextColor(Color.WHITE);
                         rb_one.setTextColor(Color.BLACK);
                         rb_three.setTextColor(Color.BLACK);
-                        releaseMoviePresenter.reqeust(userId,sessionId,page,count);
+                        releaseMoviePresenter.reqeust(userId, sessionId, page, count);
                         break;
                     case R.id.rb_three:
                         rb_three.setTextColor(Color.WHITE);
                         rb_two.setTextColor(Color.BLACK);
                         rb_one.setTextColor(Color.BLACK);
-                        comingSoonMoviePresenter.reqeust(userId,sessionId,page,count);
+                        comingSoonMoviePresenter.reqeust(userId, sessionId, page, count);
                         break;
                 }
             }
@@ -158,7 +154,7 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
                 MovieBean MovieBean = remendianyinglist.get(possion);
                 int id = MovieBean.getId();
                 MyLovePresenter myLovePresenter = new MyLovePresenter(new Xihuan());
-                myLovePresenter.reqeust(userId,sessionId,id);
+                myLovePresenter.reqeust(userId, sessionId, id);
             }
 
             @Override
@@ -166,12 +162,38 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
                 MovieBean MovieBean = remendianyinglist.get(possion);
                 int id = MovieBean.getId();
                 MyCanclePresenter myCanclePresenter = new MyCanclePresenter(new Cancle());
-                myCanclePresenter.reqeust(userId,sessionId,id);
+                myCanclePresenter.reqeust(userId, sessionId, id);
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(threeListAdapter);
 
+    }
+
+    @OnClick(R.id.imageView)
+    public void seacrch_linear2() {
+        if (animatort) {
+            return;
+        }
+        animatort = true;
+        animatorf = false;
+        //这是显示出现的动画
+        ObjectAnimator animator = ObjectAnimator.ofFloat(seacrchLinear2, "translationX", 510f, 30f);
+        animator.setDuration(1500);
+        animator.start();
+    }
+
+    @OnClick(R.id.seacrch_text)
+    public void seacrch_text() {
+        if (animatorf) {
+            return;
+        }
+        animatorf = true;
+        animatort = false;
+        //这是隐藏进去的动画
+        ObjectAnimator animator = ObjectAnimator.ofFloat(seacrchLinear2, "translationX", 30f, 510f);
+        animator.setDuration(1500);
+        animator.start();
     }
 
     @Override
@@ -251,7 +273,7 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
 
         @Override
         public void success(Result data) {
-            Toast.makeText(ListActivity.this, ""+data.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ListActivity.this, "" + data.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -265,7 +287,7 @@ public class ListActivity extends AppCompatActivity  implements DataCall<Result<
 
         @Override
         public void success(Result data) {
-            Toast.makeText( ListActivity.this,  ""+data.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ListActivity.this, "" + data.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         @Override

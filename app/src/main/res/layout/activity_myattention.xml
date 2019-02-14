@@ -25,7 +25,7 @@
                 android:layout_marginRight="32dp"
                 android:background="@drawable/myattention_bg"
                 android:text="电影"
-                android:textColor="#666666"
+                android:textColor="#ffffff"
                 android:textSize="14sp" />
 
             <Button

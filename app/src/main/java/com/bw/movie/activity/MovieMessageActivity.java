@@ -321,7 +321,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 list.add(data.getResult());
                 String imageUrl = data.getResult().getImageUrl();
                 mSDvMovie.setImageURI(Uri.parse(imageUrl));
-                mTvName.setText(result.getDirector());
+                mTvName.setText(result.getName());
             }
 
         }

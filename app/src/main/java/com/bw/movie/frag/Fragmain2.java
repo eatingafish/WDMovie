@@ -175,12 +175,10 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        initData();
     }
 
     private void initData() {
-        mLocationClient = new LocationClient(getActivity());
+        mLocationClient = new LocationClient(getActivity().getApplicationContext());
         //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);
         //注册监听函数
@@ -215,13 +213,9 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         }
     }
 
-    @OnClick({R.id.cinema_location, R.id.cinema_tuijian, R.id.cinema_near})
+    @OnClick({ R.id.cinema_tuijian, R.id.cinema_near})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.cinema_location:
-
-
-                break;
             case R.id.cinema_tuijian:
                 cinemaTuijian.setBackgroundResource(R.drawable.myattention_bg);
                 cinemaTuijian.setTextColor(Color.WHITE);
@@ -244,23 +238,23 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
         }
     }
 
-
-    //定位
     public class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
             //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
             //以下只列举部分获取地址相关的结果信息
             //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
+            String locationDescribe = location.getLocationDescribe();    //获取位置描述信息
+            String addr = location.getAddrStr();    //获取详细地址信息
+            location.getAddress();
 
             if(!location.equals("")){
                 mLocationClient.stop();
             }
 
-            String locationDescribe = location.getLocationDescribe();    //获取位置描述信息
-            String addr = location.getCity();    //获取详细地址信息
-            cimemaText.setText(locationDescribe + addr);
-
+            double weidu = location.getLongitude();
+            double jingdu = location.getLatitude();
+            cimemaText.setText(addr);
         }
     }
 
