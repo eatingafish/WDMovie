@@ -27,7 +27,7 @@
         <LinearLayout
             android:id="@+id/seacrch_linear2"
             android:layout_width="220dp"
-            android:layout_height="30dp"
+            android:layout_height="24dp"
             android:layout_alignParentRight="true"
             android:layout_marginTop="22dp"
             android:focusable="true"
@@ -40,7 +40,9 @@
                 android:layout_height="24dp"
                 android:id="@+id/imageView"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/search" />
+                android:src="@drawable/search"
+                android:padding="6dp"
+                />
 
             <EditText
                 android:id="@+id/seacrch_editext"

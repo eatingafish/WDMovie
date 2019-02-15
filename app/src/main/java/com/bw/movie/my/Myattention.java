@@ -13,13 +13,15 @@ import android.widget.ImageView;
 import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
 import com.bw.movie.adapter.MyIsFollowAdapter;
+import com.bw.movie.adapter.MyIsFollowTwoAdapter;
 import com.bw.movie.bean.MyIsFollowListBean;
+import com.bw.movie.bean.MyIsFollowListTwoBean;
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
 import com.bw.movie.core.DataCall;
 import com.bw.movie.exception.ApiException;
 import com.bw.movie.presenter.CinemaAttentionPresenter;
-import com.bw.movie.presenter.MyattentcinemaPresenter;
+import com.bw.movie.presenter.MyIsFollowListPresenter;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -46,8 +48,9 @@ public class Myattention extends AppCompatActivity implements CustomAdapt {
     private int userId;
     private MyIsFollowAdapter myIsFollowAdapter;
     private CinemaAttentionPresenter cinemaAttentionPresenter;
-    private MyattentcinemaPresenter myattentcinemaPresenter;
     private List<User> student;
+    private MyIsFollowTwoAdapter myIsFollowTwoAdapter;
+    private MyIsFollowListPresenter myIsFollowListPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +78,8 @@ public class Myattention extends AppCompatActivity implements CustomAdapt {
         myattentionRecycler.setLayoutManager(linearLayoutManager);
 
         cinemaAttentionPresenter = new CinemaAttentionPresenter(new getData());
-        myattentcinemaPresenter = new MyattentcinemaPresenter(new getData());
-        cinemaAttentionPresenter.reqeust(userId,sessionId,1,10);
+        myIsFollowListPresenter = new MyIsFollowListPresenter(new getCinemaData());
+        cinemaAttentionPresenter.reqeust(userId,sessionId,1,100);
 
         myIsFollowAdapter = new MyIsFollowAdapter(this);
         myattentionRecycler.setAdapter(myIsFollowAdapter);
@@ -115,7 +118,7 @@ public class Myattention extends AppCompatActivity implements CustomAdapt {
 
                 myIsFollowAdapter = new MyIsFollowAdapter(this);
                 myattentionRecycler.setAdapter(myIsFollowAdapter);
-                cinemaAttentionPresenter.reqeust(userId,sessionId,1,10);
+                cinemaAttentionPresenter.reqeust(userId,sessionId,1,100);
 
                 break;
             case R.id.myattention_bt_cinema:
@@ -123,9 +126,9 @@ public class Myattention extends AppCompatActivity implements CustomAdapt {
                 myattentionBtCinema.setTextColor(Color.WHITE);
                 myattentionBtMovie.setBackgroundResource(R.drawable.myattention_bg2);
                 myattentionBtMovie.setTextColor(Color.DKGRAY);
-                myIsFollowAdapter = new MyIsFollowAdapter(this);
-                myattentionRecycler.setAdapter(myIsFollowAdapter);
-                myattentcinemaPresenter.reqeust(userId,sessionId,1,10);
+                myIsFollowTwoAdapter = new MyIsFollowTwoAdapter(this);
+                myattentionRecycler.setAdapter(myIsFollowTwoAdapter);
+                myIsFollowListPresenter.reqeust(userId,sessionId,1,100);
                 break;
             case R.id.myattention_iv_back:
                 finish();
@@ -153,7 +156,6 @@ public class Myattention extends AppCompatActivity implements CustomAdapt {
                 List<MyIsFollowListBean> result = data.getResult();
                 myIsFollowAdapter.addItem(result);
                 myIsFollowAdapter.notifyDataSetChanged();
-
             }
         }
 
@@ -163,4 +165,22 @@ public class Myattention extends AppCompatActivity implements CustomAdapt {
         }
     }
 
+    /**
+     *  我关注的影院
+     */
+    private class getCinemaData implements DataCall<Result<List<MyIsFollowListTwoBean>>> {
+        @Override
+        public void success(Result<List<MyIsFollowListTwoBean>> data) {
+            if (data.getStatus().equals("0000")) {
+                List<MyIsFollowListTwoBean> result = data.getResult();
+                myIsFollowTwoAdapter.addItem(result);
+                myIsFollowTwoAdapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void fail(ApiException e) {
+
+        }
+    }
 }

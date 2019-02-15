@@ -48,7 +48,7 @@ public class MovietalkAdapter extends XRecyclerView.Adapter<MovietalkAdapter.VH>
         String time = format.format(date);
         vh.time.setText(time);
         vh.content.setText(list.get(i).getCommentContent());
-
+        vh.zannum.setText(list.get(i).getGreatNum()+"");
     }
 
     @Override
@@ -75,6 +75,7 @@ public class MovietalkAdapter extends XRecyclerView.Adapter<MovietalkAdapter.VH>
         private final TextView time;
         private final CheckBox zan;
         private final TextView number;
+        private final TextView zannum;
 
         public VH(@NonNull View itemView) {
             super(itemView);
@@ -84,6 +85,7 @@ public class MovietalkAdapter extends XRecyclerView.Adapter<MovietalkAdapter.VH>
             time = itemView.findViewById(R.id.talk_time);
             zan = itemView.findViewById(R.id.talk_zan);
             number = itemView.findViewById(R.id.talk_number);
+            zannum = itemView.findViewById(R.id.zannum);
         }
     }
 }

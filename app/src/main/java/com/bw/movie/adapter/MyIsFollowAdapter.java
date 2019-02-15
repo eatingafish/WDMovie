@@ -43,7 +43,8 @@ public class MyIsFollowAdapter extends RecyclerView.Adapter {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
         //获取当前时间
         Date date = new Date(myIsFollowListBean.getReleaseTime());
-        myFollowVh.myfollow_textviewtwo.setText(simpleDateFormat.format(date));
+        myFollowVh.myfollow_textviewthree.setText(date+"");
+        myFollowVh.myfollow_textviewtwo.setText(myIsFollowListBean.getSummary());
     }
 
     @Override
@@ -66,11 +67,14 @@ public class MyIsFollowAdapter extends RecyclerView.Adapter {
         public SimpleDraweeView myfollow_sdv;
         public TextView myfollow_textviewone;
         public TextView myfollow_textviewtwo;
+        private  TextView myfollow_textviewthree;
+
         public MyFollowVh(@NonNull View itemView) {
             super(itemView);
             myfollow_sdv = itemView.findViewById(R.id.myfollow_sdv);
             myfollow_textviewone = itemView.findViewById(R.id.myfollow_textviewone);
             myfollow_textviewtwo = itemView.findViewById(R.id.myfollow_textviewtwo);
+            myfollow_textviewthree = itemView.findViewById(R.id.myfollow_textviewthree);
         }
     }
 }

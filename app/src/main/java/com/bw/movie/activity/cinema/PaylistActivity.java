@@ -114,7 +114,6 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
         setContentView(R.layout.activity_paylist);
         ButterKnife.bind(this);
 
-
         try {
             UserDao userDao = new UserDao(this);
             student = userDao.getStudent();
@@ -207,9 +206,9 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
             public void onClick(View view) {
                 vp.setCurrentItem(0);
                 ChangeBackGround(0);
-
-//                        EventBus.getDefault().postSticky(new EvBean(cinemaId));
-//                        startActivity(new Intent(CinemaDetailActivity.this,CinemaDetailsXqFragment.class));
+                Intent intent = new Intent(PaylistActivity.this,CinemaDetailsXqFragment.class);
+                intent.putExtra("yingid",cinemaid);
+                startActivity(intent);
             }
         });
         pl.setOnClickListener(new View.OnClickListener() {
@@ -218,7 +217,7 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
                 vp.setCurrentItem(1);
                 ChangeBackGround(1);
 //                        EventBus.getDefault().postSticky(new EvBean(cinemaId));
-//                        startActivity(new Intent(CinemaDetailActivity.this,CinemaDetailsPlFragment.class));
+//                       startActivity(new Intent(CinemaDetailActivity.this,CinemaDetailsPlFragment.class));
             }
         });
 

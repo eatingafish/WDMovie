@@ -11,19 +11,32 @@ import android.widget.TextView;
 
 import com.bw.movie.R;
 import com.bw.movie.bean.TicketBean;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+import butterknife.BindView;
+import butterknife.OnClick;
+
 /**
- * Created by 。 on 2018/12/14.
+ *  on 2018/12/14.
  */
 
 public class MyAdapter extends RecyclerView.Adapter {
+
+public class MyAdapter extends RecyclerView.Adapter {
+    @BindView(R.id.one_button)
+    Button oneButton;
     private List<TicketBean> list = new ArrayList<>();
     private Context context;
     private ClickListener clickListener;
     private LongClickListener longClickListener;
+
+    public void addList(List<TicketBean> u) {
+        if (u != null) {
+    private IWXAPI api;
 
     public void addList(List<TicketBean> u) {
         if (u != null) {
@@ -45,7 +58,7 @@ public class MyAdapter extends RecyclerView.Adapter {
             return new ViewHolder2(view);
         }
 
-        return null;
+       return null;
     }
 
     @Override

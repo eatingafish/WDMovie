@@ -9,6 +9,7 @@ import com.bw.movie.bean.MovieMessageBean;
 import com.bw.movie.bean.Moviecinema;
 import com.bw.movie.bean.Movietalkbean;
 import com.bw.movie.bean.MyIsFollowListBean;
+import com.bw.movie.bean.MyIsFollowListTwoBean;
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.TicketBean;
 import com.bw.movie.bean.User;
@@ -364,14 +365,6 @@ public interface IRequest {
                                                          @Query("page") int page,
                                                          @Query("count") int count
                                                          );
-    /**
-     * 查询用户关注的影院
-     */
-    @GET("movieApi/cinema/v1/verify/findCinemaPageList")
-    Observable<Result<List<MyIsFollowListBean>>> GZyy(@Header("userId") int userId,
-                                                     @Header("sessionId") String sessionId,
-                                                     @Query("page") int page,
-                                                     @Query("count") int count);
 
     /**
      * 反馈意见
@@ -443,5 +436,10 @@ public interface IRequest {
                                                      @Query("cinemaId") int cinemaId,
                                                      @Query("page") int page,
                                                      @Query("count") int count);
-
+    //影院关注列表
+    @GET("movieApi/cinema/v1/verify/findCinemaPageList")
+    Observable<Result<List<MyIsFollowListTwoBean>>> MyisFollowList(@Header("userId")int userId,
+                                                                   @Header("sessionId")String sessionId,
+                                                                   @Query("page") int page,
+                                                                   @Query("count") int count);
 }
