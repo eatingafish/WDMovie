@@ -189,25 +189,7 @@ public class CinemazuoweiActivity extends AppCompatActivity implements CustomAda
                 final String format = df2.format(zongprice);
                 mBt_Pay.setText("微信支付"+format+"元");
                 mBt_Pay.setOnClickListener(new View.OnClickListener() {
-                    class BuyCall implements DataCall<Result> {
-                        @Override
-                        public void success(Result data) {
 
-                            if (data.getStatus().equals("0000")){
-                                Toast.makeText(CinemazuoweiActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
-                                PayPresenter payPresenter = new PayPresenter(new PayCall());
-                                payPresenter.reqeust(userId,sessionId,1,data.getOrderId());
-                            }else if (data.getStatus().equals("9999")){
-                                startActivity(new Intent(CinemazuoweiActivity.this, LoginActivity.class));
-                            }
-
-                        }
-
-                        @Override
-                        public void fail(ApiException e) {
-
-                        }
-                    }
 
                     @Override
                     public void onClick(View v) {
@@ -263,6 +245,25 @@ public class CinemazuoweiActivity extends AppCompatActivity implements CustomAda
             // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
             //3.调用微信支付sdk支付方法
             api.sendReq(req);
+        }
+
+        @Override
+        public void fail(ApiException e) {
+
+        }
+    }
+    class BuyCall implements DataCall<Result> {
+        @Override
+        public void success(Result data) {
+
+            if (data.getStatus().equals("0000")){
+                Toast.makeText(CinemazuoweiActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+                PayPresenter payPresenter = new PayPresenter(new PayCall());
+                payPresenter.reqeust(userId,sessionId,1,data.getOrderId());
+            }else if (data.getStatus().equals("9999")){
+                startActivity(new Intent(CinemazuoweiActivity.this, LoginActivity.class));
+            }
+
         }
 
         @Override

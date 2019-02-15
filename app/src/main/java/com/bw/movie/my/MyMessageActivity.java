@@ -89,11 +89,12 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
                 userId = student.get(0).getUserId();
             }
 
-            SelectUserPresenter selectUserPresenter = new SelectUserPresenter(new UserCall());
-            selectUserPresenter.reqeust((int) userId, sessionId);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        selectUserPresenter = new SelectUserPresenter(new UserCall());
+        selectUserPresenter.reqeust((int) userId, sessionId);
         updatePresenter = new UpdatePresenter(new Updatecall());
         myMessageHead.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +126,24 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
 //        String wdpwd = userInfo.getWdpwd();
 //        decrypt = EncryptUtil.decrypt(wdpwd);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            userDao = new UserDao(this);
+            student = userDao.getStudent();
+            if (student.size() != 0) {
+                sessionId = student.get(0).getSessionId();
+                userId = student.get(0).getUserId();
+            }
+           // selectUserPresenter.reqeust((int) userId, sessionId);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @OnClick({R.id.my_back, R.id.my_pwd_update, R.id.xiugai})
@@ -202,12 +221,15 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
                 mTvUserPhone.setText(data.getResult().getPhone());
                 mTvUserSex.setText(data.getResult().getSex());
 
+            }else{
+                Toast.makeText(MyMessageActivity.this, ""+data.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         }
 
         @Override
         public void fail(ApiException e) {
+            //Toast.makeText(MyMessageActivity.this, ""+e.getCode(), Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -266,7 +288,8 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
     private class UpHeadC implements DataCall<Result> {
         @Override
         public void success(Result data) {
-            Toast.makeText(MyMessageActivity.this, "" + data.getMessage(), Toast.LENGTH_SHORT).show();
+            selectUserPresenter.reqeust((int) userId, sessionId);
+            //Toast.makeText(MyMessageActivity.this, "111" + data.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -289,6 +312,7 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
             myMessageHead.setImageURI(data1);
             //userBeans.get(0).setHeadPic(data1.toString());
             UpHeadPresenter upHeadPresenter = new UpHeadPresenter(new UpHeadC());
+            //Toast.makeText(this, "哈哈哈", Toast.LENGTH_SHORT).show();
             upHeadPresenter.reqeust(userId, sessionId, objects);
             objects.clear();
         }

@@ -66,12 +66,13 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
     private VipPresenter vipPresenter;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmain3, container, false);
         unbinder = ButterKnife.bind(this, view);
+        vipPresenter = new VipPresenter(new VipCall());
+        vipPresenter.reqeust(userId,sessionId);
         try {
             userDao = new UserDao(getContext());
             student = userDao.getStudent();
@@ -85,15 +86,13 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
         }
         selectUserPresenter = new SelectUserPresenter(new UserCall());
         signPresenter = new SignPresenter(new SignCall());
-        vipPresenter = new VipPresenter(new VipCall());
-        vipPresenter.reqeust(userId,sessionId);
+
         ticketRecordPresenter = new TicketRecordPresenter(new TicketCall());
         mBtQIanDao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-               vipPresenter.reqeust(userId,sessionId);
-
+                signPresenter.reqeust(userId,sessionId);
 
 
             }
@@ -114,9 +113,8 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
     @Override
     public void onResume() {
         super.onResume();
-       // vipPresenter.reqeust(userId,sessionId);
         try {
-            UserDao userDao = new UserDao(getContext());
+            userDao = new UserDao(getContext());
             student = userDao.getStudent();
             if (student.size() != 0) {
                 sessionId = student.get(0).getSessionId();
@@ -127,11 +125,12 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 mTvName.setText("登录/注册");
                 mSdvHead.setImageResource(R.drawable.myhead);
             }
-            Toast.makeText(getContext(), student.size() + "", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), student.size() + "", Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-       //
+        vipPresenter.reqeust(userId,sessionId);
+        //
         /*selectUserPresenter = new SelectUserPresenter(new UserCall());
         signPresenter = new SignPresenter(new SignCall());
 
@@ -222,7 +221,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
-
+                        student.clear();
                         Intent intent = new Intent(getContext(), LoginActivity.class);
                         // 清空当前栈 ，并且创建新的栈
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -239,7 +238,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                 //    显示出该对话框
                 builder.show();
 
-                student.clear();
+                //
                 //startActivity(new Intent(getContext(), LoginActivity.class));
                 break;
         }
@@ -290,7 +289,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
               // startActivity(new Intent(getContext(), LoginActivity.class));
                 Toast.makeText(getContext(), "您未登录,请先登录!", Toast.LENGTH_SHORT).show();
             } else if (data.getStatus().equals("0000")) {
-                Toast.makeText(getContext(), "购票记录", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "购票记录", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -307,12 +306,12 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
              if (data.getStatus().equals("0000")) {
 
                 mTvName.setText(data.getResult().getNickName());
-
                 mSdvHead.setImageURI(data.getResult().getHeadPic());
+                 //Toast.makeText(getContext(), "设置头像", Toast.LENGTH_SHORT).show();
                 if (data.getResult().getUserSignStatus()==1){
 
                     mBtQIanDao.setText("签到");
-                    signPresenter.reqeust(userId,sessionId);
+
 
                 }else if (data.getResult().getUserSignStatus()==2){
                     mBtQIanDao.setText("已签到");
@@ -320,6 +319,7 @@ public class Fragmain3 extends Fragment implements CustomAdapt {
                     return;
 
                 }
+                return;
             }
                  mTvName.setText("登录/注册");
                  mSdvHead.setImageResource(R.drawable.myhead);

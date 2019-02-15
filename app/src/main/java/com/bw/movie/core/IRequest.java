@@ -402,18 +402,12 @@ public interface IRequest {
                               @Field("sex") int sex,
                               @Field("email")String email);
 
-    //上传用户头像
-    @POST("movieApi/user/v1/verify/uploadHeadPic")
-    @FormUrlEncoded
-    Observable<Result> uploadHeadPic(@Header("userId") String userId,
-                                     @Header("sessionId") String sessionId,
-                                     @Field("image") String image);
+
     /**
      * 修改用户头像
      */
     @POST("movieApi/user/v1/verify/uploadHeadPic")
     Observable<Result> uploadHeadPic(@Header("userId") int userId, @Header("sessionId") String sessionId, @Body MultipartBody body);
-
     /**
      * 修改密码
      */
