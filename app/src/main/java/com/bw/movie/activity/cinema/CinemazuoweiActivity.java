@@ -2,12 +2,14 @@ package com.bw.movie.activity.cinema;
 
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -78,7 +80,13 @@ public class CinemazuoweiActivity extends AppCompatActivity implements CustomAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cinemazuowei);
         ButterKnife.bind(this);
-
+        //沉浸式状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         try {
             UserDao userDao = new UserDao(this);
             List<User> student = userDao.getStudent();

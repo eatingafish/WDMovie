@@ -17,15 +17,15 @@
             android:layout_width="172dp"
             android:layout_height="20dp"
             android:layout_below="@+id/ll_zuo"
+            android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
             android:src="@drawable/cinemarectangle" />
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/yingyuanbg"
-            />
+            android:layout_height="225dp"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/yingyuanbg" />
 
         <TextView
             android:id="@+id/pay_cinema"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="CGV影院"
             android:textColor="#fff"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="35dp"
             android:layout_marginLeft="35dp"
             />
         <TextView
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:text="海淀区清河中街五彩城购物中心东区7层"
             android:textColor="#dddddd"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="55dp"
             android:layout_marginLeft="35dp"
             android:textSize="12sp"
             />
@@ -51,7 +51,7 @@
             android:layout_height="26dp"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="85dp"
             android:background="@drawable/session_redio"
             android:text="铁血战士"
             android:textColor="#fff"
@@ -133,7 +133,6 @@
         android:layout_height="match_parent"
         android:layout_below="@id/rl_top"
         android:layout_above="@+id/rl_bot"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

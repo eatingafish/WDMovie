@@ -40,7 +40,7 @@ public class SoonAdapter_Rv extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
         ((Vh_Soon) viewHolder).mSdv_Soon.setImageURI(Uri.parse(list.get(i).getImageUrl()));
         ((Vh_Soon) viewHolder).mTv_Soon.setText(list.get(i).getName());
-        ((Vh_Soon) viewHolder).mTv_Soon.setBackgroundColor(0x55000000);
+        ((Vh_Soon) viewHolder).mTv_Soon.getBackground().mutate().setAlpha(100);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

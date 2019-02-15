@@ -2,10 +2,12 @@ package com.bw.movie.activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -92,6 +94,13 @@ public class BuyMovieActivity extends AppCompatActivity implements CustomAdapt {
         setContentView(R.layout.activity_buymovie);
         ButterKnife.bind(this);
         Intent intent = getIntent();
+        //沉浸式状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         try {
             UserDao userDao = new UserDao(this);
             student = userDao.getStudent();

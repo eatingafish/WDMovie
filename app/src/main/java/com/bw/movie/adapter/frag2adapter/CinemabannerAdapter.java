@@ -67,7 +67,7 @@ public class CinemabannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 }
             });
-            ((Vh_Banner) viewHolder).textView.setBackgroundColor(0x55000000);
+            ((Vh_Banner) viewHolder).textView.getBackground().mutate().setAlpha(100);
             ((Vh_Banner) viewHolder).textView.setText(list.get(i).getName() + "　" + list.get(i).getDuration());
 
         }

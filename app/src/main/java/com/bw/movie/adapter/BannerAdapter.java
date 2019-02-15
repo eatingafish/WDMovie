@@ -72,7 +72,7 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 }
             });
-            ((Vh_Banner) viewHolder).textView.setBackgroundColor(0x55000000);
+            ((Vh_Banner) viewHolder).textView.getBackground().mutate().setAlpha(100);
             ((Vh_Banner) viewHolder).textView.setText(list.get(i).getName()+"　"+list.get(i).getReleaseTimeShow());
         }
 

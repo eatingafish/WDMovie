@@ -7,10 +7,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="230dp"
         android:background="@drawable/mybackground">
+        <View
+            android:id="@+id/b1"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            ></View>
+        <RelativeLayout
+            android:layout_below="@+id/b1"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            ><ImageView
 
-        <ImageView
             android:id="@+id/mSdv_Sound"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -18,36 +27,39 @@
             android:layout_marginTop="30dp"
             android:src="@drawable/remind" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/mSdv_Head"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"
-            android:background="@drawable/myhead"
-            app:roundAsCircle="true" />
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/mSdv_Head"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/myhead"
+                app:roundAsCircle="true" />
 
-        <TextView
-            android:id="@+id/mTv_Name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/mSdv_Head"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="登录/注册"
-            android:textColor="#ffffff"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/mTv_Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mSdv_Head"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="登录/注册"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/mBt_QIanDao"
-            android:layout_width="66dp"
-            android:layout_height="28dp"
-            android:layout_below="@+id/mTv_Name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/reg_bg"
-            android:text="签到"
-            android:textColor="#ffffff" />
+            <Button
+                android:id="@+id/mBt_QIanDao"
+                android:layout_width="66dp"
+                android:layout_height="28dp"
+                android:layout_below="@+id/mTv_Name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/reg_bg"
+                android:text="签到"
+                android:textColor="#ffffff" /></RelativeLayout>
+
+
+
     </RelativeLayout>
 
     <RelativeLayout

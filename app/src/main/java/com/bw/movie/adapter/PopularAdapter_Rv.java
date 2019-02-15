@@ -41,7 +41,7 @@ public class PopularAdapter_Rv extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (viewHolder instanceof Vh_Popular){
             ((Vh_Popular) viewHolder).mSdv_populer.setImageURI(Uri.parse(list.get(i).getImageUrl()));
             ((Vh_Popular) viewHolder).mTv_populer.setText(list.get(i).getName());
-            ((Vh_Popular) viewHolder).mTv_populer.setBackgroundColor(0x55000000);
+            ((Vh_Popular) viewHolder).mTv_populer.getBackground().mutate().setAlpha(100);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

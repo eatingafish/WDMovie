@@ -1,7 +1,10 @@
 package com.bw.movie.frag;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,8 +14,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +52,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import me.jessyan.autosize.internal.CustomAdapt;
+import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
 
 /**
@@ -94,6 +101,8 @@ public class Fragmain1 extends Fragment implements CustomAdapt, BannerAdapter.on
     View v1;
     @BindView(R.id.mRl_Popular)
     RelativeLayout mRlPopular;
+    @BindView(R.id.gxkzs)
+    RadioGroup gxkzs;
     private PopularPresenter popularPresenter;
     private WellPresenter wellPresenter;
     private SoonPresenter soonPresenter;
@@ -113,7 +122,12 @@ public class Fragmain1 extends Fragment implements CustomAdapt, BannerAdapter.on
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmain1, container, false);
         unbinder = ButterKnife.bind(this, view);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         try {
             UserDao userDao = new UserDao(getContext());
             List<User> student = userDao.getStudent();
@@ -180,6 +194,12 @@ public class Fragmain1 extends Fragment implements CustomAdapt, BannerAdapter.on
         mList = view.findViewById(R.id.mBanner);
         bannerAdapter = new BannerAdapter(this, getContext());
         mList.setAdapter(bannerAdapter);
+        mList.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
+            @Override
+            public void onItemSelected(int position) {
+                gxkzs.check(gxkzs.getChildAt(position).getId());
+            }
+        });
 
         return view;
     }
@@ -187,6 +207,7 @@ public class Fragmain1 extends Fragment implements CustomAdapt, BannerAdapter.on
     @Override
     public void clickItem(int position) {
         mList.smoothScrollToPosition(position);
+        //Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
     }
 
     //定位
@@ -323,8 +344,21 @@ public class Fragmain1 extends Fragment implements CustomAdapt, BannerAdapter.on
                         startActivity(intent);
                     }
                 });
+               /* */
+
                 bannerAdapter.addData(data.getResult());
                 bannerAdapter.notifyDataSetChanged();
+               /* for (int i = 0; i < data.getMovieList().size(); i++) {
+                    RadioButton radioButton = new RadioButton(getContext());
+                    WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+                    int width = wm.getDefaultDisplay().getWidth();
+                    double widths = width / data.getMovieList().size();
+                    radioButton.setWidth((int) widths);
+                    radioButton.setButtonTintMode(PorterDuff.Mode.CLEAR);
+                    radioButton.setBackgroundResource(R.drawable.radio_selector);
+                    gxkzs.addView(radioButton);
+                }*/
+                gxkzs.check(gxkzs.getChildAt(0).getId());
             }
 
         }
