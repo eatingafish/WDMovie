@@ -2,8 +2,8 @@ package com.bw.movie.activity;
 
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,7 +23,6 @@ import com.baidu.location.LocationClientOption;
 import com.bw.movie.Dao.UserDao;
 import com.bw.movie.R;
 import com.bw.movie.adapter.ThreeListAdapter;
-import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.MovieBean;
 import com.bw.movie.bean.Result;
 import com.bw.movie.bean.User;
@@ -285,7 +284,10 @@ public class ListActivity extends AppCompatActivity implements DataCall<Result<L
             location.getAddress();
             double weidu = location.getLongitude();
             double jingdu = location.getLatitude();
-            addre.setText(addr);
+            if (!location.equals("")) {
+                addre.setText(addr);
+                mLocationClient.stop();
+            }
         }
     }
 

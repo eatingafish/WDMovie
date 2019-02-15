@@ -1,13 +1,17 @@
 package com.bw.movie.my;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -101,13 +105,80 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
             public void onClick(View v) {
                 //showChoosePhotoDialog();
 
-                Intent intent1 = new Intent(Intent.ACTION_PICK);
-                intent1.setType("image/*");
-                startActivityForResult(intent1, 0);
+                //  checkSelfPermission 检测有没有 权限
+                //  PackageManager.PERMISSION_GRANTED 有权限
+                //  PackageManager.PERMISSION_DENIED  拒绝权限
+                if (ActivityCompat.checkSelfPermission(MyMessageActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    //权限发生了改变 true  //  false 小米
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(MyMessageActivity.this, Manifest.permission.CAMERA)) {
+
+                        new AlertDialog.Builder(MyMessageActivity.this).setTitle("调用相机")
+                                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 请求授权
+                                        ActivityCompat.requestPermissions(MyMessageActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+                                    }
+                                }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).create().show();
+
+                    } else {
+                        ActivityCompat.requestPermissions(MyMessageActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+
+                    }
+
+                } else {
+                    camear();
+                }
             }
         });
         initView();
     }
+
+    /**
+     * @param requestCode
+     * @param permissions  请求的权限
+     * @param grantResults 请求权限返回的结果
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1) {
+            // camear 权限回调
+
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Intent intent1 = new Intent(Intent.ACTION_PICK);
+                intent1.setType("image/*");
+                startActivityForResult(intent1, 0);
+                // 表示用户授权
+                Toast.makeText(this, " user Permission", Toast.LENGTH_SHORT).show();
+                camear();
+
+            } else {
+                //用户拒绝权限
+                Toast.makeText(this, " no Permission", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+
+    }
+
+    public void camear() {
+        try {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void initView() {
 
@@ -138,7 +209,7 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
                 sessionId = student.get(0).getSessionId();
                 userId = student.get(0).getUserId();
             }
-           // selectUserPresenter.reqeust((int) userId, sessionId);
+            // selectUserPresenter.reqeust((int) userId, sessionId);
 
 
         } catch (SQLException e) {
@@ -168,7 +239,6 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
         builder.setTitle("修改信息");
         builder.setView(view1);
         builder.setPositiveButton("修改", new DialogInterface.OnClickListener() {
-
 
 
             @Override
@@ -208,6 +278,7 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
         builder.show();
     }
 
+
     private class UserCall implements DataCall<Result<UserMessage>> {
         @Override
         public void success(Result<UserMessage> data) {
@@ -221,8 +292,8 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
                 mTvUserPhone.setText(data.getResult().getPhone());
                 mTvUserSex.setText(data.getResult().getSex());
 
-            }else{
-                Toast.makeText(MyMessageActivity.this, ""+data.getMessage(), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MyMessageActivity.this, "" + data.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -239,9 +310,9 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
         public void success(Result data) {
             if (data.getStatus().equals("0000")) {
                 mTvUserName.setText(name);
-                if (sex==1){
+                if (sex == 1) {
                     mTvUserSex.setText("男");
-                }else {
+                } else {
                     mTvUserSex.setText("女");
                 }
                 mTvUserMail.setText(box);
@@ -252,7 +323,7 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
 
         @Override
         public void fail(ApiException e) {
-            Toast.makeText(MyMessageActivity.this, "修改失败"+e.getCode()+e.getDisplayMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyMessageActivity.this, "修改失败" + e.getCode() + e.getDisplayMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

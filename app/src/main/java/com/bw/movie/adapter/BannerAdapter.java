@@ -7,13 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bw.movie.R;
 import com.bw.movie.bean.MovieBean;
-import com.bw.movie.frag.Fragmain1;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -53,7 +50,6 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
         View inflate = LayoutInflater.from(mActivity).inflate(R.layout.item_banner, viewGroup, false);
-
 
         return new Vh_Banner(inflate);
     }
@@ -105,11 +101,6 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         }
     }
-
-
-
-
-
 
      public interface onItemClick {
         void clickItem(int position);

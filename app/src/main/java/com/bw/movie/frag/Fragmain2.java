@@ -268,13 +268,12 @@ public class Fragmain2 extends Fragment implements CustomAdapt {
             String addr = location.getAddrStr();    //获取详细地址信息
             location.getAddress();
 
-            if (!location.equals("")) {
-                mLocationClient.stop();
-            }
-
             double weidu = location.getLongitude();
             double jingdu = location.getLatitude();
-            cimemaText.setText(addr);
+            if (!location.equals("")) {
+                cimemaText.setText(addr);
+                mLocationClient.stop();
+            }
         }
     }
 

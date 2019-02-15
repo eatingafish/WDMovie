@@ -199,13 +199,12 @@ public class Fragmain1 extends Fragment implements CustomAdapt, BannerAdapter.on
             String locationDescribe = location.getLocationDescribe();    //获取位置描述信息
             String addr = location.getAddrStr();    //获取详细地址信息
             location.getAddress();
-
-            if (!location.equals("")) {
-                mLocationClient.stop();
-            }
             double weidu = location.getLongitude();
             double jingdu = location.getLatitude();
-            locationText.setText(addr);
+            if (!location.equals("")) {
+                locationText.setText(addr);
+                mLocationClient.stop();
+            }
         }
     }
 
