@@ -9,16 +9,19 @@
     <EditText
         android:id="@+id/edit_talk"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/paylist_bg"
-        android:hint="写下评论吧！"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/item_shape"
+        android:hint="    写下评论吧！"
         />
     <Button
         android:id="@+id/but_fabiao"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
         android:text="发表"
         android:background="@drawable/reg_bg"
+        android:layout_marginRight="10dp"
         />
 </LinearLayout>

@@ -46,22 +46,62 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".activity.GuideActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.RegActivity" />
-        <activity android:name=".activity.FragActivity" />
-        <activity android:name=".my.MyMessageActivity" />
-        <activity android:name=".my.Myattention" />
-        <activity android:name=".my.MyFeedBackActivity" />
-        <activity android:name=".my.MypwdupActivity" />
-        <activity android:name=".activity.cinema.PaylistActivity" />
-        <activity android:name=".activity.MovieMessageActivity" />
-        <activity android:name=".activity.cinema.CinemazuoweiActivity" />
-        <activity android:name=".activity.Movie_buy" />
-        <activity android:name=".activity.BuyMovieActivity" />
-        <activity android:name=".activity.ListActivity"
+        <activity
+            android:name=".activity.GuideActivity"
             android:screenOrientation="portrait"
-            />
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.RegActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.FragActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".my.MyMessageActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".my.Myattention"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".my.MyFeedBackActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".my.MypwdupActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.cinema.PaylistActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.MovieMessageActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.cinema.CinemazuoweiActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.Movie_buy"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.BuyMovieActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.ListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
