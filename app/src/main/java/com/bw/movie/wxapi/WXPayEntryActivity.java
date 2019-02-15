@@ -15,12 +15,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-/**
- * @author happy_movie
- * @date 2019/1/27 11:35
- * QQ:45198565
- * 佛曰：永无BUG 盘他！
- */
+
 public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
     private IWXAPI api;
 
@@ -57,15 +52,19 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
                 case BaseResp.ErrCode.ERR_OK:
                     //支付成功后的逻辑
                     result = "微信支付成功";
+                    finish();
                     break;
                 case BaseResp.ErrCode.ERR_COMM:
                     result = "微信支付失败：" + resp.errCode + "，" + resp.errStr;
+                    finish();
                     break;
                 case BaseResp.ErrCode.ERR_USER_CANCEL:
                     result = "微信支付取消：" + resp.errCode + "，" + resp.errStr;
+                    finish();
                     break;
                 default:
                     result = "微信支付未知异常：" + resp.errCode + "，" + resp.errStr;
+                    finish();
                     break;
             }
             payResult.setText(result);

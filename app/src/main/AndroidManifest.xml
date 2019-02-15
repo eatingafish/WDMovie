@@ -119,18 +119,9 @@
             android:name="UMENG_CHANNEL"
             android:value="WDMoive" />
         // 名字
-        <activity
-            android:name=".my.MyFankuiSuccess"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".my.MyTicketActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".my.MyAlllistActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".my.MyFankuiSuccess" />
+        <activity android:name=".my.MyTicketActivity" />
+        <activity android:name=".my.MyAlllistActivity"></activity>
     </application>
 
 </manifest>
