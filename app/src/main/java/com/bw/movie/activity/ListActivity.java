@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -293,7 +294,10 @@ public class ListActivity extends AppCompatActivity implements DataCall<Result<L
             location.getAddress();
             double weidu = location.getLongitude();
             double jingdu = location.getLatitude();
-            addre.setText(addr);
+            if (!location.equals("")) {
+                addre.setText(addr);
+                mLocationClient.stop();
+            }
         }
     }
 

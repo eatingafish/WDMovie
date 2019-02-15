@@ -64,8 +64,6 @@ public class PaylistActivity extends AppCompatActivity implements CustomAdapt, C
     ImageView cinemaDingwei;
     @BindView(R.id.cinema_rcf)
     RecyclerCoverFlow cinemaRcf;
-    @BindView(R.id.cinema_time)
-    TextView cinemaTime;
     @BindView(R.id.cinema_pay_recycler)
     RecyclerView cinemaPayRecycler;
     @BindView(R.id.payback)
