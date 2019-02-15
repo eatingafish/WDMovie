@@ -29,7 +29,7 @@
             android:layout_width="220dp"
             android:layout_height="24dp"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="28dp"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:background="@drawable/shape_search"
@@ -41,7 +41,7 @@
                 android:id="@+id/imageView"
                 android:layout_marginLeft="10dp"
                 android:src="@drawable/search"
-                android:padding="6dp"
+                android:padding="3dp"
                 />
 
             <EditText
