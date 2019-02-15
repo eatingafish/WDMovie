@@ -29,6 +29,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+/**
+ * 影院详情
+ */
 public class CinemaDetailsXqFragment extends Fragment {
 
     @BindView(R.id.txt_dw)
@@ -53,12 +56,12 @@ public class CinemaDetailsXqFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cinema_details_xq, container, false);
         unbinder = ButterKnife.bind(this, view);
+        initData();
+        Intent intent = getActivity().getIntent();
+        cinemaId = intent.getIntExtra("yingid", 1);
         return view;
     }
 
-    protected void initView() {
-        initData();
-    }
 
     private void initData() {
         try {
@@ -74,7 +77,7 @@ public class CinemaDetailsXqFragment extends Fragment {
             e.printStackTrace();
         }
         DetailsPresenter detailsPresenter = new DetailsPresenter(new DetailsCall());
-        detailsPresenter.reqeust(userId, sessionId, cinemaId);
+        detailsPresenter.reqeust(userId, sessionId, 18);
     }
 
     class DetailsCall implements DataCall<Result<DetailsData>> {
@@ -98,7 +101,7 @@ public class CinemaDetailsXqFragment extends Fragment {
 
         @Override
         public void fail(ApiException e) {
-
+            Toast.makeText(getContext(), "失败", Toast.LENGTH_SHORT).show();
         }
 
 

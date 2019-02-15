@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 /**
- * Created by 申雨轩
+ * 影院评论
  */
 
 public class CinemaDetailsPlFragment extends Fragment {
@@ -80,7 +80,7 @@ public class CinemaDetailsPlFragment extends Fragment {
 
         @Override
         public void success(Result<List<CommentData>> data) {
-            if (data.getStatus().equals("0000")) {
+            if  (data.getStatus().equals("0000")) {
                 Toast.makeText(getActivity(), "" + data.getMessage(), Toast.LENGTH_SHORT).show();
                 commentAdapter.addAll(data.getResult());
                 commentAdapter.notifyDataSetChanged();

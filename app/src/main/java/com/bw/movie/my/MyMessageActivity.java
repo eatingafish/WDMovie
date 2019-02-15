@@ -222,8 +222,7 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
                 }else {
                     mTvUserSex.setText("女");
                 }
-
-
+                mTvUserMail.setText(box);
                 Toast.makeText(MyMessageActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
 
             }

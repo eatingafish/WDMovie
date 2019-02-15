@@ -46,20 +46,28 @@
             />
         <CheckBox
             android:id="@+id/talk_zan"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/zan_change"
+            android:layout_marginLeft="150dp"
+            />
+        <TextView
+            android:id="@+id/zannum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:text="1622"
-            android:drawableLeft="@drawable/zan_change"
-            android:layout_marginLeft="170dp"
+            android:text="1"
+            android:layout_marginLeft="6dp"
+            android:textSize="12sp"
+            android:textColor="#666666"
             />
+
         <ImageView
             android:id="@+id/talk_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/talk"
-            android:layout_marginLeft="20dp"
-            />
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="18dp"
+            android:src="@mipmap/talk" />
 
         <TextView
             android:id="@+id/talk_number"
@@ -67,6 +75,8 @@
             android:layout_height="wrap_content"
             android:text="80"
             android:layout_marginLeft="10dp"
+            android:textSize="12sp"
+            android:textColor="#666666"
             />
     </LinearLayout>
     <View

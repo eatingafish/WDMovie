@@ -72,7 +72,6 @@ public class MyFeedBackActivity extends AppCompatActivity implements CustomAdapt
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.myfeedbace_button_tijiao:
-
                 myFankuiPresenter.reqeust(userId,sessionId,fankui);
                 startActivity(new Intent(this, MyFankuiSuccess.class));
                 break;

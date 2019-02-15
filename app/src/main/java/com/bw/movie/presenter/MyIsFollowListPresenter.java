@@ -6,14 +6,14 @@ import com.bw.movie.http.NetworkManager;
 
 import io.reactivex.Observable;
 
-public class MyattentcinemaPresenter extends BasePresenter{
-    public MyattentcinemaPresenter(DataCall dataCall) {
+public class MyIsFollowListPresenter extends BasePresenter{
+    public MyIsFollowListPresenter(DataCall dataCall) {
         super(dataCall);
     }
 
     @Override
     protected Observable observable(Object... args) {
         IRequest iRequest = NetworkManager.instance().create(IRequest.class);
-        return iRequest.GZyy((int)args[0],(String) args[1],(int)args[2],(int)args[3]);
+        return iRequest.MyisFollowList((int) args[0],(String) args[1],(int) args[2],(int) args[3]);
     }
 }

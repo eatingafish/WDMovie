@@ -10,54 +10,63 @@ import android.widget.TextView;
 
 import com.bw.movie.R;
 import com.bw.movie.bean.TicketBean;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 
 import java.util.ArrayList;
 import java.util.List;
- 
+
+import butterknife.BindView;
+import butterknife.OnClick;
+
 /**
- * Created by 。 on 2018/12/14.
+ *  on 2018/12/14.
  */
- 
-public class MyAdapter extends RecyclerView.Adapter{
+
+public class MyAdapter extends RecyclerView.Adapter {
+    @BindView(R.id.one_button)
+    Button oneButton;
     private List<TicketBean> list = new ArrayList<>();
     private Context context;
     private ClickListener clickListener;
     private LongClickListener longClickListener;
-    public void addList(List<TicketBean> u){
-        if(u!=null){
+    private IWXAPI api;
+
+    public void addList(List<TicketBean> u) {
+        if (u != null) {
             list.addAll(u);
         }
     }
-    public MyAdapter( Context context) {
+
+    public MyAdapter(Context context) {
         this.context = context;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType==0){
+        if (viewType == 0) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.wait_money, parent, false);
             return new MyViewHolder(view);
-        }else if(viewType==1){
+        } else if (viewType == 1) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.finish_layout, parent, false);
             return new ViewHolder2(view);
         }
 
-       return null;
+        return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         int itemViewType = holder.getItemViewType();
-        switch (itemViewType){
+        switch (itemViewType) {
             case 0:
                 MyViewHolder myViewHolder = (MyViewHolder) holder;
                 TicketBean ticketBean = list.get(position);
-                myViewHolder.one_dingdan.setText(ticketBean.getOrderId());
-                myViewHolder.one_film.setText(ticketBean.getCinemaName());
-                myViewHolder.one_count.setText(ticketBean.getAmount()+"");
-                myViewHolder.one_money.setText(ticketBean.getPrice()+"");
-                myViewHolder.one_yingting.setText(ticketBean.getScreeningHall());
-                myViewHolder.one_time.setText(ticketBean.getBeginTime());
+                myViewHolder.one_dingdan.setText("订单号:"+ticketBean.getOrderId());
+                myViewHolder.one_film.setText("影院:"+ticketBean.getCinemaName());
+                myViewHolder.one_count.setText("数量:"+ticketBean.getAmount() + "张");
+                myViewHolder.one_money.setText("金额:"+ticketBean.getPrice() + "元");
+                myViewHolder.one_yingting.setText("影厅:"+ticketBean.getScreeningHall());
+                myViewHolder.one_time.setText("时间:"+ticketBean.getBeginTime());
                 myViewHolder.one_title.setText(ticketBean.getMovieName());
                 break;
             case 1:
@@ -65,15 +74,16 @@ public class MyAdapter extends RecyclerView.Adapter{
                 TicketBean ticketBean2 = list.get(position);
                 holder2.two_dingdan.setText(ticketBean2.getOrderId());
                 holder2.two_film.setText(ticketBean2.getCinemaName());
-                holder2.two_count.setText(ticketBean2.getAmount()+"");
-                holder2.two_money.setText(ticketBean2.getPrice()+"");
+                holder2.two_count.setText(ticketBean2.getAmount() + "");
+                holder2.two_money.setText(ticketBean2.getPrice() + "");
                 holder2.two_yingting.setText(ticketBean2.getScreeningHall());
                 holder2.two_time.setText(ticketBean2.getBeginTime());
                 holder2.two_title.setText(ticketBean2.getMovieName());
                 break;
         }
     }
-    public TicketBean getBean(int position){
+
+    public TicketBean getBean(int position) {
         TicketBean user = list.get(position);
         return user;
     }
@@ -82,9 +92,9 @@ public class MyAdapter extends RecyclerView.Adapter{
     public int getItemViewType(int position) {
         int status = list.get(position).getStatus();
 
-        if(status==1){
+        if (status == 1) {
             return 0;
-        }else{
+        } else {
             return 1;
         }
     }
@@ -98,7 +108,12 @@ public class MyAdapter extends RecyclerView.Adapter{
         list.clear();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
+    @OnClick(R.id.one_button)
+    public void onViewClicked() {
+       // context.startActivity(new Intent(context,CinemazuoweiActivity.class));
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
 
         private final TextView one_title;
@@ -123,7 +138,8 @@ public class MyAdapter extends RecyclerView.Adapter{
 
         }
     }
-    class ViewHolder2 extends RecyclerView.ViewHolder{
+
+    class ViewHolder2 extends RecyclerView.ViewHolder {
 
         private final TextView two_title;
         private final TextView two_dingdan;
@@ -132,6 +148,7 @@ public class MyAdapter extends RecyclerView.Adapter{
         private final TextView two_time;
         private final TextView two_count;
         private final TextView two_money;
+
         public ViewHolder2(View itemView) {
             super(itemView);
             two_title = itemView.findViewById(R.id.two_title);
@@ -143,16 +160,20 @@ public class MyAdapter extends RecyclerView.Adapter{
             two_money = itemView.findViewById(R.id.two_money);
         }
     }
-    public interface ClickListener{
+
+    public interface ClickListener {
         void onItmeClickListener(View view, int position);
     }
-    public void setOnItmeClickListener(ClickListener clickListener){
+
+    public void setOnItmeClickListener(ClickListener clickListener) {
         this.clickListener = clickListener;
     }
-    public interface LongClickListener{
+
+    public interface LongClickListener {
         void onLongItmeClickListener(View view, int position);
     }
-    public void setOnLongItmeClickListener(LongClickListener longClickListener){
+
+    public void setOnLongItmeClickListener(LongClickListener longClickListener) {
         this.longClickListener = longClickListener;
     }
 
