@@ -11,6 +11,24 @@ public class Result<T> {
     private String status;
     private T result;
     private T movieList;
+    private int flag;
+    private String downloadUrl;
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public void setDownloadUrl(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
+    }
 
     public String getOrderId() {
         return orderId;

@@ -442,4 +442,19 @@ public interface IRequest {
                                                                    @Header("sessionId")String sessionId,
                                                                    @Query("page") int page,
                                                                    @Query("count") int count);
+
+    //最新版本
+    @GET("movieApi/tool/v1/findNewVersion")
+    Observable<Result> version(@Header("userId")int userId,
+                               @Header("sessionId")String sessionId,
+                               @Header("ak") String ak
+                               );
+
+    //电影评论点赞
+    @POST("movieApi/movie/v1/verify/movieCommentGreat")
+    @FormUrlEncoded
+    Observable<Result> like(@Header("userId")int userId,
+                            @Header("sessionId")String sessionId,
+                            @Field("commentId") int commentId
+                            );
 }

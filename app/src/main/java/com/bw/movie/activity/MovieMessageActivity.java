@@ -1,10 +1,12 @@
 package com.bw.movie.activity;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,10 +42,12 @@ import com.bw.movie.presenter.MovieMessagePresenter;
 import com.bw.movie.presenter.MoviesDPresenter;
 import com.bw.movie.presenter.MovietalkPresenter;
 import com.bw.movie.presenter.MyCanclePresenter;
+import com.bw.movie.presenter.MyLikePresenter;
 import com.bw.movie.presenter.MyLovePresenter;
 import com.bw.movie.presenter.WritePresenter;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.sackcentury.shinebuttonlib.ShineButton;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -85,8 +89,8 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     private int movieid;
     private MoviesDPresenter moviesDPresenter;
     private MovieMessagePresenter movieMessagePresenter;
-
-
+    ShineButton imageView;
+    TextView textview;
 
 
     @Override
@@ -109,50 +113,74 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         Bundle extras = intent.getExtras();
         movieid = extras.getInt("movieid");
         movieMessagePresenter = new MovieMessagePresenter(new MovieCall());
-         moviesDPresenter = new MoviesDPresenter(new DianYing());
+        moviesDPresenter = new MoviesDPresenter(new DianYing());
         moviesDPresenter.reqeust(userId, sessionId, movieid);
         ButterKnife.bind(this);
 
         try {
             UserDao userDao = new UserDao(this);
             List<User> student = userDao.getStudent();
-            if (student.size() != 0)
-            {
+            if (student.size() != 0) {
                 sessionId = student.get(0).getSessionId();
                 userId = student.get(0).getUserId();
-                Log.e("wj","MovieMessageActivity======"+sessionId);
-                Log.e("wj","MovieMessageActivity======"+userId);
+                Log.e("wj", "MovieMessageActivity======" + sessionId);
+                Log.e("wj", "MovieMessageActivity======" + userId);
 
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        movieMessagePresenter.reqeust(userId,sessionId, movieid);
+        movieMessagePresenter.reqeust(userId, sessionId, movieid);
         moviesDPresenter = new MoviesDPresenter(new DianYing());
-        moviesDPresenter.reqeust(userId,sessionId, movieid);
+        moviesDPresenter.reqeust(userId, sessionId, movieid);
         ButterKnife.bind(this);
         myLovePresenter = new MyLovePresenter(new LoveCall());
         myCanclePresenter = new MyCanclePresenter(new CancleCall());
         mIvLove.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    myLovePresenter.reqeust(userId,sessionId, movieid);
-                }else {
-                    myCanclePresenter.reqeust(userId,sessionId, movieid);
+                if (isChecked) {
+                    myLovePresenter.reqeust(userId, sessionId, movieid);
+                } else {
+                    myCanclePresenter.reqeust(userId, sessionId, movieid);
+                }
+            }
+        });
+        movietalkAdapter = new MovietalkAdapter(this);
+        movietalkAdapter.setOnclick(new MovietalkAdapter.Onclick() {
+            @Override
+            public void onClick(ShineButton zan, int commentId, TextView zannum, int greatNum) {
+                MyLikePresenter movieCommentGreatPresenter = new MyLikePresenter(new MovieCommentGreat());
+                imageView = zan;
+                textview = zannum;
+                textview.setText(++greatNum + "");
+                if (list.size() > 0) {
+                    movieCommentGreatPresenter.reqeust(userId, sessionId, commentId);
+                } else {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MovieMessageActivity.this);
+                    alert.setTitle("提示");
+                    alert.setMessage("当前未登录是否去登陆");
+                    alert.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(MovieMessageActivity.this, LoginActivity.class));
+                        }
+                    });
+                    alert.setNegativeButton("取消", null);
+                    alert.show();
                 }
             }
         });
 
-
-
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         jzVideoPlayerStandard.releaseAllVideos();
         return super.onKeyDown(keyCode, event);
     }
+
     @OnClick({R.id.mBt_Message, R.id.mBt_Advance, R.id.mBt_Photo, R.id.mBt_Talk, R.id.mIv_Back, R.id.mBt_Buy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -174,7 +202,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 TextView juqing = inflate.findViewById(R.id.juqing);
                 chandi.setText("产地：" + MovieMessageBean.getPlaceOrigin());
                 juqing.setText(MovieMessageBean.getSummary());
-                 /*MovieMessageBean.get*/
+                /*MovieMessageBean.get*/
                 dowm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -236,13 +264,13 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                 talklist.setLayoutManager(linearLayoutManager);
                 final int movieid = list.get(0).getId();
                 movietalkPresenter = new MovietalkPresenter(new getData());
-                movietalkPresenter.reqeust(userId,sessionId,movieid, page, 5);
+                movietalkPresenter.reqeust(userId, sessionId, movieid, page, 5);
                 talklist.setLoadingListener(new XRecyclerView.LoadingListener() {
                     @Override
                     public void onRefresh() {
                         page = 1;
                         movietalkAdapter.remove();
-                        movietalkPresenter.reqeust(userId,sessionId,movieid, page, 10);
+                        movietalkPresenter.reqeust(userId, sessionId, movieid, page, 10);
                         movietalkAdapter.notifyDataSetChanged();
                         talklist.refreshComplete();
                     }
@@ -250,14 +278,13 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                     @Override
                     public void onLoadMore() {
                         page++;
-                        movietalkPresenter.reqeust(userId,sessionId,movieid, page, 10);
+                        movietalkPresenter.reqeust(userId, sessionId, movieid, page, 10);
                         movietalkAdapter.remove();
-                        movietalkPresenter.reqeust(userId,sessionId,movieid, page, 10);
+                        movietalkPresenter.reqeust(userId, sessionId, movieid, page, 10);
                         movietalkAdapter.notifyDataSetChanged();
                         talklist.loadMoreComplete();
                     }
                 });
-                movietalkAdapter = new MovietalkAdapter(this);
                 talklist.setAdapter(movietalkAdapter);
 
                 movieback.setOnClickListener(new View.OnClickListener() {
@@ -291,7 +318,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
                     public void onClick(View v) {
                         String commentContent = edittalk.getText().toString().trim();
                         WritePresenter writePresenter = new WritePresenter(new getWrite());
-                        writePresenter.reqeust(userId,sessionId,movieId,commentContent);
+                        writePresenter.reqeust(userId, sessionId, movieId, commentContent);
                         bottomDialog.dismiss();
 
                     }
@@ -354,10 +381,10 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
             String director = data.getResult().getDirector();
             int followMovie = data.getResult().isFollowMovie();
             MovieMessageBean.isFollowMovie();
-            if (followMovie==1){
+            if (followMovie == 1) {
                 mIvLove.setBackgroundResource(R.drawable.xin2);
 
-            }else if (followMovie==2){
+            } else if (followMovie == 2) {
                 mIvLove.setBackgroundResource(R.drawable.xin1);
             }
             //dLove.setChecked(followMovie==1?true:false);
@@ -371,7 +398,8 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     }
 
     /**
-     * 影评成功*/
+     * 影评成功
+     */
 
     private class getData implements DataCall<Result<List<Movietalkbean>>> {
         @Override
@@ -388,17 +416,17 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
     }
 
     /**
-     * 评论成功*/
+     * 评论成功
+     */
 
     private class getWrite implements DataCall<Result> {
         @Override
         public void success(Result data) {
-            if (data.getStatus().equals("9999"))
-            {
+            if (data.getStatus().equals("9999")) {
                 startActivity(new Intent(MovieMessageActivity.this, LoginActivity.class));
             }
             if (data.getStatus().equals("0000")) {
-                Toast.makeText(MovieMessageActivity.this, "评论成功"+data.getStatus(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MovieMessageActivity.this, "评论成功" + data.getStatus(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -415,8 +443,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         try {
             UserDao userDao = new UserDao(this);
             List<User> student = userDao.getStudent();
-            if (student.size() != 0)
-            {
+            if (student.size() != 0) {
                 sessionId = student.get(0).getSessionId();
                 userId = student.get(0).getUserId();
             }
@@ -430,7 +457,7 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         @Override
         public void success(Result data) {
 
-            if (data.getStatus().equals("0000")){
+            if (data.getStatus().equals("0000")) {
                 mIvLove.setBackgroundResource(R.drawable.xin2);
                 Toast.makeText(MovieMessageActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -447,13 +474,25 @@ public class MovieMessageActivity extends AppCompatActivity implements CustomAda
         public void success(Result data) {
 
 
-            if (data.getStatus().equals("0000")){
+            if (data.getStatus().equals("0000")) {
                 mIvLove.setBackgroundResource(R.drawable.xin1);
                 Toast.makeText(MovieMessageActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
-            }else if (data.getStatus().equals("9999")){
+            } else if (data.getStatus().equals("9999")) {
                 startActivity(new Intent(MovieMessageActivity.this, LoginActivity.class));
             }
 
+        }
+
+        @Override
+        public void fail(ApiException e) {
+
+        }
+    }
+
+    private class MovieCommentGreat implements DataCall<Result> {
+        @Override
+        public void success(Result data) {
+            Toast.makeText(MovieMessageActivity.this, "" + data.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         @Override

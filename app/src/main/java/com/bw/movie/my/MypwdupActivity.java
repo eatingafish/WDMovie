@@ -16,6 +16,7 @@ import com.bw.movie.presenter.UpdataPwdPresenter;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +60,18 @@ public class MypwdupActivity extends AppCompatActivity implements CustomAdapt {
         czpwd = czPwd.getText().toString().trim();
         zcpwd = zcPwd.getText().toString().trim();
 
-
+        boolean password = isPassword(czpwd);
+        if (password == false)
+        {
+            Toast.makeText(this, "密码格式不正确,必须要有数字和英文，符号中的任意一种", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        boolean passwordInfo = isPasswordInfo(czpwd);
+        if (passwordInfo == false)
+        {
+            Toast.makeText(this, "密码必须大于8位", Toast.LENGTH_SHORT).show();
+            return;
+        }
         oldencrypt = EncryptUtil.encrypt(dppwd);
         newencryptone = EncryptUtil.encrypt(czpwd);
         newencrypttwo = EncryptUtil.encrypt(zcpwd);
@@ -81,6 +93,29 @@ public class MypwdupActivity extends AppCompatActivity implements CustomAdapt {
 
         updataPwdPresenter.reqeust(userId,sessionId,oldencrypt,newencryptone,newencrypttwo);
     }
+
+    /**
+     * 验证密码，必须要6位字符以上。且必要要有数字和英文，符号中的任意两种
+     * @param password
+     * @return
+     */
+    @SuppressWarnings("unused")
+    private static boolean isPasswordInfo(String password){
+        Pattern pa=Pattern.compile("^(?![0-9]+$)(?![a-zA-Z]+$)(?!([^(0-9a-zA-Z)]|[\\(\\)])+$)([^(0-9a-zA-Z)]|[\\(\\)]|[a-zA-Z]|[0-9]){8,20}$");
+        return pa.matcher(password).matches();
+    }
+
+
+    /**
+     * 验证密码，且必要要有数字和英文，符号中的任意一种
+     * @param password
+     * @return
+     */
+    private static boolean isPassword(String password){
+        Pattern pa=Pattern.compile("^[0-9a-zA-Z]{8,20}$");
+        return pa.matcher(password).matches();
+    }
+
 
     @Override
     public boolean isBaseOnWidth() {

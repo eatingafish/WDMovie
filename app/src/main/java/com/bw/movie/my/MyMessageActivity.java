@@ -257,15 +257,18 @@ public class MyMessageActivity extends AppCompatActivity implements CustomAdapt 
                 }
 
                 name = newName.getText().toString().trim();
+
+                //正则判断邮箱
                 box = newBox.getText().toString().trim();
-
-                Log.e("asd", "id" + userId);
-                Log.e("asd", "session" + sessionId);
-                Log.e("asd", "name" + name);
-                Log.e("asd", "sex" + sex);
-                Log.e("asd", "email" + box);
-
-                updatePresenter.reqeust(userId, sessionId, name, sex, box);
+                String regex = "[a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\\.[a-zA-Z]+)+";
+                boolean cwj1=box.matches(regex);
+                if (cwj1) {
+                    updatePresenter.reqeust(userId, sessionId, name, sex, box);
+                    Toast.makeText(MyMessageActivity.this, "修改成功!", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(MyMessageActivity.this, "修改失败!!邮箱格式不正确!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
             }
         });
